@@ -16,14 +16,27 @@ SRC = $(addprefix $(SRCDIR)/, main.c)
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 TOTAL_FILES = $(words $(SRC))
 CURRENT = 0
+LIBFT = lib/libft
+GET_NEXT = lib/get_next_line
+MLX = lib/mlx
+INLIBFT = -L $(LIBFT) -lft
+INGET_NEXT = -L $(GET_NEXT) -lftget_next_line
+INMLX = -L $(MLX)/build -lmlx42 -ldl -L /opt/homebrew/Cellar/glfw/3.3.8/lib/ -lglfw -pthread -lm
+
 all: $(NAME)
+
 $(NAME): $(OBJ)
+
 	@$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ)
+	@cd $(LIBFT) && $(MAKE) bonus
+	@cd $(GET_NEXT) && $(MAKE) all
+	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
 	@if [ -f $(NAME) ]; then\
 		echo "$(GREEN)\nCompilation successful! Executable $(NAME) created.$(NC)";\
 	else\
 		echo "$(RED)\nCompilation failed!$(NC)";\
 	fi
+
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@mkdir -p $(OBJDIR)
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
@@ -38,15 +51,24 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			printf "$(RED)░ $(NC)"; \
 		fi; \
 	done
-	@printf "] $(BLUE)$(CURRENT)/$(TOTAL_FILES) ($(shell echo 'scale=2; $(CURRENT) * 100 / $(TOTAL_FILES)' | bc)%%)$(NC)"
+	@printf "] $(BLUE)$(CURRENT)/$(TOTAL_FILES) ($(shell echo 'scale=2; $(CURRENT) * 100 / $(TOTAL_FILES)' | bc)%%)$(NC)\n"
+
 clean:
 	@clear
 	@echo "$(RED)Cleaning up...$(NC)"
 	@rm -rf $(OBJDIR)
+	@cd $(LIBFT) && $(MAKE) clean
+	@cd $(GET_NEXT) && $(MAKE) clean
+	@rm -rf $(MLX)/build
+
 fclean: clean
 	@clear
 	@echo "$(RED)Cleaning up...$(NC)"
 	@echo "$(RED)Removing executable $(NAME)...$(NC)"
+	@cd $(LIBFT) && $(MAKE) fclean
+	@cd $(GET_NEXT) && $(MAKE) fclean
 	@rm -f $(NAME)
+
 re: fclean all
+
 .PHONY: all clean fclean re
