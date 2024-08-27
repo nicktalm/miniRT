@@ -20,17 +20,16 @@ LIBFT = lib/libft
 GET_NEXT = lib/get_next_line
 MLX = lib/mlx
 INLIBFT = -L $(LIBFT) -lft
-INGET_NEXT = -L $(GET_NEXT) -lftget_next_line
-INMLX = -L $(MLX)/build -lmlx42 -ldl -L /opt/homebrew/Cellar/glfw/3.3.8/lib/ -lglfw -pthread -lm
+INGET_NEXT = -L $(GET_NEXT) -l_get_next_line
+INMLX = -L $(MLX)/build -lmlx42 -ldl -L /usr/local/lib/ -lglfw -pthread -lm
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-
-	@$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJ)
 	@cd $(LIBFT) && $(MAKE) bonus
 	@cd $(GET_NEXT) && $(MAKE) all
 	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
+	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ) -fsanitize=address
 	@if [ -f $(NAME) ]; then\
 		echo "$(GREEN)\nCompilation successful! Executable $(NAME) created.$(NC)";\
 	else\
