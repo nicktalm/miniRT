@@ -12,7 +12,7 @@ CXX = cc
 CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
 OBJDIR = ./obj
-SRC = $(addprefix $(SRCDIR)/, main.c)
+SRC = $(addprefix $(SRCDIR)/, main.c check_file.c)
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 TOTAL_FILES = $(words $(SRC))
 CURRENT = 0
