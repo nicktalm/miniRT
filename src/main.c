@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/27 11:27:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/08/27 19:09:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,12 @@ void	init_data(t_data *data)
 	if (!data->set.cy)
 		return ;
 	data->set.sp[0].coords.x = 0.0;
-	data->set.sp[0].coords.y = 0.0;
-	data->set.sp[0].coords.z = 20.6;
-	data->set.sp[0].diameter = 12.6;
-	data->set.sp[0].color.x = 10;
+	data->set.sp[0].coords.y = 1.0;
+	data->set.sp[0].coords.z = 3;
+	data->set.sp[0].diameter = 5;
+	data->set.sp[0].color.x = 255;
 	data->set.sp[0].color.y = 0;
-	data->set.sp[0].color.z = 255;
+	data->set.sp[0].color.z = 0;
 	data->set.pl[0].coords.x = 0.0;
 	data->set.pl[0].coords.y = 0.0;
 	data->set.pl[0].coords.z = -10.0;
@@ -120,7 +120,10 @@ void	test(t_data *data)
 			r > 255 ? r = 255 : r;
 			g > 255 ? g = 255 : g;
 			b > 255 ? b = 255 : b;
-			mlx_put_pixel(data->img, i, j, get_color(r, g, b, 255));
+			if (!hit_sphere(data, view_point_x(i), view_point_y(j)))
+				mlx_put_pixel(data->img, i, j, get_color(r, g, b, 255));
+			else
+				mlx_put_pixel(data->img, i, j, get_color(data->set.sp->color.x, data->set.sp->color.y, data->set.sp->color.z, 255));
 			i++;
 		}
 		j++;
@@ -130,4 +133,63 @@ void	test(t_data *data)
 int	get_color(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
+}
+
+float	view_point_x(int value)
+{
+	float	result;
+
+	result = (float)value - 800.0;
+	return (result);
+}
+
+float	view_point_y(int value)
+{
+	float	result;
+
+	result = (float)value + 450.0;
+	return (result);
+}
+
+int	hit_sphere(t_data *data, float x, float y)
+{
+	float	a;
+	float	b;
+	float	c;
+	float	r;
+	t_vec	start;
+	t_vec	soll;
+	float	result;
+
+	printf("x = %f y = %f\n", x, y);
+	start.x = data->set.sp->coords.x;
+	start.y = data->set.sp->coords.y;
+	start.z = data->set.sp->coords.z;
+	soll.x = x;
+	soll.y = y;
+	soll.z = 1;
+	r = data->set.sp->diameter / 2;
+	a = multi_vec(soll, soll);
+	b = 2.0 * multi_vec(start, soll);
+	c = multi_vec(start, start) - r * r;
+	result = (b * b) - (4 * a * c);
+	if (result >= 0)
+		return (1);
+	else
+		return (0);
+}
+
+float	multi_vec(t_vec s1, t_vec s2)
+{
+	return (s1.x * s2.x + s1.y * s2.y + s1.z * s2.z);
+}
+
+t_vec	sub_vec(t_vec s1, t_vec s2)
+{
+	t_vec	result;
+
+	result.x = s1.x - s2.x;
+	result.y = s1.y - s2.y;
+	result.z = s1.z - s2.z;
+	return (result);
 }

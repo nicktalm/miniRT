@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/27 11:15:50 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/08/27 18:08:51 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINIRT_H
 
 # include <stdio.h>
+# include <math.h>
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
@@ -93,5 +94,10 @@ void	init_data(t_data *data);
 void	init_mlx(t_data *data);
 void	test(t_data *data);
 int		get_color(int r, int g, int b, int a);
+float	view_point_x(int value);
+float	view_point_y(int value);
+int		hit_sphere(t_data *data, float x, float y);
+t_vec	sub_vec(t_vec s1, t_vec s2);
+float	multi_vec(t_vec s1, t_vec s2);
 
 #endif
