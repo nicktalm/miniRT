@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/28 11:24:12 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/28 12:39:42 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,9 @@ typedef struct s_settings
 	t_sphere	*sp;
 	t_plane		*pl;
 	t_cylinder	*cy;
+	int			sp_count;
+	int			pl_count;
+	int			cy_count;
 }				t_settings;
 
 typedef struct s_data
@@ -113,5 +116,8 @@ void	error(char *message);
 //helper
 
 double	ft_atof(const char *str);
+void	sphere_count(t_data *data, char **line);
+void	plane_count(t_data *data, char **line);
+void	cylinder_count(t_data *data, char **line);
 
 #endif

@@ -6,13 +6,13 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:46:39 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/28 11:28:15 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/28 12:45:06 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	print_struct(t_data *data, int sphere_count, int plane_count, int cylinder_count)
+void	print_struct(t_data *data)
 {
 	printf("Ambient\n");
 	printf("data.set.ambient.ratio: %f\n", data->set.ambient.ratio);
@@ -38,53 +38,49 @@ void	print_struct(t_data *data, int sphere_count, int plane_count, int cylinder_
 	printf("data.set.light.color.y: %f\n", data->set.light.color.y);
 	printf("data.set.light.color.z: %f\n", data->set.light.color.z);
 	printf("\n\n");
-	int j = 0;
-	while (sphere_count > j)
+	printf("Sphere\n");
+	for (int i = 0; i < data->set.sp_count; i++)
 	{
-		printf("Sphere %d\n", j + 1);
-		printf("data.set.sp[%d].coords.x: %f\n", j, data->set.sp[j].coords.x);
-		printf("data.set.sp[%d].coords.y: %f\n", j, data->set.sp[j].coords.y);
-		printf("data.set.sp[%d].coords.z: %f\n", j, data->set.sp[j].coords.z);
-		printf("data.set.sp[%d].diameter: %f\n", j, data->set.sp[j].diameter);
-		printf("data.set.sp[%d].color.x: %f\n", j, data->set.sp[j].color.x);
-		printf("data.set.sp[%d].color.y: %f\n", j, data->set.sp[j].color.y);
-		printf("data.set.sp[%d].color.z: %f\n", j, data->set.sp[j].color.z);
-		printf("\n\n");
-		j++;
+		printf("Sphere %d\n", i);
+		printf("data.set.sp[%d].coords.x: %f\n", i, data->set.sp[i].coords.x);
+		printf("data.set.sp[%d].coords.y: %f\n", i, data->set.sp[i].coords.y);
+		printf("data.set.sp[%d].coords.z: %f\n", i, data->set.sp[i].coords.z);
+		printf("data.set.sp[%d].diameter: %f\n", i, data->set.sp[i].diameter);
+		printf("data.set.sp[%d].color.x: %f\n", i, data->set.sp[i].color.x);
+		printf("data.set.sp[%d].color.y: %f\n", i, data->set.sp[i].color.y);
+		printf("data.set.sp[%d].color.z: %f\n", i, data->set.sp[i].color.z);
 	}
-	j = 0;
-	while (plane_count > j)
+	printf("\n\n");
+	printf("Plane\n");
+	for (int i = 0; i < data->set.pl_count; i++)
 	{
-		printf("Plane %d\n", j + 1);
-		printf("data.set.pl[%d].coords.x: %f\n", j, data->set.pl[j].coords.x);
-		printf("data.set.pl[%d].coords.y: %f\n", j, data->set.pl[j].coords.y);
-		printf("data.set.pl[%d].coords.z: %f\n", j, data->set.pl[j].coords.z);
-		printf("data.set.pl[%d].normalized.x: %f\n", j, data->set.pl[j].normalized.x);
-		printf("data.set.pl[%d].normalized.y: %f\n", j, data->set.pl[j].normalized.y);
-		printf("data.set.pl[%d].normalized.z: %f\n", j, data->set.pl[j].normalized.z);
-		printf("data.set.pl[%d].color.x: %f\n", j, data->set.pl[j].color.x);
-		printf("data.set.pl[%d].color.y: %f\n", j, data->set.pl[j].color.y);
-		printf("data.set.pl[%d].color.z: %f\n", j, data->set.pl[j].color.z);
-		printf("\n\n");
-		j++;
+		printf("Plane %d\n", i);
+		printf("data.set.pl[%d].coords.x: %f\n", i, data->set.pl[i].coords.x);
+		printf("data.set.pl[%d].coords.y: %f\n", i, data->set.pl[i].coords.y);
+		printf("data.set.pl[%d].coords.z: %f\n", i, data->set.pl[i].coords.z);
+		printf("data.set.pl[%d].normalized.x: %f\n", i, data->set.pl[i].normalized.x);
+		printf("data.set.pl[%d].normalized.y: %f\n", i, data->set.pl[i].normalized.y);
+		printf("data.set.pl[%d].normalized.z: %f\n", i, data->set.pl[i].normalized.z);
+		printf("data.set.pl[%d].color.x: %f\n", i, data->set.pl[i].color.x);
+		printf("data.set.pl[%d].color.y: %f\n", i, data->set.pl[i].color.y);
+		printf("data.set.pl[%d].color.z: %f\n", i, data->set.pl[i].color.z);
 	}
-	j = 0;
-	while (cylinder_count > j)
+	printf("\n\n");
+	printf("Cylinder\n");
+	for (int i = 0; i < data->set.cy_count; i++)
 	{
-		printf("Cylinder %d\n", j + 1);
-		printf("data.set.cy[%d].coords.x: %f\n", j, data->set.cy[j].coords.x);
-		printf("data.set.cy[%d].coords.y: %f\n", j, data->set.cy[j].coords.y);
-		printf("data.set.cy[%d].coords.z: %f\n", j, data->set.cy[j].coords.z);
-		printf("data.set.cy[%d].normalized.x: %f\n", j, data->set.cy[j].normalized.x);
-		printf("data.set.cy[%d].normalized.y: %f\n", j, data->set.cy[j].normalized.y);
-		printf("data.set.cy[%d].normalized.z: %f\n", j, data->set.cy[j].normalized.z);
-		printf("data.set.cy[%d].diameter: %f\n", j, data->set.cy[j].diameter);
-		printf("data.set.cy[%d].height: %f\n", j, data->set.cy[j].height);
-		printf("data.set.cy[%d].color.x: %f\n", j, data->set.cy[j].color.x);
-		printf("data.set.cy[%d].color.y: %f\n", j, data->set.cy[j].color.y);
-		printf("data.set.cy[%d].color.z: %f\n", j, data->set.cy[j].color.z);
-		printf("\n\n");
-		j++;
+		printf("Cylinder %d\n", i);
+		printf("data.set.cy[%d].coords.x: %f\n", i, data->set.cy[i].coords.x);
+		printf("data.set.cy[%d].coords.y: %f\n", i, data->set.cy[i].coords.y);
+		printf("data.set.cy[%d].coords.z: %f\n", i, data->set.cy[i].coords.z);
+		printf("data.set.cy[%d].normalized.x: %f\n", i, data->set.cy[i].normalized.x);
+		printf("data.set.cy[%d].normalized.y: %f\n", i, data->set.cy[i].normalized.y);
+		printf("data.set.cy[%d].normalized.z: %f\n", i, data->set.cy[i].normalized.z);
+		printf("data.set.cy[%d].diameter: %f\n", i, data->set.cy[i].diameter);
+		printf("data.set.cy[%d].height: %f\n", i, data->set.cy[i].height);
+		printf("data.set.cy[%d].color.x: %f\n", i, data->set.cy[i].color.x);
+		printf("data.set.cy[%d].color.y: %f\n", i, data->set.cy[i].color.y);
+		printf("data.set.cy[%d].color.z: %f\n", i, data->set.cy[i].color.z);
 	}
 }
 
@@ -162,9 +158,6 @@ int	read_rt_file(int fd, t_data *data, char *argv)
 	int		i;
 	int		rows;
 	char	**line;
-	int		sphere_count;
-	int		plane_count;
-	int		cylinder_count;
 
 	i = 0;
 	rows = 0;
@@ -183,40 +176,16 @@ int	read_rt_file(int fd, t_data *data, char *argv)
 	}
 	line[i] = NULL;
 	check_param_nbr(line);
-	i = 0;
-	sphere_count = 0;
-	while (line[i])
-	{
-		if (ft_strncmp(line[i], "sp", 2) == 0)
-			sphere_count++;
-		i++;
-	}
-	data->set.sp = malloc(sizeof(t_sphere) * sphere_count);
-	i = 0;
-	plane_count = 0;
-	while (line[i])
-	{
-		if (ft_strncmp(line[i], "pl", 2) == 0)
-			plane_count++;
-		i++;
-	}
-	data->set.pl = malloc(sizeof(t_plane) * plane_count);
-	i = 0;
-	cylinder_count = 0;
-	while (line[i])
-	{
-		if (ft_strncmp(line[i], "cy", 2) == 0)
-			cylinder_count++;
-		i++;
-	}
-	data->set.cy = malloc(sizeof(t_cylinder) * cylinder_count);
+	sphere_count(data, line);
+	plane_count(data, line);
+	cylinder_count(data, line);
 	i = 0;
 	while (line[i] != NULL)
 	{
 		parse_line(data, &line[i]);
 		i++;
 	}
-	print_struct(data, sphere_count, plane_count, cylinder_count);
+	print_struct(data);
 	return (0);
 }
 
