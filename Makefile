@@ -9,7 +9,7 @@ CLEAR_LINE = \033[2K\r
 
 NAME = miniRT
 CXX = cc
-CXXFLAGS = -Wall -Wextra -Werror
+# CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
 OBJDIR = ./obj
 SRC = $(addprefix $(SRCDIR)/, main.c)
