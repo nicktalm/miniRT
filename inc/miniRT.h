@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/27 12:22:27 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/08/28 11:24:12 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINIRT_H
 
 # include <stdio.h>
+# include <fcntl.h>
+# include <math.h>
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
@@ -64,7 +66,7 @@ typedef struct s_camera
 
 typedef struct s_ambient
 {
-	float	range;
+	float	ratio;
 	t_vec	color;
 }				t_ambient;
 
@@ -89,5 +91,27 @@ typedef struct s_data
 // main
 
 int		main(int argc, char **argv);
+
+//parsing
+
+int		open_file(char *argv, t_data *data);
+int		rt_file_check(char *argv);
+int		read_rt_file(int fd, t_data *data, char *argv);
+int		parse_line(t_data *data, char **line);
+int		check_param_nbr(char **line);
+
+//parsing_obj
+
+void	parse_sphere(t_data *data, char **line);
+void	parse_plane(t_data *data, char **line);
+void	parse_cylinder(t_data *data, char **line);
+
+//error
+
+void	error(char *message);
+
+//helper
+
+double	ft_atof(const char *str);
 
 #endif

@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   helper.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/27 14:36:06 by ntalmon          ###   ########.fr       */
+/*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
+/*   Updated: 2024/08/27 17:39:57 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-int	main(int argc, char **argv)
+double	ft_atof(const char *str)
 {
-	t_data	data;
+	double	int_part;
+	double	dec_part;
+	double	sign;
+	int		i;
 
-	if (argc != 2)
-		error("Wrong number of arguments");
-	else
-		open_file(argv[1], &data);
-	return (0);
+	int_part = 0.0;
+	dec_part = 0.0;
+	sign = 1.0;
+	if (*str == '+' || *str == '-')
+		if (*str++ == '-')
+			sign = -1.0;
+	while (ft_isdigit(*str))
+		int_part = int_part * 10 + (*str++ - '0');
+	i = -1;
+	if (*str == '.' && *str++)
+	{
+		while (ft_isdigit(*str))
+			dec_part += (pow(10, i--) * (*str++ - '0'));
+	}
+	return (sign * (int_part + dec_part));
 }

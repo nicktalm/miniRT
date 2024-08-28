@@ -1,24 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/27 14:36:06 by ntalmon          ###   ########.fr       */
+/*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
+/*   Updated: 2024/08/27 13:02:51 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-int	main(int argc, char **argv)
+void	error(char *message)
 {
-	t_data	data;
-
-	if (argc != 2)
-		error("Wrong number of arguments");
-	else
-		open_file(argv[1], &data);
-	return (0);
+	ft_putstr_fd("Error: ", 2);
+	ft_putstr_fd(message, 2);
+	ft_putstr_fd("\n", 2);
+	exit(0);
 }

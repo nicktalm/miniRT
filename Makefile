@@ -12,7 +12,7 @@ CXX = cc
 CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
 OBJDIR = ./obj
-SRC = $(addprefix $(SRCDIR)/, main.c check_file.c)
+SRC = $(addprefix $(SRCDIR)/, main.c check_file.c error.c parsing.c helper.c parsing_obj.c)
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 TOTAL_FILES = $(words $(SRC))
 CURRENT = 0
@@ -28,6 +28,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@cd $(LIBFT) && $(MAKE) bonus
 	@cd $(GET_NEXT) && $(MAKE) all
+	@printf "\n"
 	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
 	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ) -fsanitize=address
 	@if [ -f $(NAME) ]; then\
@@ -50,7 +51,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 			printf "$(RED)░ $(NC)"; \
 		fi; \
 	done
-	@printf "] $(BLUE)$(CURRENT)/$(TOTAL_FILES) ($(shell echo 'scale=2; $(CURRENT) * 100 / $(TOTAL_FILES)' | bc)%%)$(NC)\n"
+	@printf "] $(BLUE)$(CURRENT)/$(TOTAL_FILES) ($(shell echo 'scale=2; $(CURRENT) * 100 / $(TOTAL_FILES)' | bc)%%)$(NC)"
 
 clean:
 	@clear
