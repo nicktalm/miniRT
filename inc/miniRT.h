@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/28 16:38:12 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/08/29 17:57:37 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,9 @@ typedef struct s_data
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
-	t_vec		color;
 	float		aspect_ratio;
-	int			vpw;
-	int			vph;
+	t_vec		t1;
+	t_vec		t2;
 }				t_data;
 
 // main
@@ -95,15 +94,8 @@ typedef struct s_data
 int		main(void);
 void	init_data(t_data *data);
 void	init_mlx(t_data *data);
-void	test(t_data *data);
-t_vec	grade_color(t_vec color, float grade);
+void	create_img(t_data *data);
 int		get_color(int r, int g, int b, int a);
-float	view_point_x(int value, t_data *data);
-float	view_point_y(int value, t_data *data);
-float	hit_sphere(float x, float y, t_sphere *sp);
-t_vec	sub_vec(t_vec s1, t_vec s2);
-float	multi_vec(t_vec s1, t_vec s2);
-t_vec	norm_vec(t_vec s1);
-void	calc_vpw(t_data *data);
+bool	hit_sphere(t_data *data, t_vec test);
 
 #endif
