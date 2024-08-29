@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 18:06:16 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/08/29 22:47:43 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	init_data(t_data *data)
 	data->set.ambient.color.z = 255;
 	data->set.cam.coords.x = 0.0;
 	data->set.cam.coords.y = 0.0;
-	data->set.cam.coords.z = -2.0;
+	data->set.cam.coords.z = 5.0;
 	data->set.cam.normalized.x = 0.0;
 	data->set.cam.normalized.y = 0.0;
 	data->set.cam.normalized.z = 1.0;
 	data->set.cam.fov = 90 * (M_PI / 180);
-	data->set.light.coords.x = -40.0;
-	data->set.light.coords.y = 50.0;
-	data->set.light.coords.z = 0.0;
+	data->set.light.coords.x = -1.0;
+	data->set.light.coords.y = -1.0;
+	data->set.light.coords.z = 1.0;
 	data->set.light.brightness = 0.6;
 	data->set.light.color.x = 10;
 	data->set.light.color.y = 0;
@@ -61,7 +61,7 @@ void	init_data(t_data *data)
 	data->set.sp[0].coords.x = 0.0;
 	data->set.sp[0].coords.y = 0.0;
 	data->set.sp[0].coords.z = 0.0;
-	data->set.sp[0].diameter = 0.5;
+	data->set.sp[0].diameter = 2;
 	data->set.sp[0].color.x = 255;
 	data->set.sp[0].color.y = 0;
 	data->set.sp[0].color.z = 0;
@@ -112,10 +112,11 @@ void	create_img(t_data *data)
 {
 	t_vec	coords;
 	t_vec	test;
-	t_vec	color;
+	float	light;
 
 	coords.y = 0.0;
 	coords.z = -1.0;
+	data->set.light.coords = norm_vec(data->set.light.coords);
 	while (coords.y < 900.0)
 	{
 		coords.x = 0.0;
@@ -124,12 +125,15 @@ void	create_img(t_data *data)
 			test.x = (coords.x * 2) / 1600.0 - 1;
 			test.y = 1 - ((coords.y * 2) / 900.0);
 			test.z = -1.0;
+			test.x *= data->aspect_ratio;
 			if (hit_sphere(data, test))
 			{
-				color.x = 255 * data->t1.x;
-				color.y = 0 * data->t1.y;
-				color.z = 0 * data->t1.z;
-				mlx_put_pixel(data->img, coords.x, coords.y, get_color(color.x, color.y, color.z, 255));
+				data->set.light.coords.x *= -1;
+				data->set.light.coords.y *= -1;
+				data->set.light.coords.z *= -1;
+				light = dot(data->t2, data->set.light.coords);
+				light < 0.0 ? light = 0.0 : light;
+				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp->color.x * light, data->set.sp->color.y * light, data->set.sp->color.z * light, 255));
 			}
 			coords.x++;
 		}
@@ -153,23 +157,35 @@ bool	hit_sphere(t_data *data, t_vec test)
 	b = 2.0 * (data->set.cam.coords.x * test.x + data->set.cam.coords.y * test.y + data->set.cam.coords.z * test.z);
 	c = pow(data->set.cam.coords.x, 2.0) + pow(data->set.cam.coords.y, 2.0) + pow(data->set.cam.coords.z, 2.0) - pow(data->set.sp->diameter / 2.0, 2.0);
 	dis = b * b - 4.0 * a * c;
-	if (dis > 0.0)
+	if (dis >= 0.0)
 	{
 		data->t1.x = (-b - sqrt(dis)) / 2 * a;
 		data->t1.y = data->set.cam.coords.x + (test.x * data->t1.x);
+		data->t1.x -= data->set.sp->coords.x;
+		data->t1.y -= data->set.sp->coords.y;
+		data->t1 = norm_vec(data->t1);
 		data->t2.x = (-b + sqrt(dis)) / 2 * a;
 		data->t2.y = data->set.cam.coords.y + (test.y * data->t2.x);
-		return (true);
-	}
-	else if (dis == 0.0)
-	{
-		data->t1.x = 0.0;
-		data->t1.y = 0.0;
-		data->t1.z = 0.0;
-		data->t2.x = 0.0;
-		data->t2.y = 0.0;
-		data->t2.z = 0.0;
+		data->t2.x -= data->set.sp->coords.x;
+		data->t2.y -= data->set.sp->coords.y;
+		data->t2 = norm_vec(data->t2);
 		return (true);
 	}
 	return (false);
+}
+
+t_vec	norm_vec(t_vec s1)
+{
+	float	len;
+
+	len = sqrt(pow(s1.x, 2) + pow(s1.y, 2) + pow(s1.z, 2));
+	s1.x /= len;
+	s1.y /= len;
+	s1.z /= len;
+	return (s1);
+}
+
+float	dot(t_vec s1, t_vec s2)
+{
+	return (s1.x * s2.x + s1.y * s2.y + s1.z * s2.z);
 }

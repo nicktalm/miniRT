@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 17:57:37 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/08/29 22:23:00 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,7 @@ void	init_mlx(t_data *data);
 void	create_img(t_data *data);
 int		get_color(int r, int g, int b, int a);
 bool	hit_sphere(t_data *data, t_vec test);
+t_vec	norm_vec(t_vec s1);
+float	dot(t_vec s1, t_vec s2);
 
 #endif
