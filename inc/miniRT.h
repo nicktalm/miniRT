@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/28 12:39:42 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/29 12:22:09 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,12 @@ int		check_param_nbr(char **line);
 void	parse_sphere(t_data *data, char **line);
 void	parse_plane(t_data *data, char **line);
 void	parse_cylinder(t_data *data, char **line);
+
+//parsing_helper
+
+void	parse_coords(t_vec *vec, char *line);
+void	parse_normalized_vector(t_vec *vec, char *line);
+void	parse_color(t_vec *vec, char *line);
 
 //error
 

@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:46:39 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/28 12:45:06 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/29 13:03:52 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,49 +38,49 @@ void	print_struct(t_data *data)
 	printf("data.set.light.color.y: %f\n", data->set.light.color.y);
 	printf("data.set.light.color.z: %f\n", data->set.light.color.z);
 	printf("\n\n");
-	printf("Sphere\n");
+	printf("\033[1;31mSphere\033[0m\n\n");
 	for (int i = 0; i < data->set.sp_count; i++)
 	{
-		printf("Sphere %d\n", i);
-		printf("data.set.sp[%d].coords.x: %f\n", i, data->set.sp[i].coords.x);
-		printf("data.set.sp[%d].coords.y: %f\n", i, data->set.sp[i].coords.y);
-		printf("data.set.sp[%d].coords.z: %f\n", i, data->set.sp[i].coords.z);
-		printf("data.set.sp[%d].diameter: %f\n", i, data->set.sp[i].diameter);
-		printf("data.set.sp[%d].color.x: %f\n", i, data->set.sp[i].color.x);
-		printf("data.set.sp[%d].color.y: %f\n", i, data->set.sp[i].color.y);
-		printf("data.set.sp[%d].color.z: %f\n", i, data->set.sp[i].color.z);
+		printf("\033[0;31mSphere %d\033[0m\n", i);
+		printf("\033[0;31mdata.set.sp[%d].coords.x: %f\033[0m\n", i, data->set.sp[i].coords.x);
+		printf("\033[0;31mdata.set.sp[%d].coords.y: %f\033[0m\n", i, data->set.sp[i].coords.y);
+		printf("\033[0;31mdata.set.sp[%d].coords.z: %f\033[0m\n", i, data->set.sp[i].coords.z);
+		printf("\033[0;31mdata.set.sp[%d].diameter: %f\033[0m\n", i, data->set.sp[i].diameter);
+		printf("\033[0;31mdata.set.sp[%d].color.x: %f\033[0m\n", i, data->set.sp[i].color.x);
+		printf("\033[0;31mdata.set.sp[%d].color.y: %f\033[0m\n", i, data->set.sp[i].color.y);
+		printf("\033[0;31mdata.set.sp[%d].color.z: %f\033[0m\n", i, data->set.sp[i].color.z);
 	}
 	printf("\n\n");
-	printf("Plane\n");
+	printf("\033[0;32mPlane\033[0m\n\n");
 	for (int i = 0; i < data->set.pl_count; i++)
 	{
-		printf("Plane %d\n", i);
-		printf("data.set.pl[%d].coords.x: %f\n", i, data->set.pl[i].coords.x);
-		printf("data.set.pl[%d].coords.y: %f\n", i, data->set.pl[i].coords.y);
-		printf("data.set.pl[%d].coords.z: %f\n", i, data->set.pl[i].coords.z);
-		printf("data.set.pl[%d].normalized.x: %f\n", i, data->set.pl[i].normalized.x);
-		printf("data.set.pl[%d].normalized.y: %f\n", i, data->set.pl[i].normalized.y);
-		printf("data.set.pl[%d].normalized.z: %f\n", i, data->set.pl[i].normalized.z);
-		printf("data.set.pl[%d].color.x: %f\n", i, data->set.pl[i].color.x);
-		printf("data.set.pl[%d].color.y: %f\n", i, data->set.pl[i].color.y);
-		printf("data.set.pl[%d].color.z: %f\n", i, data->set.pl[i].color.z);
+		printf("\033[0;32mPlane %d\033[0m\n", i);
+		printf("\033[0;32mdata.set.pl[%d].coords.x: %f\033[0m\n", i, data->set.pl[i].coords.x);
+		printf("\033[0;32mdata.set.pl[%d].coords.y: %f\033[0m\n", i, data->set.pl[i].coords.y);
+		printf("\033[0;32mdata.set.pl[%d].coords.z: %f\033[0m\n", i, data->set.pl[i].coords.z);
+		printf("\033[0;32mdata.set.pl[%d].normalized.x: %f\033[0m\n", i, data->set.pl[i].normalized.x);
+		printf("\033[0;32mdata.set.pl[%d].normalized.y: %f\033[0m\n", i, data->set.pl[i].normalized.y);
+		printf("\033[0;32mdata.set.pl[%d].normalized.z: %f\033[0m\n", i, data->set.pl[i].normalized.z);
+		printf("\033[0;32mdata.set.pl[%d].color.x: %f\033[0m\n", i, data->set.pl[i].color.x);
+		printf("\033[0;32mdata.set.pl[%d].color.y: %f\033[0m\n", i, data->set.pl[i].color.y);
+		printf("\033[0;32mdata.set.pl[%d].color.z: %f\033[0m\n", i, data->set.pl[i].color.z);
 	}
 	printf("\n\n");
-	printf("Cylinder\n");
+	printf("\033[0;34mCylinder\033[0m\n\n");
 	for (int i = 0; i < data->set.cy_count; i++)
 	{
-		printf("Cylinder %d\n", i);
-		printf("data.set.cy[%d].coords.x: %f\n", i, data->set.cy[i].coords.x);
-		printf("data.set.cy[%d].coords.y: %f\n", i, data->set.cy[i].coords.y);
-		printf("data.set.cy[%d].coords.z: %f\n", i, data->set.cy[i].coords.z);
-		printf("data.set.cy[%d].normalized.x: %f\n", i, data->set.cy[i].normalized.x);
-		printf("data.set.cy[%d].normalized.y: %f\n", i, data->set.cy[i].normalized.y);
-		printf("data.set.cy[%d].normalized.z: %f\n", i, data->set.cy[i].normalized.z);
-		printf("data.set.cy[%d].diameter: %f\n", i, data->set.cy[i].diameter);
-		printf("data.set.cy[%d].height: %f\n", i, data->set.cy[i].height);
-		printf("data.set.cy[%d].color.x: %f\n", i, data->set.cy[i].color.x);
-		printf("data.set.cy[%d].color.y: %f\n", i, data->set.cy[i].color.y);
-		printf("data.set.cy[%d].color.z: %f\n", i, data->set.cy[i].color.z);
+		printf("\033[0;34mCylinder %d\033[0m\n", i);
+		printf("\033[0;34mdata.set.cy[%d].coords.x: %f\033[0m\n", i, data->set.cy[i].coords.x);
+		printf("\033[0;34mdata.set.cy[%d].coords.y: %f\033[0m\n", i, data->set.cy[i].coords.y);
+		printf("\033[0;34mdata.set.cy[%d].coords.z: %f\033[0m\n", i, data->set.cy[i].coords.z);
+		printf("\033[0;34mdata.set.cy[%d].normalized.x: %f\033[0m\n", i, data->set.cy[i].normalized.x);
+		printf("\033[0;34mdata.set.cy[%d].normalized.y: %f\033[0m\n", i, data->set.cy[i].normalized.y);
+		printf("\033[0;34mdata.set.cy[%d].normalized.z: %f\033[0m\n", i, data->set.cy[i].normalized.z);
+		printf("\033[0;34mdata.set.cy[%d].diameter: %f\033[0m\n", i, data->set.cy[i].diameter);
+		printf("\033[0;34mdata.set.cy[%d].height: %f\033[0m\n", i, data->set.cy[i].height);
+		printf("\033[0;34mdata.set.cy[%d].color.x: %f\033[0m\n", i, data->set.cy[i].color.x);
+		printf("\033[0;34mdata.set.cy[%d].color.y: %f\033[0m\n", i, data->set.cy[i].color.y);
+		printf("\033[0;34mdata.set.cy[%d].color.z: %f\033[0m\n", i, data->set.cy[i].color.z);
 	}
 }
 
@@ -146,11 +146,8 @@ int	check_param_nbr(char **line)
 	}
 	if (count_a == 1 && count_c == 1 && count_l == 1)
 		return (0);
-	else
-	{
-		printf("Error: Wrong number of parameters\n");
-		return (1);
-	}
+	error("Error: Wrong number of parameters\n");
+	return (1);
 }
 
 int	read_rt_file(int fd, t_data *data, char *argv)
