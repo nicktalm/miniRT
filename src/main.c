@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 22:47:43 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:57:58 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,14 @@ void	init_data(t_data *data)
 	data->set.ambient.color.z = 255;
 	data->set.cam.coords.x = 0.0;
 	data->set.cam.coords.y = 0.0;
-	data->set.cam.coords.z = 5.0;
+	data->set.cam.coords.z = 3.0;
 	data->set.cam.normalized.x = 0.0;
 	data->set.cam.normalized.y = 0.0;
 	data->set.cam.normalized.z = 1.0;
 	data->set.cam.fov = 90 * (M_PI / 180);
 	data->set.light.coords.x = -1.0;
 	data->set.light.coords.y = -1.0;
-	data->set.light.coords.z = 1.0;
+	data->set.light.coords.z = -1.0;
 	data->set.light.brightness = 0.6;
 	data->set.light.color.x = 10;
 	data->set.light.color.y = 0;
@@ -67,14 +67,14 @@ void	init_data(t_data *data)
 	data->set.sp[0].color.z = 0;
 	data->set.sp[1].coords.x = 2.0;
 	data->set.sp[1].coords.y = 0.0;
-	data->set.sp[1].coords.z = 20;
+	data->set.sp[1].coords.z = 0.0;
 	data->set.sp[1].diameter = 2;
 	data->set.sp[1].color.x = 0;
 	data->set.sp[1].color.y = 0;
 	data->set.sp[1].color.z = 255;
 	data->set.sp[2].coords.x = -2.0;
 	data->set.sp[2].coords.y = 0.0;
-	data->set.sp[2].coords.z = 5;
+	data->set.sp[2].coords.z = 0.0;
 	data->set.sp[2].diameter = 2;
 	data->set.sp[2].color.x = 0;
 	data->set.sp[2].color.y = 255;
@@ -113,10 +113,14 @@ void	create_img(t_data *data)
 	t_vec	coords;
 	t_vec	test;
 	float	light;
+	t_vec	color;
 
 	coords.y = 0.0;
 	coords.z = -1.0;
 	data->set.light.coords = norm_vec(data->set.light.coords);
+	data->set.light.coords.x *= -1;
+	data->set.light.coords.y *= -1;
+	data->set.light.coords.z *= -1;
 	while (coords.y < 900.0)
 	{
 		coords.x = 0.0;
@@ -126,15 +130,14 @@ void	create_img(t_data *data)
 			test.y = 1 - ((coords.y * 2) / 900.0);
 			test.z = -1.0;
 			test.x *= data->aspect_ratio;
-			if (hit_sphere(data, test))
+			if (hit_sphere(data, test, &data->set.sp[0]))
 			{
-				data->set.light.coords.x *= -1;
-				data->set.light.coords.y *= -1;
-				data->set.light.coords.z *= -1;
-				light = dot(data->t2, data->set.light.coords);
+				light = dot(data->norm_t1, data->set.light.coords);
 				light < 0.0 ? light = 0.0 : light;
-				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp->color.x * light, data->set.sp->color.y * light, data->set.sp->color.z * light, 255));
+				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp[0].color.x * light, data->set.sp[0].color.y * light, data->set.sp[0].color.z * light, 255));
 			}
+			else
+				mlx_put_pixel(data->img, coords.x, coords.y, get_color(0, 0, 0, 100));
 			coords.x++;
 		}
 		coords.y++;
@@ -143,32 +146,35 @@ void	create_img(t_data *data)
 
 int	get_color(int r, int g, int b, int a)
 {
+	r > 255 ? r = 255 : r < 0 ? r = 0 : r;
+	g > 255 ? g = 255 : g < 0 ? g = 0 : g;
+	b > 255 ? b = 255 : b < 0 ? b = 0 : b;
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-bool	hit_sphere(t_data *data, t_vec test)
+bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp)
 {
 	float	a;
 	float	b;
 	float	c;
 	float	dis;
+	float	t1;
+	float	t2;
 
 	a = pow(test.x, 2.0) + pow(test.y, 2.0) + pow(test.z, 2.0);
 	b = 2.0 * (data->set.cam.coords.x * test.x + data->set.cam.coords.y * test.y + data->set.cam.coords.z * test.z);
-	c = pow(data->set.cam.coords.x, 2.0) + pow(data->set.cam.coords.y, 2.0) + pow(data->set.cam.coords.z, 2.0) - pow(data->set.sp->diameter / 2.0, 2.0);
+	c = pow(data->set.cam.coords.x, 2.0) + pow(data->set.cam.coords.y, 2.0) + pow(data->set.cam.coords.z, 2.0) - pow(sp->diameter / 2.0, 2.0);
 	dis = b * b - 4.0 * a * c;
 	if (dis >= 0.0)
 	{
-		data->t1.x = (-b - sqrt(dis)) / 2 * a;
-		data->t1.y = data->set.cam.coords.x + (test.x * data->t1.x);
-		data->t1.x -= data->set.sp->coords.x;
-		data->t1.y -= data->set.sp->coords.y;
-		data->t1 = norm_vec(data->t1);
-		data->t2.x = (-b + sqrt(dis)) / 2 * a;
-		data->t2.y = data->set.cam.coords.y + (test.y * data->t2.x);
-		data->t2.x -= data->set.sp->coords.x;
-		data->t2.y -= data->set.sp->coords.y;
-		data->t2 = norm_vec(data->t2);
+		t1 = (-b - sqrt(dis)) / 2 * a;
+		data->t1.x = data->set.cam.coords.x + (test.x * t1);
+		data->t1.y = data->set.cam.coords.y + (test.y * t1);
+		data->t1.z = data->set.cam.coords.z + (test.z * t1);
+		data->norm_t1.x = data->t1.x - sp->coords.x;
+		data->norm_t1.y = data->t1.y - sp->coords.y;
+		data->norm_t1.z = data->t1.z - sp->coords.z;
+		data->norm_t1 = norm_vec(data->t1);
 		return (true);
 	}
 	return (false);

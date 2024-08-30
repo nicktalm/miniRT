@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 22:23:00 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/08/30 13:38:39 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,9 @@ typedef struct s_data
 	mlx_image_t	*img;
 	float		aspect_ratio;
 	t_vec		t1;
+	t_vec		norm_t1;
 	t_vec		t2;
+	t_vec		norm_t2;
 }				t_data;
 
 // main
@@ -96,7 +98,7 @@ void	init_data(t_data *data);
 void	init_mlx(t_data *data);
 void	create_img(t_data *data);
 int		get_color(int r, int g, int b, int a);
-bool	hit_sphere(t_data *data, t_vec test);
+bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
 t_vec	norm_vec(t_vec s1);
 float	dot(t_vec s1, t_vec s2);
 
