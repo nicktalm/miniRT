@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 12:22:09 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/30 13:29:28 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,20 @@ typedef struct s_data
 
 int		main(int argc, char **argv);
 
+//check_file
+
+int		read_lines_from_file(int fd, char ***line, char *argv);
+int		process_rt_file(int fd, t_data *data, char *argv);
+int		rt_file_check(char *argv);
+int		open_file(char *argv, t_data *data);
+
 //parsing
 
-int		open_file(char *argv, t_data *data);
-int		rt_file_check(char *argv);
-int		read_rt_file(int fd, t_data *data, char *argv);
+void	parse_ambient(t_data *data, char **line);
+void	parse_camera(t_data *data, char **line);
+void	parse_light(t_data *data, char **line);
+void	check_wrong_line(char *line);
 int		parse_line(t_data *data, char **line);
-int		check_param_nbr(char **line);
 
 //parsing_obj
 
@@ -111,6 +118,7 @@ void	parse_cylinder(t_data *data, char **line);
 
 //parsing_helper
 
+void	ft_count(t_data *data, char **line);
 void	parse_coords(t_vec *vec, char *line);
 void	parse_normalized_vector(t_vec *vec, char *line);
 void	parse_color(t_vec *vec, char *line);
@@ -118,12 +126,21 @@ void	parse_color(t_vec *vec, char *line);
 //error
 
 void	error(char *message);
+void	error_2(char *message, char *param);
 
 //helper
 
-double	ft_atof(const char *str);
+void	check_param_nbr_2(char **params, int nbr);
 void	sphere_count(t_data *data, char **line);
 void	plane_count(t_data *data, char **line);
 void	cylinder_count(t_data *data, char **line);
+double	ft_atof(char *str);
+
+//helper_2
+
+void	process_line(char *line, char *result);
+char	*replace_whitespace(char *line);
+char	*clean_line(char *line);
+int		check_param_nbr(char **line);
 
 #endif

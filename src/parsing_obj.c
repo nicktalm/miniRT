@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 12:51:21 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/29 15:41:16 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	parse_sphere(t_data *data, char **line)
 	char		**params;
 
 	params = ft_split(*line, ' ');
+	check_param_nbr_2(params, 4);
 	if (ft_strncmp(params[0], "sp", 2) != 0)
 		return ;
 	parse_coords(&data->set.sp[i].coords, params[1]);
@@ -32,6 +33,7 @@ void	parse_plane(t_data *data, char **line)
 	char		**params;
 
 	params = ft_split(*line, ' ');
+	check_param_nbr_2(params, 4);
 	if (ft_strncmp(params[0], "pl", 2) != 0)
 		return ;
 	parse_coords(&data->set.pl[i].coords, params[1]);
@@ -46,6 +48,7 @@ void	parse_cylinder(t_data *data, char **line)
 	char		**params;
 
 	params = ft_split(*line, ' ');
+	check_param_nbr_2(params, 6);
 	if (ft_strncmp(params[0], "cy", 2) != 0)
 		return ;
 	parse_coords(&data->set.cy[i].coords, params[1]);

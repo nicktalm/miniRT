@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:46:39 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 13:03:52 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/30 13:30:58 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,98 +84,45 @@ void	print_struct(t_data *data)
 	}
 }
 
-char	*clean_line(char *line)
+int	read_lines_from_file(int fd, char ***line, char *argv)
 {
-	int		i;
-	int		j;
-	int		in_space;
-	char	*result;
-	char	*trimmed_result;
-
-	in_space = 0;
-	if (!line)
-		return (NULL);
-	result = malloc(ft_strlen(line) + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (line[i])
-	{
-		if (line[i] == '\t' || line[i] == '\n' || line[i] == ' ')
-		{
-			if (!in_space)
-			{
-				result[j++] = ' ';
-				in_space = 1;
-			}
-		}
-		else
-		{
-			result[j++] = line[i];
-			in_space = 0;
-		}
-		i++;
-	}
-	result[j] = '\0';
-	trimmed_result = ft_strtrim(result, " ");
-	free(result);
-	return (trimmed_result);
-}
-
-int	check_param_nbr(char **line)
-{
-	int	count_a;
-	int	count_c;
-	int	count_l;
-	int	i;
-
-	i = 0;
-	count_a = 0;
-	count_c = 0;
-	count_l = 0;
-	while (line[i] != NULL)
-	{
-		if (ft_strncmp(line[i], "A ", 2) == 0)
-			count_a++;
-		else if (ft_strncmp(line[i], "C ", 2) == 0)
-			count_c++;
-		else if (ft_strncmp(line[i], "L ", 2) == 0)
-			count_l++;
-		i++;
-	}
-	if (count_a == 1 && count_c == 1 && count_l == 1)
-		return (0);
-	error("Error: Wrong number of parameters\n");
-	return (1);
-}
-
-int	read_rt_file(int fd, t_data *data, char *argv)
-{
-	int		i;
 	int		rows;
-	char	**line;
+	int		i;
 
-	i = 0;
 	rows = 0;
 	while (get_next_line(fd))
 		rows++;
 	close(fd);
-	line = malloc(sizeof(char *) * (rows + 1));
+	*line = malloc(sizeof(char *) * (rows + 1));
+	if (!*line)
+		return (-1);
 	fd = open(argv, O_RDONLY);
+	if (fd < 0)
+		return (-1);
+	i = 0;
 	while (i < rows)
 	{
-		line[i] = get_next_line(fd);
-		if (!line[i])
+		(*line)[i] = get_next_line(fd);
+		if (!(*line)[i])
 			break ;
-		line[i] = clean_line(line[i]);
+		(*line)[i] = clean_line((*line)[i]);
 		i++;
 	}
-	line[i] = NULL;
-	check_param_nbr(line);
-	sphere_count(data, line);
-	plane_count(data, line);
-	cylinder_count(data, line);
+	line[0][i] = NULL;
+	close(fd);
+	return (0);
+}
+
+int	process_rt_file(int fd, t_data *data, char *argv)
+{
+	char	**line;
+	int		result;
+	int		i;
+
+	result = read_lines_from_file(fd, &line, argv);
+	if (result < 0)
+		return (result);
+	ft_count(data, line);
 	i = 0;
 	while (line[i] != NULL)
 	{
@@ -183,6 +130,7 @@ int	read_rt_file(int fd, t_data *data, char *argv)
 		i++;
 	}
 	print_struct(data);
+	free(line);
 	return (0);
 }
 
@@ -205,7 +153,7 @@ int	open_file(char *argv, t_data *data)
 		error("File not found");
 	if (rt_file_check(argv))
 		error("Wrong file format");
-	if (read_rt_file(fd, data, argv))
+	if (process_rt_file(fd, data, argv))
 		return (0);
 	return (1);
 }

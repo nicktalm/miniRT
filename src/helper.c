@@ -6,11 +6,22 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/28 12:40:09 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/08/29 16:34:13 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+void	check_param_nbr_2(char **params, int nbr)
+{
+	int	i;
+
+	i = 0;
+	while (params[i])
+		i++;
+	if (i != nbr)
+		error_2("Wrong number of parameters for ", params[0]);
+}
 
 void	sphere_count(t_data *data, char **line)
 {
@@ -21,7 +32,7 @@ void	sphere_count(t_data *data, char **line)
 	count = 0;
 	while (line[i])
 	{
-		if (ft_strncmp(line[i], "sp", 2) == 0)
+		if (ft_strncmp(line[i], "sp ", 3) == 0)
 			count++;
 		i++;
 	}
@@ -38,7 +49,7 @@ void	plane_count(t_data *data, char **line)
 	count = 0;
 	while (line[i])
 	{
-		if (ft_strncmp(line[i], "pl", 2) == 0)
+		if (ft_strncmp(line[i], "pl ", 3) == 0)
 			count++;
 		i++;
 	}
@@ -55,7 +66,7 @@ void	cylinder_count(t_data *data, char **line)
 	count = 0;
 	while (line[i])
 	{
-		if (ft_strncmp(line[i], "cy", 2) == 0)
+		if (ft_strncmp(line[i], "cy ", 3) == 0)
 			count++;
 		i++;
 	}
