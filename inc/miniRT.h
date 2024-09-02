@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/30 13:38:39 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/02 15:55:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ typedef struct s_data
 	t_vec		norm_t1;
 	t_vec		t2;
 	t_vec		norm_t2;
+	int			width;
+	int			hight;
+	int			dpi;
 }				t_data;
 
 // main
@@ -101,5 +104,10 @@ int		get_color(int r, int g, int b, int a);
 bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
 t_vec	norm_vec(t_vec s1);
 float	dot(t_vec s1, t_vec s2);
+void	resize(int width, int hight, void *param);
+void	hook(void *param);
+void	key(mlx_key_data_t keydata, void *param);
+void	cursor(double xpos, double ypos, void *param);
+void	changed_img(t_data *data);
 
 #endif
