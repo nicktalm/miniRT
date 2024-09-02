@@ -2,3 +2,4 @@
 *.o
 miniRT
 .DS_Store
+.devcontainer

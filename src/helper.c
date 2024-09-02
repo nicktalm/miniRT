@@ -6,13 +6,13 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/29 16:34:13 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/02 16:06:46 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	check_param_nbr_2(char **params, int nbr)
+void	check_param_nbr_2(char **params, int nbr, t_data *data)
 {
 	int	i;
 
@@ -20,7 +20,7 @@ void	check_param_nbr_2(char **params, int nbr)
 	while (params[i])
 		i++;
 	if (i != nbr)
-		error_2("Wrong number of parameters for ", params[0]);
+		error_2("Wrong number of parameters for ", params[0], data);
 }
 
 void	sphere_count(t_data *data, char **line)

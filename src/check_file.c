@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:46:39 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/08/30 13:30:58 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/02 13:57:04 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,16 @@ int	read_lines_from_file(int fd, char ***line, char *argv)
 {
 	int		rows;
 	int		i;
+	char	*str;
 
 	rows = 0;
-	while (get_next_line(fd))
+	str = get_next_line(fd);
+	while (str != NULL)
+	{
+		free(str);
+		str = get_next_line(fd);
 		rows++;
+	}
 	close(fd);
 	*line = malloc(sizeof(char *) * (rows + 1));
 	if (!*line)
@@ -130,6 +136,12 @@ int	process_rt_file(int fd, t_data *data, char *argv)
 		i++;
 	}
 	print_struct(data);
+	i = 0;
+	while (line[i] != NULL)
+	{
+		free(line[i]);
+		i++;
+	}
 	free(line);
 	return (0);
 }
@@ -150,9 +162,9 @@ int	open_file(char *argv, t_data *data)
 
 	fd = open(argv, O_RDONLY);
 	if (fd == -1)
-		error("File not found");
+		error("File not found", data);
 	if (rt_file_check(argv))
-		error("Wrong file format");
+		error("Wrong file format", data);
 	if (process_rt_file(fd, data, argv))
 		return (0);
 	return (1);
