@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 15:55:35 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/02 21:46:56 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_sphere
 {
 	t_vec			coords;
 	float			diameter;
+	float			radius;
 	t_vec			color;
 }				t_sphere;
 
@@ -54,6 +55,7 @@ typedef struct s_light
 	t_vec	coords;
 	float	brightness;
 	t_vec	color;
+	t_vec	normalized;
 }				t_light;
 
 typedef struct s_camera
@@ -86,12 +88,12 @@ typedef struct s_data
 	mlx_image_t	*img;
 	float		aspect_ratio;
 	t_vec		t1;
-	t_vec		norm_t1;
-	t_vec		t2;
-	t_vec		norm_t2;
 	int			width;
 	int			hight;
 	int			dpi;
+	t_vec		*caches;
+	bool		moved;
+	int			pos;
 }				t_data;
 
 // main

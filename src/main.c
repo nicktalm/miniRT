@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 15:57:27 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/02 21:56:59 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(void)
 	free(data.set.sp);
 	free(data.set.pl);
 	free(data.set.cy);
+	free(data.caches);
 	return (0);
 }
 
@@ -63,6 +64,7 @@ void	init_data(t_data *data)
 	data->set.sp[0].coords.y = 0.0;
 	data->set.sp[0].coords.z = 0.0;
 	data->set.sp[0].diameter = 2;
+	data->set.sp[0].radius = data->set.sp[0].diameter / 2;
 	data->set.sp[0].color.x = 255;
 	data->set.sp[0].color.y = 0;
 	data->set.sp[0].color.z = 0;
@@ -70,6 +72,7 @@ void	init_data(t_data *data)
 	data->set.sp[1].coords.y = 0.0;
 	data->set.sp[1].coords.z = 0.0;
 	data->set.sp[1].diameter = 2;
+	data->set.sp[1].radius = data->set.sp[1].diameter / 2;
 	data->set.sp[1].color.x = 0;
 	data->set.sp[1].color.y = 0;
 	data->set.sp[1].color.z = 255;
@@ -77,6 +80,7 @@ void	init_data(t_data *data)
 	data->set.sp[2].coords.y = 0.0;
 	data->set.sp[2].coords.z = 0.0;
 	data->set.sp[2].diameter = 2;
+	data->set.sp[2].radius = data->set.sp[2].diameter / 2;
 	data->set.sp[2].color.x = 0;
 	data->set.sp[2].color.y = 255;
 	data->set.sp[2].color.z = 0;
@@ -100,16 +104,25 @@ void	init_data(t_data *data)
 	data->set.cy[0].color.x = 10;
 	data->set.cy[0].color.y = 0;
 	data->set.cy[0].color.z = 255;
-	data->aspect_ratio = 16.0 / 9.0;
-	data->width = 1600;
+	data->width = 900;
 	data->hight = 900;
-	data->dpi = 100;
+	data->aspect_ratio = data->width / data->hight;
+	data->dpi = 10;
+	data->caches = (t_vec *)malloc(sizeof(t_vec) * data->width * data->hight);
+	if (!data->caches)
+		return ;
+	data->pos = 0;
+	data->moved = true;
+	data->set.light.normalized = norm_vec(data->set.light.coords);
+	data->set.light.normalized.x *= -1;
+	data->set.light.normalized.y *= -1;
+	data->set.light.normalized.z *= -1;
 }
 
 void	init_mlx(t_data *data)
 {
-	data->window = mlx_init(1600, 900, "miniRT", true);
-	data->img = mlx_new_image(data->window, 1600, 900);
+	data->window = mlx_init(data->width, data->hight, "miniRT", true);
+	data->img = mlx_new_image(data->window, data->width, data->hight);
 }
 
 void	create_img(t_data *data)
@@ -121,10 +134,6 @@ void	create_img(t_data *data)
 
 	coords.y = 0.0;
 	coords.z = -1.0;
-	data->set.light.coords = norm_vec(data->set.light.coords);
-	data->set.light.coords.x *= -1;
-	data->set.light.coords.y *= -1;
-	data->set.light.coords.z *= -1;
 	while (coords.y < data->hight)
 	{
 		coords.x = 0.0;
@@ -136,7 +145,7 @@ void	create_img(t_data *data)
 			test.x *= data->aspect_ratio;
 			if (hit_sphere(data, test, &data->set.sp[0]))
 			{
-				light = dot(data->norm_t1, data->set.light.coords);
+				light = dot(data->caches[data->pos], data->set.light.normalized);
 				light < 0.0 ? light = 0.0 : light;
 				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp[0].color.x * light, data->set.sp[0].color.y * light, data->set.sp[0].color.z * light, 255));
 			}
@@ -146,6 +155,7 @@ void	create_img(t_data *data)
 		}
 		coords.y++;
 	}
+	data->moved = false;
 }
 
 int	get_color(int r, int g, int b, int a)
@@ -166,22 +176,31 @@ bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp)
 	float	t1;
 	float	t2;
 
-	a = pow(test.x, 2.0) + pow(test.y, 2.0) + pow(test.z, 2.0);
+	a = (test.x * test.x) + (test.y * test.y)+ (test.z * test.z);
 	b = 2.0 * (data->set.cam.coords.x * test.x + data->set.cam.coords.y * test.y + data->set.cam.coords.z * test.z);
-	c = pow(data->set.cam.coords.x, 2.0) + pow(data->set.cam.coords.y, 2.0) + pow(data->set.cam.coords.z, 2.0) - pow(sp->diameter / 2.0, 2.0);
+	c = (data->set.cam.coords.x * data->set.cam.coords.x) + (data->set.cam.coords.y * data->set.cam.coords.y) + (data->set.cam.coords.z * data->set.cam.coords.z) - (sp->radius * sp->radius);
 	dis = b * b - 4.0 * a * c;
 	if (dis >= 0.0)
 	{
-		t1 = (-b - sqrt(dis)) / 2 * a;
-		data->t1.x = data->set.cam.coords.x + (test.x * t1);
-		data->t1.y = data->set.cam.coords.y + (test.y * t1);
-		data->t1.z = data->set.cam.coords.z + (test.z * t1);
-		data->norm_t1.x = data->t1.x - sp->coords.x;
-		data->norm_t1.y = data->t1.y - sp->coords.y;
-		data->norm_t1.z = data->t1.z - sp->coords.z;
-		data->norm_t1 = norm_vec(data->t1);
+		if (data->moved)
+		{
+			t1 = (-b - sqrt(dis)) / 2 * a;
+			data->t1.x = data->set.cam.coords.x + (test.x * t1);
+			data->t1.y = data->set.cam.coords.y + (test.y * t1);
+			data->t1.z = data->set.cam.coords.z + (test.z * t1);
+			data->t1.x -= sp->coords.x;
+			data->t1.y -= sp->coords.y;
+			data->t1.z -= sp->coords.z;
+			data->caches[data->pos] = norm_vec(data->t1);
+		}
+		if (data->pos == data->hight * data->width)
+				data->pos = 0;
+		data->pos++;
 		return (true);
 	}
+	if (data->pos == data->hight * data->width)
+		data->pos = 0;
+	data->pos++;
 	return (false);
 }
 
@@ -189,7 +208,7 @@ t_vec	norm_vec(t_vec s1)
 {
 	float	len;
 
-	len = sqrt(pow(s1.x, 2) + pow(s1.y, 2) + pow(s1.z, 2));
+	len = sqrt((s1.x * s1.x) + (s1.y * s1.y) + (s1.z * s1.z));
 	s1.x /= len;
 	s1.y /= len;
 	s1.z /= len;
@@ -209,6 +228,12 @@ void	resize(int width, int hight, void *param)
 	data->hight = hight;
 	data->width = width;
 	data->aspect_ratio = (float)width / (float)hight;
+	data->moved = true;
+	data->pos = 0;
+	free(data->caches);
+	data->caches = (t_vec *)malloc (sizeof(t_vec) * data->width * data->hight);
+	if (!data->caches)
+		printf("error\n");
 }
 
 void	hook(void *param)
@@ -223,7 +248,7 @@ void	hook(void *param)
 	mlx_resize_hook(data->window, resize, data);
 	mlx_delete_image(data->window, data->img);
 	data->img = mlx_new_image(data->window, data->width, data->hight);
-	changed_img(data);
+	create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
 	printf("time = %f\n", (mlx_get_time() - time) * 1000);
 }
@@ -252,8 +277,10 @@ void	key(mlx_key_data_t keydata, void *param)
 		free(data->set.sp);
 		free(data->set.pl);
 		free(data->set.cy);
+		free(data->caches);
 		exit(0);
 	}
+	data->moved = true;
 }
 
 void	cursor(double xpos, double ypos, void *param)
@@ -271,15 +298,14 @@ void	cursor(double xpos, double ypos, void *param)
 	}
 	else
 	{
-		// printf("xpos = %f ypos = %f\n", xpos, ypos);
 		if (mlx_is_mouse_down(data->window, MLX_MOUSE_BUTTON_LEFT))
 		{
 			data->set.light.coords.x -= ((float)xpos / data->dpi) - (float)mouseX;
 			data->set.light.coords.z -= ((float)ypos / data->dpi) - (float)mouseY;
-			// printf("light x = %f\n", data->set.light.coords.x);
-			// printf("light y = %f\n", data->set.light.coords.y);
-			// data->set.light.coords.z -= (float)nowX - (float)mouseX;
-			data->set.light.coords = norm_vec(data->set.light.coords);
+			data->set.light.normalized = norm_vec(data->set.light.coords);
+			data->set.light.normalized.x *= -1;
+			data->set.light.normalized.y *= -1;
+			data->set.light.normalized.z *= -1;
 		}
 		else
 		{
@@ -287,36 +313,38 @@ void	cursor(double xpos, double ypos, void *param)
 			mouseY = 0;
 		}
 	}
+	data->moved = true;
 }
 
-void	changed_img(t_data *data)
-{
-	t_vec	coords;
-	t_vec	test;
-	float	light;
-	t_vec	color;
+// void	changed_img(t_data *data)
+// {
+// 	t_vec	coords;
+// 	t_vec	test;
+// 	float	light;
+// 	t_vec	color;
 
-	coords.y = 0.0;
-	coords.z = -1.0;
-	while (coords.y < data->hight)
-	{
-		coords.x = 0.0;
-		while (coords.x < data->width)
-		{
-			test.x = (coords.x * 2) / (float)data->width - 1;
-			test.y = 1 - ((coords.y * 2) / (float)data->hight);
-			test.z = -1.0;
-			test.x *= data->aspect_ratio;
-			if (hit_sphere(data, test, &data->set.sp[0]))
-			{
-				light = dot(data->norm_t1, data->set.light.coords);
-				light < 0.0 ? light = 0.0 : light;
-				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp[0].color.x * light, data->set.sp[0].color.y * light, data->set.sp[0].color.z * light, 255));
-			}
-			else
-				mlx_put_pixel(data->img, coords.x, coords.y, get_color(0, 0, 0, 100));
-			coords.x++;
-		}
-		coords.y++;
-	}
-}
+// 	coords.y = 0.0;
+// 	coords.z = -1.0;
+// 	while (coords.y < data->hight)
+// 	{
+// 		coords.x = 0.0;
+// 		while (coords.x < data->width)
+// 		{
+// 			test.x = (coords.x * 2) / (float)data->width - 1;
+// 			test.y = 1 - ((coords.y * 2) / (float)data->hight);
+// 			test.z = -1.0;
+// 			test.x *= data->aspect_ratio;
+// 			if (hit_sphere(data, test, &data->set.sp[0]))
+// 			{
+// 				light = dot(data->caches[data->pos], data->set.light.coords);
+// 				light < 0.0 ? light = 0.0 : light;
+// 				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp[0].color.x * light, data->set.sp[0].color.y * light, data->set.sp[0].color.z * light, 255));
+// 			}
+// 			else
+// 				mlx_put_pixel(data->img, coords.x, coords.y, get_color(0, 0, 0, 100));
+// 			coords.x++;
+// 		}
+// 		coords.y++;
+// 	}
+// 	data->moved = false;
+// }
