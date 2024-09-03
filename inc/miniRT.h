@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 21:46:56 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/03 10:18:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,17 +99,28 @@ typedef struct s_data
 // main
 
 int		main(void);
-void	init_data(t_data *data);
-void	init_mlx(t_data *data);
+
+// key_actions
+
+void	hook(void *param);
+void	resize(int width, int hight, void *param);
+void	key(mlx_key_data_t keydata, void *param);
+void	cursor(double xpos, double ypos, void *param);
+
+// vec_calc
+
+t_vec	norm_vec(t_vec s1);
+float	dot(t_vec s1, t_vec s2);
+
+// image_creation
+
 void	create_img(t_data *data);
 int		get_color(int r, int g, int b, int a);
 bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
-t_vec	norm_vec(t_vec s1);
-float	dot(t_vec s1, t_vec s2);
-void	resize(int width, int hight, void *param);
-void	hook(void *param);
-void	key(mlx_key_data_t keydata, void *param);
-void	cursor(double xpos, double ypos, void *param);
-void	changed_img(t_data *data);
+
+// init_data
+
+void	init_data(t_data *data);
+void	init_mlx(t_data *data);
 
 #endif

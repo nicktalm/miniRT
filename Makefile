@@ -9,10 +9,10 @@ CLEAR_LINE = \033[2K\r
 
 NAME = miniRT
 CXX = cc
-# CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
 OBJDIR = ./obj
-SRC = $(addprefix $(SRCDIR)/, main.c)
+SRC = $(addprefix $(SRCDIR)/, main.c image_creation.c init_data.c key_actions.c vec_calc.c)
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 TOTAL_FILES = $(words $(SRC))
 CURRENT = 0
@@ -21,9 +21,9 @@ GET_NEXT = lib/get_next_line
 MLX = lib/mlx
 INLIBFT = -L $(LIBFT) -lft
 INGET_NEXT = -L $(GET_NEXT) -l_get_next_line
-INMLX = -L $(MLX)/build -lmlx42 -ldl -L /opt/homebrew/Cellar/glfw/3.3.8/lib/ -lglfw -pthread -lm
-# /usr/local/lib/
+INMLX = -L $(MLX)/build -lmlx42 -ldl -L /usr/local/lib/ -lglfw -pthread -lm
 
+# /opt/homebrew/Cellar/glfw/3.3.8/lib/
 all: $(NAME)
 
 $(NAME): $(OBJ)
