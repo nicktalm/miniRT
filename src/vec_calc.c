@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   vec_calc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 10:36:28 by lbohm            ###   ########.fr       */
+/*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
+/*   Updated: 2024/09/03 10:13:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-int	main(int argc, char **argv)
+t_vec	norm_vec(t_vec s1)
 {
-	t_data	data;
+	float	len;
 
-	init_data(&data, argc, argv);
-	init_mlx(&data);
-	create_img(&data);
-	mlx_image_to_window(data.window, data.img, 0, 0);
-	mlx_loop_hook(data.window, hook, &data);
-	mlx_loop(data.window);
-	mlx_delete_image(data.window, data.img);
-	mlx_terminate(data.window);
-	free_all(&data);
-	return (0);
+	len = sqrt((s1.x * s1.x) + (s1.y * s1.y) + (s1.z * s1.z));
+	s1.x /= len;
+	s1.y /= len;
+	s1.z /= len;
+	return (s1);
+}
+
+float	dot(t_vec s1, t_vec s2)
+{
+	return (s1.x * s2.x + s1.y * s2.y + s1.z * s2.z);
 }

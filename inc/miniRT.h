@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 11:29:23 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/03 10:36:55 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_sphere
 {
 	t_vec			coords;
 	float			diameter;
+	float			radius;
 	t_vec			color;
 }				t_sphere;
 
@@ -55,13 +56,14 @@ typedef struct s_light
 	t_vec	coords;
 	float	brightness;
 	t_vec	color;
+	t_vec	normalized;
 }				t_light;
 
 typedef struct s_camera
 {
 	t_vec	coords;
 	t_vec	normalized;
-	int		fov;
+	float	fov;
 }				t_camera;
 
 typedef struct s_ambient
@@ -88,7 +90,14 @@ typedef struct s_data
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
-	t_vec		color;
+	float		aspect_ratio;
+	t_vec		t1;
+	int			width;
+	int			hight;
+	int			dpi;
+	t_vec		*caches;
+	bool		moved;
+	int			pos;
 }				t_data;
 
 // main
@@ -143,5 +152,29 @@ void	process_line(char *line, char *result);
 char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
 int		check_param_nbr(char **line);
+
+
+// key_actions
+
+void	hook(void *param);
+void	resize(int width, int hight, void *param);
+void	key(mlx_key_data_t keydata, void *param);
+void	cursor(double xpos, double ypos, void *param);
+
+// vec_calc
+
+t_vec	norm_vec(t_vec s1);
+float	dot(t_vec s1, t_vec s2);
+
+// image_creation
+
+void	create_img(t_data *data);
+int		get_color(int r, int g, int b, int a);
+bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
+
+// init_data
+
+void	init_data(t_data *data, int argc, char **argv);
+void	init_mlx(t_data *data);
 
 #endif
