@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:24:59 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 14:04:24 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/03 11:16:34 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ char	*clean_line(char *line)
 	if (!intermediate_result)
 		return (NULL);
 	trimmed_result = ft_strtrim(intermediate_result, " ");
-	printf("trimmed_result: %s\n", trimmed_result);
+	// printf("trimmed_result: %s\n", trimmed_result);
 	free(line);
 	free(intermediate_result);
 	return (trimmed_result);
 }
 
-int	check_param_nbr(char **line)
+int	check_param_nbr(t_data *data, char **line)
 {
 	int	count_a;
 	int	count_c;
@@ -92,6 +92,6 @@ int	check_param_nbr(char **line)
 	}
 	if (count_a == 1 && count_c == 1 && count_l == 1)
 		return (0);
-	printf("Wrong number of parameters");
+	error("Wrong number of parameters", data);
 	return (1);
 }

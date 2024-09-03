@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:46:39 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 10:38:18 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/03 11:18:00 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,10 @@
 // 	}
 // }
 
-int	read_lines_from_file(int fd, char ***line, char *argv)
+int	count_rows(int fd)
 {
-	int		rows;
-	int		i;
 	char	*str;
+	int		rows;
 
 	rows = 0;
 	str = get_next_line(fd);
@@ -99,6 +98,15 @@ int	read_lines_from_file(int fd, char ***line, char *argv)
 		rows++;
 	}
 	close(fd);
+	return (rows);
+}
+
+int	read_lines_from_file(int fd, char ***line, char *argv)
+{
+	int		rows;
+	int		i;
+
+	rows = count_rows(fd);
 	*line = malloc(sizeof(char *) * (rows + 1));
 	if (!*line)
 		return (-1);
