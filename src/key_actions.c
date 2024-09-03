@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/03 11:21:07 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/03 17:36:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ void	hook(void *param)
 	mlx_resize_hook(data->window, resize, data);
 	mlx_delete_image(data->window, data->img);
 	data->img = mlx_new_image(data->window, data->width, data->hight);
+	if (data->moved)
+	{
+		free(data->caches_t);
+		data->caches_t = (t_vec *)malloc (sizeof(t_vec) * data->width * data->hight);
+		if (!data->caches_t)
+			error("malloc failed", data);
+	}
 	create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
 	printf("time = %f\n", (mlx_get_time() - time) * 1000);
@@ -38,11 +45,6 @@ void	resize(int width, int hight, void *param)
 	data->width = width;
 	data->aspect_ratio = (float)width / (float)hight;
 	data->moved = true;
-	data->pos = 0;
-	free(data->caches);
-	data->caches = (t_vec *)malloc (sizeof(t_vec) * data->width * data->hight);
-	if (!data->caches)
-		printf("error\n");
 }
 
 void	key(mlx_key_data_t keydata, void *param)

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:15:44 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/03 10:57:08 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/03 17:54:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,25 @@ void	create_img(t_data *data)
 
 	coords.y = 0.0;
 	coords.z = -1.0;
+	data->pos = 0;
+	data->pos_p = 0;
 	while (coords.y < data->hight)
 	{
 		coords.x = 0.0;
 		while (coords.x < data->width)
 		{
-			test.x = (coords.x * 2) / (float)data->width - 1;
-			test.y = 1 - ((coords.y * 2) / (float)data->hight);
-			test.z = -1.0;
-			test.x *= data->aspect_ratio;
+			if (data->moved)
+				pixel_to_wspace(coords, data);
+			else
+			{
+				test = data->caches_p[data->pos_p];
+				data->pos_p++;
+			}
 			if (hit_sphere(data, test, &data->set.sp[0]))
 			{
-				light = dot(data->caches[data->pos], data->set.light.normalized);
-				light < 0.0 ? light = 0.0 : light;
+				// light = dot(data->caches_t[data->pos], data->set.light.normalized);
+				// light < 0.0 ? light = 0.0 : light;
+				light = 1;
 				mlx_put_pixel(data->img, coords.x, coords.y, get_color(data->set.sp[0].color.x * light, data->set.sp[0].color.y * light, data->set.sp[0].color.z * light, 255));
 			}
 			else
@@ -60,10 +66,15 @@ bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp)
 	float	c;
 	float	dis;
 	float	t1;
+	float	t2;
+	t_vec	origin;
 
-	a = (test.x * test.x) + (test.y * test.y)+ (test.z * test.z);
-	b = 2.0 * (data->set.cam.coords.x * test.x + data->set.cam.coords.y * test.y + data->set.cam.coords.z * test.z);
-	c = (data->set.cam.coords.x * data->set.cam.coords.x) + (data->set.cam.coords.y * data->set.cam.coords.y) + (data->set.cam.coords.z * data->set.cam.coords.z) - (sp->radius * sp->radius);
+	origin = sub_vec(data->set.cam.coords, sp->coords);
+	origin.x *= -1;
+	origin.y *= -1;
+	a = dot(test, test);
+	b = 2.0 * dot(origin, test);
+	c = dot(origin, origin) - (sp->radius * sp->radius);
 	dis = b * b - 4.0 * a * c;
 	if (data->pos == data->hight * data->width)
 		data->pos = 0;
@@ -79,9 +90,20 @@ bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp)
 			data->t1.x -= sp->coords.x;
 			data->t1.y -= sp->coords.y;
 			data->t1.z -= sp->coords.z;
-			data->caches[data->pos] = norm_vec(data->t1);
+			data->caches_t[data->pos] = norm_vec(data->t1);
 		}
 		return (true);
 	}
 	return (false);
+}
+
+void	pixel_to_wspace(t_vec s1, t_data *data)
+{
+	data->caches_p[data->pos_p].x = s1.x * (data->viewport.x / (float)data->width);
+	data->caches_p[data->pos_p].y = s1.y * (data->viewport.y / (float)data->hight);
+	data->caches_p[data->pos_p].z = data->viewport.z;
+	data->caches_p[data->pos_p].x = (2.0 * data->caches_p[data->pos_p].x) / data->viewport.x - 1.0;
+	data->caches_p[data->pos_p].y = 1.0 - (data->caches_p[data->pos_p].y * 2.0) / data->viewport.y;
+	data->caches_p[data->pos_p].x *= data->aspect_ratio;
+	data->pos_p++;
 }

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/03 10:13:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/03 16:21:42 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,14 @@ t_vec	norm_vec(t_vec s1)
 float	dot(t_vec s1, t_vec s2)
 {
 	return (s1.x * s2.x + s1.y * s2.y + s1.z * s2.z);
+}
+
+t_vec	sub_vec(t_vec s1, t_vec s2)
+{
+	t_vec	result;
+
+	result.x = s1.x - s2.x;
+	result.y = s1.y - s2.y;
+	result.z = s1.z - s2.z;
+	return (result);
 }

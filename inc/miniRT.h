@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 10:36:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/03 17:54:31 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,13 @@ typedef struct s_data
 	int			width;
 	int			hight;
 	int			dpi;
-	t_vec		*caches;
-	bool		moved;
+	t_vec		*caches_t;
 	int			pos;
+	t_vec		*caches_p;
+	int			pos_p;
+	bool		moved;
+	t_vec		viewport;
+	float		fov_vert;
 }				t_data;
 
 // main
@@ -165,12 +169,14 @@ void	cursor(double xpos, double ypos, void *param);
 
 t_vec	norm_vec(t_vec s1);
 float	dot(t_vec s1, t_vec s2);
+t_vec	sub_vec(t_vec s1, t_vec s2);
 
 // image_creation
 
 void	create_img(t_data *data);
 int		get_color(int r, int g, int b, int a);
 bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
+void	pixel_to_wspace(t_vec s1, t_data *data);
 
 // init_data
 
