@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:24:59 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 14:04:24 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/03 11:11:46 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ char	*clean_line(char *line)
 	if (!intermediate_result)
 		return (NULL);
 	trimmed_result = ft_strtrim(intermediate_result, " ");
-	printf("trimmed_result: %s\n", trimmed_result);
 	free(line);
 	free(intermediate_result);
 	return (trimmed_result);

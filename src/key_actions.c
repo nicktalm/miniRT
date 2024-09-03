@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/03 10:12:06 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/03 11:21:07 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,7 @@ void	key(mlx_key_data_t keydata, void *param)
 	{
 		mlx_delete_image(data->window, data->img);
 		mlx_terminate(data->window);
-		free(data->set.sp);
-		free(data->set.pl);
-		free(data->set.cy);
-		free(data->caches);
+		free_all(data);
 		exit(0);
 	}
 	data->moved = true;
