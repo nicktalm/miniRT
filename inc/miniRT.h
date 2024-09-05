@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 17:54:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/05 18:44:31 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,9 @@ void	cursor(double xpos, double ypos, void *param);
 t_vec	norm_vec(t_vec s1);
 float	dot(t_vec s1, t_vec s2);
 t_vec	sub_vec(t_vec s1, t_vec s2);
+t_vec	multi_vec(t_vec s1, void *s2, int check);
+t_vec	dev_vec(t_vec s1, void *s2, int check);
+t_vec	add_vec(t_vec s1, t_vec s2);
 
 // image_creation
 
@@ -182,5 +185,9 @@ void	pixel_to_wspace(t_vec s1, t_data *data);
 
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
+
+// img_creation_test
+
+void	create(t_data *data);
 
 #endif
