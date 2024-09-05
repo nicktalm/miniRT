@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 11:16:55 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/05 15:44:12 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	parse_coords(t_vec *coords, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (!values[0] || !values[1] || !values[2])
+	if (values[3] != NULL || !values[0] || !values[1] || !values[2])
 		error("Coordinates must have 3 values", data);
 	coords->x = ft_atof(values[0]);
 	coords->y = ft_atof(values[1]);
@@ -41,7 +41,7 @@ void	parse_color(t_vec *color, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (!values[0] || !values[1] || !values[2])
+	if (values[3] != NULL || !values[0] || !values[1] || !values[2])
 		error("RGB values must have 3 values", data);
 	color->x = ft_atof(values[0]);
 	if (color->x < 0 || color->x > 255)
@@ -63,7 +63,7 @@ void	parse_normalized_vector(t_vec *vec, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (!values[0] || !values[1] || !values[2])
+	if (values[3] != NULL || !values[0] || !values[1] || !values[2])
 		error("Normalized vector must have 3 values", data);
 	vec->x = ft_atof(values[0]);
 	if (vec->x < -1 || vec->x > 1)
