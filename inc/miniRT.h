@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/05 18:44:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/06 17:17:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,29 @@ typedef struct s_settings
 	int			cy_count;
 }				t_settings;
 
+typedef struct s_viewport
+{
+	t_vec	size;
+	t_vec	u;
+	t_vec	v;
+	t_vec	du;
+	t_vec	dv;
+	t_vec	p00;
+}				t_viewport;
+
+typedef struct s_ray
+{
+	t_vec	origin;
+	t_vec	direction;
+}				t_ray;
+
 typedef struct s_data
 {
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
+	t_viewport	vp;
+	t_ray		now_ray;
 	float		aspect_ratio;
 	t_vec		t1;
 	int			width;
@@ -170,9 +188,13 @@ void	cursor(double xpos, double ypos, void *param);
 t_vec	norm_vec(t_vec s1);
 float	dot(t_vec s1, t_vec s2);
 t_vec	sub_vec(t_vec s1, t_vec s2);
-t_vec	multi_vec(t_vec s1, void *s2, int check);
-t_vec	dev_vec(t_vec s1, void *s2, int check);
+t_vec	multi_vec(t_vec s1, t_vec s2);
+t_vec	multi_vec_wnbr(t_vec s1, float nbr);
+t_vec	dev_vec(t_vec s1, t_vec s2);
+t_vec	dev_vec_wnbr(t_vec s1, float nbr);
 t_vec	add_vec(t_vec s1, t_vec s2);
+t_vec	add_vec_wnbr(t_vec s1, float nbr);
+t_vec	ray_vec(t_vec origin, float t, t_vec dir);
 
 // image_creation
 
@@ -189,5 +211,6 @@ void	init_mlx(t_data *data);
 // img_creation_test
 
 void	create(t_data *data);
+float	hit_sphere_test(t_sphere sp, t_ray ray, t_data *data);
 
 #endif
