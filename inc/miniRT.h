@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 11:17:12 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/05 16:19:18 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	parse_cylinder(t_data *data, char **line);
 //parsing_helper
 
 void	ft_count(t_data *data, char **line);
+void	free_values(char **values);
 void	parse_coords(t_vec *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec *vec, char *line, t_data *data);
 void	parse_color(t_vec *vec, char *line, t_data *data);
