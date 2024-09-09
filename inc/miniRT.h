@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/06 17:17:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/09 17:49:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_viewport
 	t_vec	v;
 	t_vec	du;
 	t_vec	dv;
+	t_vec	upper_left;
 	t_vec	p00;
 }				t_viewport;
 
@@ -101,15 +102,24 @@ typedef struct s_ray
 	t_vec	direction;
 }				t_ray;
 
+typedef struct s_hitpoint
+{
+	t_vec	p;
+	t_vec	normal;
+	t_vec	color;
+	float	t;
+}				t_hitpoint;
+
 typedef struct s_data
 {
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
 	t_viewport	vp;
+	t_vec		t1;
 	t_ray		now_ray;
 	float		aspect_ratio;
-	t_vec		t1;
+	float		best_hit;
 	int			width;
 	int			hight;
 	int			dpi;
@@ -175,7 +185,6 @@ char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
 int		check_param_nbr(char **line);
 
-
 // key_actions
 
 void	hook(void *param);
@@ -211,6 +220,8 @@ void	init_mlx(t_data *data);
 // img_creation_test
 
 void	create(t_data *data);
-float	hit_sphere_test(t_sphere sp, t_ray ray, t_data *data);
+bool	hit_sphere_test(t_ray ray, t_hitpoint *hit, t_data *data);
+void	in_out_object(t_ray ray, t_hitpoint *hit);
+bool	test2(int x, int y, t_data *data, t_hitpoint *hit);
 
 #endif
