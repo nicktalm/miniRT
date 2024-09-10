@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/06 17:17:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:39:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_viewport
 	t_vec	v;
 	t_vec	du;
 	t_vec	dv;
+	t_vec	upper_left;
 	t_vec	p00;
 }				t_viewport;
 
@@ -101,6 +102,15 @@ typedef struct s_ray
 	t_vec	direction;
 }				t_ray;
 
+typedef struct s_hitpoint
+{
+	t_vec	p;
+	t_vec	normal;
+	t_vec	color;
+	float	t;
+	int		sp_i;
+}				t_hitpoint;
+
 typedef struct s_data
 {
 	t_settings	set;
@@ -109,17 +119,8 @@ typedef struct s_data
 	t_viewport	vp;
 	t_ray		now_ray;
 	float		aspect_ratio;
-	t_vec		t1;
 	int			width;
-	int			hight;
-	int			dpi;
-	t_vec		*caches_t;
-	int			pos;
-	t_vec		*caches_p;
-	int			pos_p;
-	bool		moved;
-	t_vec		viewport;
-	float		fov_vert;
+	int			height;
 }				t_data;
 
 // main
@@ -150,12 +151,14 @@ void	parse_cylinder(t_data *data, char **line);
 //parsing_helper
 
 void	ft_count(t_data *data, char **line);
+void	free_values(char **values);
 void	parse_coords(t_vec *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec *vec, char *line, t_data *data);
 void	parse_color(t_vec *vec, char *line, t_data *data);
 
 //error
 
+void	free_params(char **params, int count);
 void	free_all(t_data *data);
 void	error(char *message, t_data *data);
 void	error_2(char *message, char *param, t_data *data);
@@ -173,13 +176,12 @@ double	ft_atof(const char *str);
 void	process_line(char *line, char *result);
 char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
-int		check_param_nbr(char **line);
-
+int		check_param_nbr(t_data *data, char **line);
 
 // key_actions
 
 void	hook(void *param);
-void	resize(int width, int hight, void *param);
+void	resize(int width, int height, void *param);
 void	key(mlx_key_data_t keydata, void *param);
 void	cursor(double xpos, double ypos, void *param);
 
@@ -195,22 +197,21 @@ t_vec	dev_vec_wnbr(t_vec s1, float nbr);
 t_vec	add_vec(t_vec s1, t_vec s2);
 t_vec	add_vec_wnbr(t_vec s1, float nbr);
 t_vec	ray_vec(t_vec origin, float t, t_vec dir);
-
-// image_creation
-
-void	create_img(t_data *data);
-int		get_color(int r, int g, int b, int a);
-bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
-void	pixel_to_wspace(t_vec s1, t_data *data);
+t_vec	cross_vec(t_vec s1, t_vec s2);
 
 // init_data
 
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
 
-// img_creation_test
+// img_creation
 
-void	create(t_data *data);
-float	hit_sphere_test(t_sphere sp, t_ray ray, t_data *data);
+void	create_img(t_data *data);
+int		create_color(float x, float y, float z, int a);
+bool	hit_sphere_test(t_ray ray, t_hitpoint *hit, t_data *data);
+void	in_out_object(t_ray ray, t_hitpoint *hit);
+bool	trace_ray(float x, float y, t_data *data, t_hitpoint *hit);
+void	init_viewport(t_data *data);
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 #endif
