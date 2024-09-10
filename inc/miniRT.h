@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/09 17:49:03 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 16:36:26 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_hitpoint
 	t_vec	normal;
 	t_vec	color;
 	float	t;
+	int		sp_i;
 }				t_hitpoint;
 
 typedef struct s_data
@@ -116,20 +117,10 @@ typedef struct s_data
 	mlx_t		*window;
 	mlx_image_t	*img;
 	t_viewport	vp;
-	t_vec		t1;
 	t_ray		now_ray;
 	float		aspect_ratio;
-	float		best_hit;
 	int			width;
 	int			hight;
-	int			dpi;
-	t_vec		*caches_t;
-	int			pos;
-	t_vec		*caches_p;
-	int			pos_p;
-	bool		moved;
-	t_vec		viewport;
-	float		fov_vert;
 }				t_data;
 
 // main
@@ -219,9 +210,12 @@ void	init_mlx(t_data *data);
 
 // img_creation_test
 
-void	create(t_data *data);
+void	create_img(t_data *data);
+int		create_color(float x, float y, float z, int a);
 bool	hit_sphere_test(t_ray ray, t_hitpoint *hit, t_data *data);
 void	in_out_object(t_ray ray, t_hitpoint *hit);
-bool	test2(int x, int y, t_data *data, t_hitpoint *hit);
+bool	trace_ray(float x, float y, t_data *data, t_hitpoint *hit);
+void	init_viewport(t_data *data);
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 #endif
