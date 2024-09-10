@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/10 16:42:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 16:48:28 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	create_img(t_data *data)
 	coords.z = 0.0;
 	data->now_ray.origin = data->set.cam.coords;
 	init_viewport(data);
-	while (coords.y < data->hight)
+	while (coords.y < data->height)
 	{
 		coords.x = 0.0;
 		while (coords.x < data->width)
@@ -134,7 +134,7 @@ bool	trace_ray(float x, float y, t_data *data, t_hitpoint *hit)
 	blue.x = 0.5;
 	blue.y = 0.7;
 	blue.z = 1.0;
-	if (x >= 0 && x < data->width && y >= 0 && y < data->hight)
+	if (x >= 0 && x < data->width && y >= 0 && y < data->height)
 	{
 		pixle_center = add_vec(add_vec(data->vp.p00, multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		data->now_ray.direction = sub_vec(pixle_center, data->set.cam.coords);
@@ -171,7 +171,7 @@ void	init_viewport(t_data *data)
 	data->vp.v.y = -data->vp.size.y;
 	data->vp.v.z = 0;
 	data->vp.du = dev_vec_wnbr(data->vp.u, (float)data->width);
-	data->vp.dv = dev_vec_wnbr(data->vp.v, (float)data->hight);
+	data->vp.dv = dev_vec_wnbr(data->vp.v, (float)data->height);
 	data->vp.upper_left = sub_vec(sub_vec(\
 		sub_vec(data->set.cam.coords, z_distanz), \
 		dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));

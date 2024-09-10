@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/10 16:38:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 16:48:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@
 // 	mlx_cursor_hook(data->window, cursor, data);
 // 	mlx_resize_hook(data->window, resize, data);
 // 	mlx_delete_image(data->window, data->img);
-// 	data->img = mlx_new_image(data->window, data->width, data->hight);
+// 	data->img = mlx_new_image(data->window, data->width, data->height);
 // 	if (data->moved)
 // 	{
 // 		free(data->caches_t);
-// 		data->caches_t = (t_vec *)malloc (sizeof(t_vec) * data->width * data->hight);
+// 		data->caches_t = (t_vec *)malloc (sizeof(t_vec) * data->width * data->height);
 // 		if (!data->caches_t)
 // 			error("malloc failed", data);
 // 	}
@@ -36,14 +36,14 @@
 // 	printf("time = %f\n", (mlx_get_time() - time) * 1000);
 // }
 
-// void	resize(int width, int hight, void *param)
+// void	resize(int width, int height, void *param)
 // {
 // 	t_data	*data;
 
 // 	data = param;
-// 	data->hight = hight;
+// 	data->height = height;
 // 	data->width = width;
-// 	data->aspect_ratio = (float)width / (float)hight;
+// 	data->aspect_ratio = (float)width / (float)height;
 // 	data->moved = true;
 // }
 

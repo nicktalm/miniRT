@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 16:36:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:20:50 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ typedef struct s_data
 	t_ray		now_ray;
 	float		aspect_ratio;
 	int			width;
-	int			hight;
+	int			height;
 }				t_data;
 
 // main
@@ -179,7 +179,7 @@ int		check_param_nbr(char **line);
 // key_actions
 
 void	hook(void *param);
-void	resize(int width, int hight, void *param);
+void	resize(int width, int height, void *param);
 void	key(mlx_key_data_t keydata, void *param);
 void	cursor(double xpos, double ypos, void *param);
 
@@ -195,20 +195,14 @@ t_vec	dev_vec_wnbr(t_vec s1, float nbr);
 t_vec	add_vec(t_vec s1, t_vec s2);
 t_vec	add_vec_wnbr(t_vec s1, float nbr);
 t_vec	ray_vec(t_vec origin, float t, t_vec dir);
-
-// image_creation
-
-void	create_img(t_data *data);
-int		get_color(int r, int g, int b, int a);
-bool	hit_sphere(t_data *data, t_vec test, t_sphere *sp);
-void	pixel_to_wspace(t_vec s1, t_data *data);
+t_vec	cross_vec(t_vec s1, t_vec s2);
 
 // init_data
 
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
 
-// img_creation_test
+// img_creation
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, int a);
