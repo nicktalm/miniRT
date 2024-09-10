@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 17:11:54 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/10 21:49:55 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	parse_camera(t_data *data, char **line)
 	params = ft_split(*line, ' ');
 	check_param_nbr_2(params, 4, data);
 	parse_coords(&data->set.cam.coords, params[1], data);
-	parse_normalized_vector(&data->set.cam.normalized, params[2], data);
+	parse_normalized_vector(&data->set.cam.direction, params[2], data);
 	data->set.cam.fov = ft_atoi(params[3]) * (M_PI / 180.0);
 	if (data->set.cam.fov < 0 || data->set.cam.fov > 180)
 		error("FOV must be between 0 and 180", data);
