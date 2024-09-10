@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 17:20:50 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:31:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ double	ft_atof(const char *str);
 void	process_line(char *line, char *result);
 char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
-int		check_param_nbr(char **line);
+int		check_param_nbr(t_data *data, char **line);
+
 
 // key_actions
 

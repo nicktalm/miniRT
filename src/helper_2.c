@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:24:59 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/03 11:11:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:33:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*clean_line(char *line)
 	return (trimmed_result);
 }
 
-int	check_param_nbr(char **line)
+int	check_param_nbr(t_data *data, char **line)
 {
 	int	count_a;
 	int	count_c;
@@ -91,6 +91,6 @@ int	check_param_nbr(char **line)
 	}
 	if (count_a == 1 && count_c == 1 && count_l == 1)
 		return (0);
-	printf("Wrong number of parameters");
+	error("Wrong number of parameters", data);
 	return (1);
 }

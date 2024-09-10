@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/10 16:48:28 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:35:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ bool	hit_sphere_test(t_ray ray, t_hitpoint *hit, t_data *data)
 		diffuse_strength = dot(hit->normal, light_dir);
 		diffuse_strength < 0.0 ? diffuse_strength = 0 : diffuse_strength;
 		diffuse = multi_vec_wnbr(data->set.light.color, diffuse_strength);
-		hit->color = add_vec(hit->color, multi_vec(add_vec(light, diffuse), dev_vec_wnbr(data->set.sp[hit->sp_i].color, 255.0)));
+		hit->color = add_vec(hit->color, multi_vec(add_vec(light, diffuse), data->set.sp[hit->sp_i].color));
 		return (true);
 	}
 	return (false);

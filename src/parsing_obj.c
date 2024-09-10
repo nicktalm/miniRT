@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 11:43:19 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/10 17:37:23 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	parse_sphere(t_data *data, char **line)
 void	parse_plane(t_data *data, char **line)
 {
 	static int	i;
-	char		**params;
+	char		**params;`
 
 	params = ft_split(*line, ' ');
 	check_param_nbr_2(params, 4, data);
