@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 17:31:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:39:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,12 +151,14 @@ void	parse_cylinder(t_data *data, char **line);
 //parsing_helper
 
 void	ft_count(t_data *data, char **line);
+void	free_values(char **values);
 void	parse_coords(t_vec *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec *vec, char *line, t_data *data);
 void	parse_color(t_vec *vec, char *line, t_data *data);
 
 //error
 
+void	free_params(char **params, int count);
 void	free_all(t_data *data);
 void	error(char *message, t_data *data);
 void	error_2(char *message, char *param, t_data *data);
@@ -175,7 +177,6 @@ void	process_line(char *line, char *result);
 char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
 int		check_param_nbr(t_data *data, char **line);
-
 
 // key_actions
 
