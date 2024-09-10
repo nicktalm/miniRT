@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 11:44:35 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/10 17:11:54 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	parse_ambient(t_data *data, char **line)
 	if (data->set.ambient.ratio < 0 || data->set.ambient.ratio > 1)
 		error("Ambient light ratio must be between 0 and 1", data);
 	parse_color(&data->set.ambient.color, params[2], data);
-	free(params[0]);
-	free(params[1]);
-	free(params[2]);
-	free(params);
+	free_params(params, 3);
 }
 
 void	parse_camera(t_data *data, char **line)
@@ -36,14 +33,10 @@ void	parse_camera(t_data *data, char **line)
 	check_param_nbr_2(params, 4, data);
 	parse_coords(&data->set.cam.coords, params[1], data);
 	parse_normalized_vector(&data->set.cam.normalized, params[2], data);
-	data->set.cam.fov = ft_atoi(params[3]);
+	data->set.cam.fov = ft_atoi(params[3]) * (M_PI / 180.0);
 	if (data->set.cam.fov < 0 || data->set.cam.fov > 180)
 		error("FOV must be between 0 and 180", data);
-	free(params[0]);
-	free(params[1]);
-	free(params[2]);
-	free(params[3]);
-	free(params);
+	free_params(params, 4);
 }
 
 void	parse_light(t_data *data, char **line)
@@ -57,11 +50,7 @@ void	parse_light(t_data *data, char **line)
 	if (data->set.light.brightness < 0 || data->set.light.brightness > 1)
 		error("Brightness must be between 0 and 1", data);
 	parse_color(&data->set.light.color, params[3], data);
-	free(params[0]);
-	free(params[1]);
-	free(params[2]);
-	free(params[3]);
-	free(params);
+	free_params(params, 4);
 }
 
 void	check_wrong_line(char *line, t_data *data)

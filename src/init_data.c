@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/03 10:57:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/10 17:12:01 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,10 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->set.sp = NULL;
 		data->set.pl = NULL;
 		data->set.cy = NULL;
-		data->caches = NULL;
-		data->width = 900;
+		data->width = 1600;
 		data->hight = 900;
-		data->aspect_ratio = data->width / data->hight;
-		data->dpi = 10;
-		data->caches = (t_vec *)malloc(sizeof(t_vec) * data->width * data->hight);
-		if (!data->caches)
-			error("malloc failed", data);
-		data->pos = 0;
-		data->moved = true;
+		data->aspect_ratio = (float)data->width / (float)data->hight;
 		open_file(argv[1], data);
-		data->set.light.normalized = norm_vec(data->set.light.coords);
-		data->set.light.normalized.x *= -1;
-		data->set.light.normalized.y *= -1;
-		data->set.light.normalized.z *= -1;
 	}
 	else
 		error("Wrong nbr of Arguments", data);

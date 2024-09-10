@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/05 16:20:26 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/10 17:11:08 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	parse_color(t_vec *color, char *param, t_data *data)
 	color->z = ft_atof(values[2]);
 	if (color->z < 0 || color->z > 255)
 		error("RGB values must be between 0 and 255", data);
+	*color = dev_vec_wnbr(*color, 255.0);
 	free_values(values);
 }
 
