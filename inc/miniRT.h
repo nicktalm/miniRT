@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 21:48:46 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/11 17:28:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINIRT_H
 
 # include <stdio.h>
+# include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
 # include "../lib/get_next_line/get_next_line.h"
@@ -111,6 +112,12 @@ typedef struct s_hitpoint
 	int		sp_i;
 }				t_hitpoint;
 
+typedef struct s_caches
+{
+	t_hitpoint	*hit;
+	int			pos;
+}				t_caches;
+
 typedef struct s_data
 {
 	t_settings	set;
@@ -118,9 +125,12 @@ typedef struct s_data
 	mlx_image_t	*img;
 	t_viewport	vp;
 	t_ray		now_ray;
+	t_caches	c;
+	t_vec		bg;
 	float		aspect_ratio;
 	int			width;
 	int			height;
+	bool		moved;
 }				t_data;
 
 // main
@@ -183,7 +193,6 @@ int		check_param_nbr(t_data *data, char **line);
 void	hook(void *param);
 void	resize(int width, int height, void *param);
 void	key(mlx_key_data_t keydata, void *param);
-void	cursor(double xpos, double ypos, void *param);
 
 // vec_calc
 
@@ -203,15 +212,16 @@ t_vec	cross_vec(t_vec s1, t_vec s2);
 
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
+void	init_viewport(t_data *data);
 
 // img_creation
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, int a);
-bool	hit_sphere_test(t_ray ray, t_hitpoint *hit, t_data *data);
-void	in_out_object(t_ray ray, t_hitpoint *hit);
-bool	trace_ray(float x, float y, t_data *data, t_hitpoint *hit);
-void	init_viewport(t_data *data);
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
+void	hit_sphere(t_ray ray, t_data *data);
+void	in_out_object(t_ray ray, t_data *data);
+bool	trace_ray(float x, float y, t_data *data);
+void	super_sampling(t_data *data, int x, int y);
+void	get_sp_color(t_data *data, t_ray ray);
 
 #endif
