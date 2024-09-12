@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/11 17:08:50 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/12 18:52:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	create_img(t_data *data)
 				data->c.hit[data->c.pos].color.y = 0.0;
 				data->c.hit[data->c.pos].color.z = 0.0;
 				trace_ray((float)coords.x, (float)coords.y, data);
-				// super_sampling(data, coords.x, coords.y);
+				super_sampling(data, coords.x, coords.y);
 			}
 			mlx_put_pixel(data->img, coords.x, coords.y,
 				create_color(data->c.hit[data->c.pos].color.x,
@@ -73,7 +73,7 @@ void	hit_sphere(t_ray ray, t_data *data)
 
 	i = 0;
 	t = 0.0;
-	data->c.hit[data->c.pos].sp_i = 0;
+	data->c.hit[data->c.pos].i = 0;
 	data->c.hit[data->c.pos].t = __FLT_MAX__;
 	while (i < data->set.sp_count)
 	{
@@ -94,7 +94,46 @@ void	hit_sphere(t_ray ray, t_data *data)
 			if (data->c.hit[data->c.pos].t > t)
 			{
 				data->c.hit[data->c.pos].t = t;
-				data->c.hit[data->c.pos].sp_i = i;
+				data->c.hit[data->c.pos].i = i;
+			}
+		}
+		i++;
+	}
+}
+
+void	hit_cylinder(t_ray ray, t_data *data)
+{
+	t_vec	oc;
+	float	a;
+	float	b;
+	float	c;
+	float	dis;
+	float	t;
+	int		i;
+
+	i = 0;
+	t = 0.0;
+	data->c.hit[data->c.pos].i = 0;
+	while (i < data->set.cy_count)
+	{
+		oc = sub_vec(data->set.cy[i].coords, ray.origin);
+		a = dot(ray.direction, ray.direction);
+		b = dot(ray.direction, oc);
+		c = dot(oc, oc) - data->set.cy[i].radius * data->set.cy[i].radius;
+		dis = (b * b) - (a * c);
+		if (dis > 0.0)
+		{
+			t = (b - sqrt(dis)) / a;
+			if (t <= 0.0 || t >= INFINITY)
+			{
+				t = (b + sqrt(dis) / a);
+				if (t <= 0.0 || t >= INFINITY)
+					t = __FLT_MAX__;
+			}
+			if (data->c.hit[data->c.pos].t > t)
+			{
+				data->c.hit[data->c.pos].t = t;
+				data->c.hit[data->c.pos].i = i;
 			}
 		}
 		i++;
@@ -118,7 +157,7 @@ bool	trace_ray(float x, float y, t_data *data)
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		data->now_ray.direction = sub_vec(pixle_center, data->set.cam.coords);
-		get_sp_color(data, data->now_ray);
+		get_obj_color(data, data->now_ray);
 		return (true);
 	}
 	return (false);
@@ -129,51 +168,72 @@ void	super_sampling(t_data *data, int x, int y)
 	int	i;
 
 	i = 1;
-	if (trace_ray((float)x + 0.5, (float)y, data))
+	if (trace_ray((float)x + 0.5f, (float)y, data))
 		i++;
-	if (trace_ray((float)x - 0.5, (float)y, data))
+	if (trace_ray((float)x - 0.5f, (float)y, data))
 		i++;
-	if (trace_ray((float)x, (float)y + 0.5, data))
+	if (trace_ray((float)x, (float)y + 0.5f, data))
 		i++;
-	if (trace_ray((float)x, (float)y - 0.5, data))
+	if (trace_ray((float)x, (float)y - 0.5f, data))
 		i++;
-	if (trace_ray((float)x - 0.5, (float)y - 0.5, data))
+	if (trace_ray((float)x - 0.5f, (float)y - 0.5f, data))
 		i++;
-	if (trace_ray((float)x + 0.5, (float)y + 0.5, data))
+	if (trace_ray((float)x + 0.5f, (float)y + 0.5f, data))
 		i++;
-	if (trace_ray((float)x + 0.5, (float)y - 0.5, data))
+	if (trace_ray((float)x + 0.5f, (float)y - 0.5f, data))
 		i++;
-	if (trace_ray((float)x - 0.5, (float)y + 0.5, data))
+	if (trace_ray((float)x - 0.5f, (float)y + 0.5f, data))
 		i++;
 	data->c.hit[data->c.pos].color
 		= dev_vec_wnbr(data->c.hit[data->c.pos].color, (float)i);
 }
 
-void	get_sp_color(t_data *data, t_ray ray)
+void	get_obj_color(t_data *data, t_ray ray)
 {
 	t_vec	light;
 	t_vec	light_dir;
 	t_vec	diffuse;
+	t_vec	r;
 	float	diffuse_strength;
 	int		re;
+	float	multi;
 
+	multi = 1.0f;
 	re = 0;
-	while (re++ < 2)
+	while (re++ < 10)
 	{
 		hit_sphere(ray, data);
 		if (data->c.hit[data->c.pos].t != __FLT_MAX__)
 		{
 			data->c.hit[data->c.pos].p = ray_vec(ray.origin, data->c.hit[data->c.pos].t, ray.direction);
-			data->c.hit[data->c.pos].normal = norm_vec(dev_vec_wnbr(sub_vec(data->c.hit[data->c.pos].p, data->set.sp[data->c.hit[data->c.pos].sp_i].coords), data->set.sp[data->c.hit[data->c.pos].sp_i].radius));
+			data->c.hit[data->c.pos].normal = dev_vec_wnbr(sub_vec(data->c.hit[data->c.pos].p, data->set.sp[data->c.hit[data->c.pos].i].coords), data->set.sp[data->c.hit[data->c.pos].i].radius);
 			in_out_object(ray, data);
 			light = multi_vec_wnbr(data->set.light.color, data->set.light.brightness);
 			light_dir = norm_vec(sub_vec(data->set.light.coords, data->c.hit[data->c.pos].p));
 			diffuse_strength = dot(data->c.hit[data->c.pos].normal, light_dir);
 			diffuse_strength < 0.0 ? diffuse_strength = 0 : diffuse_strength;
 			diffuse = multi_vec_wnbr(data->set.light.color, diffuse_strength);
-			data->c.hit[data->c.pos].color = add_vec(data->c.hit[data->c.pos].color, multi_vec(add_vec(light, diffuse), data->set.sp[data->c.hit[data->c.pos].sp_i].color));
+			data->c.hit[data->c.pos].color = add_vec(data->c.hit[data->c.pos].color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[data->c.hit[data->c.pos].i].color), multi));
+			multi *= 0.5f;
+			r.x = rando();
+			r.y = rando();
+			r.z = rando();
+			ray.origin = ray_vec(data->c.hit[data->c.pos].p, 0.000001f, data->c.hit[data->c.pos].normal);
+			ray.direction = reflect_vec(ray.direction, add_vec(data->c.hit[data->c.pos].normal, multi_vec_wnbr(r, data->set.sp[data->c.hit[data->c.pos].i].material)));
 		}
 		else
-			data->c.hit[data->c.pos].color = add_vec(data->c.hit[data->c.pos].color, data->bg);
+		{
+			data->c.hit[data->c.pos].color = add_vec(data->c.hit[data->c.pos].color, multi_vec_wnbr(data->bg, multi));
+			break ;
+		}
 	}
+}
+
+float	rando(void)
+{
+	float	nbr;
+
+	nbr = (float)rand() / (float)RAND_MAX;
+	nbr = (nbr * 1.0f) - 0.5f;
+	return (nbr);
 }

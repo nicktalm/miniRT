@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/11 17:28:35 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/12 16:33:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,20 @@ typedef struct s_vec
 	float	z;
 }				t_vec;
 
+typedef struct s_color
+{
+	float	r;
+	float	g;
+	float	b;
+	float	a;
+}				t_color;
+
 typedef struct s_cylinder
 {
 	t_vec				coords;
 	t_vec				normalized;
 	float				diameter;
+	float				radius;
 	float				height;
 	t_vec				color;
 }				t_cylinder;
@@ -50,6 +59,7 @@ typedef struct s_sphere
 	float			diameter;
 	float			radius;
 	t_vec			color;
+	float			material;
 }				t_sphere;
 
 typedef struct s_light
@@ -109,7 +119,7 @@ typedef struct s_hitpoint
 	t_vec	normal;
 	t_vec	color;
 	float	t;
-	int		sp_i;
+	int		i;
 }				t_hitpoint;
 
 typedef struct s_caches
@@ -207,6 +217,7 @@ t_vec	add_vec(t_vec s1, t_vec s2);
 t_vec	add_vec_wnbr(t_vec s1, float nbr);
 t_vec	ray_vec(t_vec origin, float t, t_vec dir);
 t_vec	cross_vec(t_vec s1, t_vec s2);
+t_vec	reflect_vec(t_vec s1, t_vec s2);
 
 // init_data
 
@@ -222,6 +233,7 @@ void	hit_sphere(t_ray ray, t_data *data);
 void	in_out_object(t_ray ray, t_data *data);
 bool	trace_ray(float x, float y, t_data *data);
 void	super_sampling(t_data *data, int x, int y);
-void	get_sp_color(t_data *data, t_ray ray);
+void	get_obj_color(t_data *data, t_ray ray);
+float	rando(void);
 
 #endif

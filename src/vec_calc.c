@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/10 17:20:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/12 11:45:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,4 +111,9 @@ t_vec	cross_vec(t_vec s1, t_vec s2)
 	result.y = (s1.z * s2.x) - (s1.x * s2.z);
 	result.z = (s1.z * s2.y) - (s1.y * s2.x);
 	return (result);
+}
+
+t_vec	reflect_vec(t_vec s1, t_vec s2)
+{
+	return (sub_vec(s1, multi_vec_wnbr(s2, 2 * dot(s1, s2))));
 }

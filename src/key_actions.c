@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/11 16:53:58 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/12 18:18:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	hook(void *param)
 	data->img = mlx_new_image(data->window, data->width, data->height);
 	create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
-	printf("time = %f\n", (mlx_get_time() - time) * 1000);
+	printf("fps = %f\n", 1 / (mlx_get_time() - time));
 }
 
 void	resize(int width, int height, void *param)

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/11 16:47:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/12 18:53:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->moved = true;
 		data->c.hit = NULL;
 		data->c.pos = 0;
-		data->bg.x = 0.0;
-		data->bg.y = 0.0;
-		data->bg.z = 0.0;
+		data->bg.x = 0.4;
+		data->bg.y = 0.5;
+		data->bg.z = 0.6;
 		data->c.hit = (t_hitpoint *)malloc
 			(data->width * data->height * sizeof(t_hitpoint));
 		if (!data->c.hit)
@@ -34,6 +34,8 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		open_file(argv[1], data);
 		data->now_ray.origin = data->set.cam.coords;
+		data->set.sp[0].material = 0.004f;
+		data->set.sp[1].material = 0.004f;
 	}
 	else
 		error("Wrong nbr of Arguments", data);
