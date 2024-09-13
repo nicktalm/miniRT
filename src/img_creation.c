@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/12 18:52:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/13 15:42:55 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	create_img(t_data *data)
 {
 	t_vec		coords;
+	t_vec		testc;
 
 	coords.x = 0.0;
 	coords.y = 0.0;
@@ -25,18 +26,13 @@ void	create_img(t_data *data)
 		coords.x = 0.0;
 		while (coords.x < data->width)
 		{
-			if (data->moved)
-			{
-				data->c.hit[data->c.pos].color.x = 0.0;
-				data->c.hit[data->c.pos].color.y = 0.0;
-				data->c.hit[data->c.pos].color.z = 0.0;
-				trace_ray((float)coords.x, (float)coords.y, data);
-				super_sampling(data, coords.x, coords.y);
-			}
+			trace_ray((float)coords.x, (float)coords.y, data);
+			// super_sampling(data, coords.x, coords.y);
+			testc = dev_vec_wnbr(data->c.hit[data->c.pos].color, (float)data->i);
 			mlx_put_pixel(data->img, coords.x, coords.y,
-				create_color(data->c.hit[data->c.pos].color.x,
-					data->c.hit[data->c.pos].color.y,
-					data->c.hit[data->c.pos].color.z, 255));
+				create_color(testc.x,
+					testc.y,
+					testc.z, 255));
 			data->c.pos++;
 			coords.x++;
 		}
@@ -44,6 +40,7 @@ void	create_img(t_data *data)
 	}
 	data->moved = false;
 	data->c.pos = 0;
+	data->i++;
 }
 
 int	create_color(float x, float y, float z, int a)
@@ -218,7 +215,7 @@ void	get_obj_color(t_data *data, t_ray ray)
 			r.x = rando();
 			r.y = rando();
 			r.z = rando();
-			ray.origin = ray_vec(data->c.hit[data->c.pos].p, 0.000001f, data->c.hit[data->c.pos].normal);
+			ray.origin = ray_vec(data->c.hit[data->c.pos].p, 0.0001f, data->c.hit[data->c.pos].normal);
 			ray.direction = reflect_vec(ray.direction, add_vec(data->c.hit[data->c.pos].normal, multi_vec_wnbr(r, data->set.sp[data->c.hit[data->c.pos].i].material)));
 		}
 		else

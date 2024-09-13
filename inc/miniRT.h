@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/12 16:33:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/13 16:48:38 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
+# include <pthread.h>
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
@@ -115,11 +116,11 @@ typedef struct s_ray
 
 typedef struct s_hitpoint
 {
-	t_vec	p;
-	t_vec	normal;
-	t_vec	color;
-	float	t;
-	int		i;
+	t_vec		p;
+	t_vec		normal;
+	t_vec		color;
+	float		t;
+	int			i;
 }				t_hitpoint;
 
 typedef struct s_caches
@@ -127,6 +128,15 @@ typedef struct s_caches
 	t_hitpoint	*hit;
 	int			pos;
 }				t_caches;
+
+typedef struct s_range
+{
+	pthread_t	p;
+	int			x_max;
+	int			x_min;
+	int			y_max;
+	int			y_min;
+}				t_range;
 
 typedef struct s_data
 {
@@ -137,9 +147,13 @@ typedef struct s_data
 	t_ray		now_ray;
 	t_caches	c;
 	t_vec		bg;
+	t_range		*range;
 	float		aspect_ratio;
 	int			width;
 	int			height;
+	int			i;
+	int			x_max;
+	int			y_max;
 	bool		moved;
 }				t_data;
 

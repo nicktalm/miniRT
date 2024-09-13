@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/12 18:53:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/13 16:44:51 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,26 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->set.sp = NULL;
 		data->set.pl = NULL;
 		data->set.cy = NULL;
-		data->width = 1600;
-		data->height = 900;
+		data->width = 800;
+		data->height = 800;
 		data->moved = true;
 		data->c.hit = NULL;
 		data->c.pos = 0;
 		data->bg.x = 0.4;
 		data->bg.y = 0.5;
 		data->bg.z = 0.6;
+		data->i = 1;
 		data->c.hit = (t_hitpoint *)malloc
 			(data->width * data->height * sizeof(t_hitpoint));
-		if (!data->c.hit)
+		data->range = (t_range *)malloc (data->width * data->height * sizeof(t_range));
+		if (!data->c.hit || !data->range)
 			error("malloc failed", data);
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		open_file(argv[1], data);
 		data->now_ray.origin = data->set.cam.coords;
-		data->set.sp[0].material = 0.004f;
-		data->set.sp[1].material = 0.004f;
+		data->set.sp[0].material = 0.0f;
+		data->set.sp[1].material = 0.0f;
+		data->set.sp[2].material = 0.1f;
 	}
 	else
 		error("Wrong nbr of Arguments", data);

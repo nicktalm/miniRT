@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/12 18:18:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/13 15:31:05 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	resize(int width, int height, void *param)
 		(data->width * data->height * sizeof(t_hitpoint));
 	if (!data->c.hit)
 		error("malloc failed", data);
+	data->i = 1;
 	data->moved = true;
 }
 
