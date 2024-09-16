@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/13 16:48:38 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/16 13:32:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,15 +129,6 @@ typedef struct s_caches
 	int			pos;
 }				t_caches;
 
-typedef struct s_range
-{
-	pthread_t	p;
-	int			x_max;
-	int			x_min;
-	int			y_max;
-	int			y_min;
-}				t_range;
-
 typedef struct s_data
 {
 	t_settings	set;
@@ -147,7 +138,7 @@ typedef struct s_data
 	t_ray		now_ray;
 	t_caches	c;
 	t_vec		bg;
-	t_range		*range;
+	struct s_range	*range;
 	float		aspect_ratio;
 	int			width;
 	int			height;
@@ -156,6 +147,18 @@ typedef struct s_data
 	int			y_max;
 	bool		moved;
 }				t_data;
+
+typedef struct s_range
+{
+	pthread_t	p;
+	t_hitpoint	*hit;
+	int			th_nbr;
+	int			x_max;
+	int			x_min;
+	int			y_max;
+	int			y_min;
+	t_data		data;
+}				t_range;
 
 // main
 
@@ -243,11 +246,18 @@ void	init_viewport(t_data *data);
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, int a);
-void	hit_sphere(t_ray ray, t_data *data);
+void	hit_sphere(t_ray ray, t_hitpoint *hit, t_data *data);
 void	in_out_object(t_ray ray, t_data *data);
-bool	trace_ray(float x, float y, t_data *data);
+bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 void	super_sampling(t_data *data, int x, int y);
-void	get_obj_color(t_data *data, t_ray ray);
+void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
 float	rando(void);
+
+// multi_threading
+
+void	calc_pixels(t_data *data);
+void	creat_img_multi(t_data *data);
+void	fill_range(t_range *range, t_vec *max, t_vec *min, int i, t_data *data);
+void	*loop_thread(void *param);
 
 #endif

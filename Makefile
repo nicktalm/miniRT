@@ -12,7 +12,7 @@ CXX = cc
 # CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
 OBJDIR = ./obj
-SRC = $(addprefix $(SRCDIR)/, main.c img_creation.c init_data.c key_actions.c vec_calc.c check_file.c error.c parsing.c helper.c parsing_obj.c parsing_helper.c helper_2.c)
+SRC = $(addprefix $(SRCDIR)/, main.c multi_threading.c img_creation.c init_data.c key_actions.c vec_calc.c check_file.c error.c parsing.c helper.c parsing_obj.c parsing_helper.c helper_2.c)
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 TOTAL_FILES = $(words $(SRC))
 CURRENT = 0
@@ -31,7 +31,7 @@ $(NAME): $(OBJ)
 	@cd $(GET_NEXT) && $(MAKE) all
 	@printf "\n"
 	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
-	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ) -fsanitize=address
+	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ)
 	@if [ -f $(NAME) ]; then\
 		echo "$(GREEN)\nCompilation successful! Executable $(NAME) created.$(NC)";\
 	else\

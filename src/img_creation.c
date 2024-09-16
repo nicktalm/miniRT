@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/13 15:42:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/16 13:47:52 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	create_img(t_data *data)
 		coords.x = 0.0;
 		while (coords.x < data->width)
 		{
-			trace_ray((float)coords.x, (float)coords.y, data);
+			// trace_ray((float)coords.x, (float)coords.y, data);
 			// super_sampling(data, coords.x, coords.y);
 			testc = dev_vec_wnbr(data->c.hit[data->c.pos].color, (float)data->i);
 			mlx_put_pixel(data->img, coords.x, coords.y,
@@ -58,7 +58,7 @@ int	create_color(float x, float y, float z, int a)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	hit_sphere(t_ray ray, t_data *data)
+void	hit_sphere(t_ray ray, t_hitpoint *hit, t_data *data)
 {
 	t_vec	oc;
 	float	a;
@@ -70,8 +70,8 @@ void	hit_sphere(t_ray ray, t_data *data)
 
 	i = 0;
 	t = 0.0;
-	data->c.hit[data->c.pos].i = 0;
-	data->c.hit[data->c.pos].t = __FLT_MAX__;
+	hit->i = 0;
+	hit->t = __FLT_MAX__;
 	while (i < data->set.sp_count)
 	{
 		oc = sub_vec(data->set.sp[i].coords, ray.origin);
@@ -88,10 +88,10 @@ void	hit_sphere(t_ray ray, t_data *data)
 				if (t <= 0.0 || t >= INFINITY)
 					t = __FLT_MAX__;
 			}
-			if (data->c.hit[data->c.pos].t > t)
+			if (hit->t > t)
 			{
-				data->c.hit[data->c.pos].t = t;
-				data->c.hit[data->c.pos].i = i;
+				hit->t = t;
+				hit->i = i;
 			}
 		}
 		i++;
@@ -144,83 +144,85 @@ void	in_out_object(t_ray ray, t_data *data)
 			= multi_vec_wnbr(data->c.hit[data->c.pos].normal, -1.0);
 }
 
-bool	trace_ray(float x, float y, t_data *data)
+bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 {
 	t_vec		pixle_center;
-	t_vec		result;
+	t_ray		ray;
 
 	if (x >= 0 && x < data->width && y >= 0 && y < data->height)
 	{
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
-		data->now_ray.direction = sub_vec(pixle_center, data->set.cam.coords);
-		get_obj_color(data, data->now_ray);
+		ray.origin = data->set.cam.coords;
+		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
+		get_obj_color(data, ray, hit);
 		return (true);
 	}
 	return (false);
 }
 
-void	super_sampling(t_data *data, int x, int y)
-{
-	int	i;
+// void	super_sampling(t_data *data, int x, int y)
+// {
+// 	int			i;
+// 	t_hitpoint	hit;
 
-	i = 1;
-	if (trace_ray((float)x + 0.5f, (float)y, data))
-		i++;
-	if (trace_ray((float)x - 0.5f, (float)y, data))
-		i++;
-	if (trace_ray((float)x, (float)y + 0.5f, data))
-		i++;
-	if (trace_ray((float)x, (float)y - 0.5f, data))
-		i++;
-	if (trace_ray((float)x - 0.5f, (float)y - 0.5f, data))
-		i++;
-	if (trace_ray((float)x + 0.5f, (float)y + 0.5f, data))
-		i++;
-	if (trace_ray((float)x + 0.5f, (float)y - 0.5f, data))
-		i++;
-	if (trace_ray((float)x - 0.5f, (float)y + 0.5f, data))
-		i++;
-	data->c.hit[data->c.pos].color
-		= dev_vec_wnbr(data->c.hit[data->c.pos].color, (float)i);
-}
+// 	i = 1;
+// 	if (trace_ray((float)x + 0.5f, (float)y, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x - 0.5f, (float)y, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x, (float)y + 0.5f, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x, (float)y - 0.5f, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x - 0.5f, (float)y - 0.5f, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x + 0.5f, (float)y + 0.5f, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x + 0.5f, (float)y - 0.5f, &hit, data))
+// 		i++;
+// 	if (trace_ray((float)x - 0.5f, (float)y + 0.5f, &hit, data))
+// 		i++;
+// 	data->c.hit[data->c.pos].color
+// 		= dev_vec_wnbr(data->c.hit[data->c.pos].color, (float)i);
+// }
 
-void	get_obj_color(t_data *data, t_ray ray)
+void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 {
-	t_vec	light;
-	t_vec	light_dir;
-	t_vec	diffuse;
-	t_vec	r;
-	float	diffuse_strength;
-	int		re;
-	float	multi;
+	t_vec		light;
+	t_vec		light_dir;
+	t_vec		diffuse;
+	t_vec		r;
+	float		diffuse_strength;
+	int			re;
+	float		multi;
 
 	multi = 1.0f;
 	re = 0;
-	while (re++ < 10)
+	while (re++ < 5)
 	{
-		hit_sphere(ray, data);
-		if (data->c.hit[data->c.pos].t != __FLT_MAX__)
+		hit_sphere(ray, hit, data);
+		if (hit->t != __FLT_MAX__)
 		{
-			data->c.hit[data->c.pos].p = ray_vec(ray.origin, data->c.hit[data->c.pos].t, ray.direction);
-			data->c.hit[data->c.pos].normal = dev_vec_wnbr(sub_vec(data->c.hit[data->c.pos].p, data->set.sp[data->c.hit[data->c.pos].i].coords), data->set.sp[data->c.hit[data->c.pos].i].radius);
+			hit->p = ray_vec(ray.origin, hit->t, ray.direction);
+			hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.sp[hit->i].coords), data->set.sp[hit->i].radius);
 			in_out_object(ray, data);
 			light = multi_vec_wnbr(data->set.light.color, data->set.light.brightness);
-			light_dir = norm_vec(sub_vec(data->set.light.coords, data->c.hit[data->c.pos].p));
-			diffuse_strength = dot(data->c.hit[data->c.pos].normal, light_dir);
+			light_dir = norm_vec(sub_vec(data->set.light.coords, hit->p));
+			diffuse_strength = dot(hit->normal, light_dir);
 			diffuse_strength < 0.0 ? diffuse_strength = 0 : diffuse_strength;
 			diffuse = multi_vec_wnbr(data->set.light.color, diffuse_strength);
-			data->c.hit[data->c.pos].color = add_vec(data->c.hit[data->c.pos].color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[data->c.hit[data->c.pos].i].color), multi));
+			hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[hit->i].color), multi));
 			multi *= 0.5f;
 			r.x = rando();
 			r.y = rando();
 			r.z = rando();
-			ray.origin = ray_vec(data->c.hit[data->c.pos].p, 0.0001f, data->c.hit[data->c.pos].normal);
-			ray.direction = reflect_vec(ray.direction, add_vec(data->c.hit[data->c.pos].normal, multi_vec_wnbr(r, data->set.sp[data->c.hit[data->c.pos].i].material)));
+			ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
+			ray.direction = reflect_vec(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.sp[hit->i].material)));
 		}
 		else
 		{
-			data->c.hit[data->c.pos].color = add_vec(data->c.hit[data->c.pos].color, multi_vec_wnbr(data->bg, multi));
+			hit->color = add_vec(hit->color, multi_vec_wnbr(data->bg, multi));
 			break ;
 		}
 	}

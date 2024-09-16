@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/13 15:31:05 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/16 14:08:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	hook(void *param)
 	mlx_delete_image(data->window, data->img);
 	mlx_resize_hook(data->window, resize, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
-	create_img(data);
+	creat_img_multi(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
 	printf("fps = %f\n", 1 / (mlx_get_time() - time));
 }

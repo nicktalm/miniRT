@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/13 16:44:51 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/16 15:21:59 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 void	init_data(t_data *data, int argc, char **argv)
 {
+	data->set.sp = NULL;
+	data->set.pl = NULL;
+	data->set.cy = NULL;
 	if (argc == 2)
 	{
-		data->set.sp = NULL;
-		data->set.pl = NULL;
-		data->set.cy = NULL;
-		data->width = 800;
-		data->height = 800;
+		data->width = 1600;
+		data->height = 900;
 		data->moved = true;
 		data->c.hit = NULL;
 		data->c.pos = 0;
@@ -30,9 +30,15 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->i = 1;
 		data->c.hit = (t_hitpoint *)malloc
 			(data->width * data->height * sizeof(t_hitpoint));
-		data->range = (t_range *)malloc (data->width * data->height * sizeof(t_range));
+		data->range = (t_range *)malloc (200 * sizeof(t_range));
 		if (!data->c.hit || !data->range)
 			error("malloc failed", data);
+		for (int i = 0; i < 200; i++)
+		{
+			data->range[i].hit = (t_hitpoint *)malloc (data->width * data->height * sizeof(t_hitpoint));
+			if (!data->range[i].hit)
+				error("malloc failed", data);
+		}
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		open_file(argv[1], data);
 		data->now_ray.origin = data->set.cam.coords;
@@ -58,22 +64,19 @@ void	init_viewport(t_data *data)
 	up.x = 0.0;
 	up.y = 1.0;
 	up.z = 0.0;
-	if (data->moved)
-	{
-		right = cross_vec(up, data->set.cam.direction);
-		right = norm_vec(right);
-		up = cross_vec(data->set.cam.direction, right);
-		data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
-		data->vp.size.y = data->vp.size.x / data->aspect_ratio;
-		data->vp.size.z = 0;
-		data->vp.u = multi_vec_wnbr(right, data->vp.size.x);
-		data->vp.v = multi_vec_wnbr(up, data->vp.size.y);
-		data->vp.du = dev_vec_wnbr(data->vp.u, (float)data->width);
-		data->vp.dv = dev_vec_wnbr(data->vp.v, (float)data->height);
-		data->vp.upper_left = sub_vec(sub_vec(\
-			sub_vec(data->set.cam.coords, data->set.cam.direction), \
-			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
-		data->vp.p00 = add_vec(data->vp.upper_left,
-				multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
-	}
+	right = cross_vec(up, data->set.cam.direction);
+	right = norm_vec(right);
+	up = cross_vec(data->set.cam.direction, right);
+	data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
+	data->vp.size.y = data->vp.size.x / data->aspect_ratio;
+	data->vp.size.z = 0;
+	data->vp.u = multi_vec_wnbr(right, data->vp.size.x);
+	data->vp.v = multi_vec_wnbr(up, data->vp.size.y);
+	data->vp.du = dev_vec_wnbr(data->vp.u, (float)data->width);
+	data->vp.dv = dev_vec_wnbr(data->vp.v, (float)data->height);
+	data->vp.upper_left = sub_vec(sub_vec(\
+		sub_vec(data->set.cam.coords, data->set.cam.direction), \
+		dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
+	data->vp.p00 = add_vec(data->vp.upper_left,
+			multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
 }

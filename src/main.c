@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/11 17:32:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/16 16:13:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int argc, char **argv)
 
 	init_data(&data, argc, argv);
 	init_mlx(&data);
-	create_img(&data);
+	creat_img_multi(&data);
 	mlx_image_to_window(data.window, data.img, 0, 0);
 	mlx_loop_hook(data.window, hook, &data);
 	mlx_loop(data.window);
