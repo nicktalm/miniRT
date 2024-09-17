@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/16 14:08:03 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/17 17:04:04 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,12 @@ void	hook(void *param)
 	mlx_delete_image(data->window, data->img);
 	mlx_resize_hook(data->window, resize, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
-	creat_img_multi(data);
+	if (!ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
+		create_img(data);
+	else
+		creat_img_multi(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
-	printf("fps = %f\n", 1 / (mlx_get_time() - time));
+	// printf("time = %f ms\n", (mlx_get_time() - time) * 1000);
 }
 
 void	resize(int width, int height, void *param)
@@ -35,12 +38,6 @@ void	resize(int width, int height, void *param)
 	data->height = height;
 	data->width = width;
 	data->aspect_ratio = (float)width / (float)height;
-	free(data->c.hit);
-	data->c.hit = NULL;
-	data->c.hit = (t_hitpoint *)malloc
-		(data->width * data->height * sizeof(t_hitpoint));
-	if (!data->c.hit)
-		error("malloc failed", data);
 	data->i = 1;
 	data->moved = true;
 }

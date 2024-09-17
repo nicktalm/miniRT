@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:19:03 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/16 15:36:34 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/17 16:55:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,30 @@
 
 void	calc_pixels(t_data *data)
 {
-	int	x_max;
-	int	y_max;
-
-	data->x_max = data->width / 10;
-	data->y_max = data->height / 20;
+	if (data->moved)
+	{
+		data->x_max = data->width / 10;
+		data->y_max = data->height / 20;
+	}
 }
 
 
 void	creat_img_multi(t_data *data)
 {
 	int		i;
-	t_vec	max;
 	t_vec	min;
 
 	i = 0;
-	max.x = 0;
-	max.y = 0;
-	max.z = 0;
 	min.x = 0;
 	min.y = 0;
 	min.z = 0;
-	if (data->moved)
-	{
-		calc_pixels(data);
-		init_viewport(data);
-	}
+	calc_pixels(data);
+	init_viewport(data);
 	while (i < 200)
 	{
 		if (data->moved)
 		{
-			fill_range(data->range, &max, &min, i, data);
+			fill_range(data->range, &min, i, data);
 			data->range[i].th_nbr = i;
 		}
 		data->range[i].data = *data;
@@ -61,7 +54,7 @@ void	creat_img_multi(t_data *data)
 	data->i++;
 }
 
-void	fill_range(t_range *range, t_vec *max, t_vec *min, int i, t_data *data)
+void	fill_range(t_range *range, t_vec *min, int i, t_data *data)
 {
 	if (min->x < data->width && min->y < data->height)
 	{
@@ -90,6 +83,9 @@ void	*loop_thread(void *param)
 	t_vec		testc;
 
 	range = param;
+	printf("nbr = %i\n", range->th_nbr);
+	if (range->th_nbr == 5)
+		printf("here\n");
 	y = range->y_min;
 	while (y < range->y_max)
 	{

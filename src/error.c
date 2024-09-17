@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/11 15:28:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/17 16:59:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	free_all(t_data *data)
 		free(data->set.pl);
 	if (data->set.cy)
 		free(data->set.cy);
-	if (data->c.hit)
-		free(data->c.hit);
+	if (ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
+		pthread_mutex_destroy(&data->random);
 }
 
 void	error_2(char *message, char *param, t_data *data)

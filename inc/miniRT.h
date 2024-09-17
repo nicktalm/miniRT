@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/16 13:32:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/17 16:48:27 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,21 +123,16 @@ typedef struct s_hitpoint
 	int			i;
 }				t_hitpoint;
 
-typedef struct s_caches
-{
-	t_hitpoint	*hit;
-	int			pos;
-}				t_caches;
-
 typedef struct s_data
 {
+	char		*name;
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
 	t_viewport	vp;
-	t_ray		now_ray;
-	t_caches	c;
 	t_vec		bg;
+	pthread_mutex_t	random;
+	pthread_mutex_t	count;
 	struct s_range	*range;
 	float		aspect_ratio;
 	int			width;
@@ -241,23 +236,28 @@ t_vec	reflect_vec(t_vec s1, t_vec s2);
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
 void	init_viewport(t_data *data);
+void	init_data_b(t_data *data);
 
 // img_creation
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, int a);
 void	hit_sphere(t_ray ray, t_hitpoint *hit, t_data *data);
-void	in_out_object(t_ray ray, t_data *data);
+void	in_out_object(t_ray ray, t_hitpoint *hit);
 bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 void	super_sampling(t_data *data, int x, int y);
 void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
-float	rando(void);
+float	rando(t_data *data);
 
 // multi_threading
 
 void	calc_pixels(t_data *data);
 void	creat_img_multi(t_data *data);
-void	fill_range(t_range *range, t_vec *max, t_vec *min, int i, t_data *data);
+void	fill_range(t_range *range, t_vec *min, int i, t_data *data);
 void	*loop_thread(void *param);
+
+// thread_helper
+
+int		sp_count(t_data *data);
 
 #endif

@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   thread_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/17 16:45:19 by lbohm            ###   ########.fr       */
+/*   Created: 2024/09/17 16:22:48 by lbohm             #+#    #+#             */
+/*   Updated: 2024/09/17 16:28:22 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-int	main(int argc, char **argv)
+int	sp_count(t_data *data)
 {
-	t_data	data;
+	int	ret;
 
-	init_data(&data, argc, argv);
-	init_mlx(&data);
-	if (!ft_strncmp(argv[0], "./miniRT", ft_len(argv[0])))
-		create_img(&data);
-	else
-		creat_img_multi(&data);
-	mlx_image_to_window(data.window, data.img, 0, 0);
-	mlx_loop_hook(data.window, hook, &data);
-	mlx_loop(data.window);
-	mlx_delete_image(data.window, data.img);
-	mlx_terminate(data.window);
-	free_all(&data);
-	return (0);
+	pthread_mutex_lock(&data->count);
+	ret = data->set.sp_count;
+	pthread_mutex_unlock(&data->count);
+	return (ret);
 }
