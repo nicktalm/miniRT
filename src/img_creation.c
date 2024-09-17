@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/17 17:44:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/17 20:17:55 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,13 @@ void	hit_sphere(t_ray ray, t_hitpoint *hit, t_data *data)
 	t = 0.0;
 	hit->i = 0;
 	hit->t = __FLT_MAX__;
-	// printf("sp count = %i\n", data->set.sp_count);
 	while (i < data->set.sp_count)
 	{
-		// printf("inside\n");
 		oc = sub_vec(data->set.sp[i].coords, ray.origin);
 		a = dot(ray.direction, ray.direction);
 		b = dot(ray.direction, oc);
 		c = dot(oc, oc) - data->set.sp[i].radius * data->set.sp[i].radius;
 		dis = (b * b) - (a * c);
-		// printf("after dis\n");
 		if (dis > 0.0)
 		{
 			t = (b - sqrt(dis)) / a;
@@ -96,49 +93,28 @@ void	hit_sphere(t_ray ray, t_hitpoint *hit, t_data *data)
 				hit->i = i;
 			}
 		}
-		// printf("after if\n");
 		i++;
 	}
 }
 
-// void	hit_cylinder(t_ray ray, t_data *data)
-// {
-// 	t_vec	oc;
-// 	float	a;
-// 	float	b;
-// 	float	c;
-// 	float	dis;
-// 	float	t;
-// 	int		i;
-
-// 	i = 0;
-// 	t = 0.0;
-// 	data->c.hit[data->c.pos].i = 0;
-// 	while (i < data->set.cy_count)
-// 	{
-// 		oc = sub_vec(data->set.cy[i].coords, ray.origin);
-// 		a = dot(ray.direction, ray.direction);
-// 		b = dot(ray.direction, oc);
-// 		c = dot(oc, oc) - data->set.cy[i].radius * data->set.cy[i].radius;
-// 		dis = (b * b) - (a * c);
-// 		if (dis > 0.0)
-// 		{
-// 			t = (b - sqrt(dis)) / a;
-// 			if (t <= 0.0 || t >= INFINITY)
-// 			{
-// 				t = (b + sqrt(dis) / a);
-// 				if (t <= 0.0 || t >= INFINITY)
-// 					t = __FLT_MAX__;
-// 			}
-// 			if (data->c.hit[data->c.pos].t > t)
-// 			{
-// 				data->c.hit[data->c.pos].t = t;
-// 				data->c.hit[data->c.pos].i = i;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// }
+void	hit_plane(t_ray ray, t_hitpoint *hit, t_data *data)
+{
+	int		i;
+	float	t;
+	
+	i = 0;
+	t = 0.0;
+	while (i < data->set.pl_count)
+	{
+		t = dot(data->set.pl[i].normalized, sub_vec(data->set.pl[i].coords, ray.origin)) / dot(data->set.pl[i].normalized, ray.direction);
+		if (t > 0.0)
+		{
+			hit->i = i;
+			hit->t = t;
+		}
+		i++;
+	}
+}
 
 void	in_out_object(t_ray ray, t_hitpoint *hit)
 {
@@ -199,18 +175,20 @@ void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 	float		diffuse_strength;
 	int			re;
 	float		multi;
-	int			befor;
+	// int			befor;
 
 	multi = 1.0f;
 	re = 0;
-	befor = 0;
+	// befor = 0;
 	while (re++ < 5)
 	{
-		hit_sphere(ray, hit, data);
+		// hit_sphere(ray, hit, data);
+		hit_plane(ray, hit, data);
 		if (hit->t != __FLT_MAX__)
 		{
 			hit->p = ray_vec(ray.origin, hit->t, ray.direction);
-			hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.sp[hit->i].coords), data->set.sp[hit->i].radius);
+			// hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.sp[hit->i].coords), data->set.sp[hit->i].radius);
+			hit->normal = norm_vec(hit->p);
 			in_out_object(ray, hit);
 			light = multi_vec_wnbr(data->set.light.color, data->set.light.brightness);
 			light_dir = norm_vec(sub_vec(data->set.light.coords, hit->p));
@@ -219,13 +197,14 @@ void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 			diffuse = multi_vec_wnbr(data->set.light.color, diffuse_strength);
 			if (!ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
 			{
+				// if (re == 1)
+				// 	befor = hit->i;
+				// ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
+				// ray.direction = light_dir;
 				if (re == 1)
-					befor = hit->i;
-				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-				ray.direction = light_dir;
-				if (re == 2)
 				{
-					hit->color = multi_vec(add_vec(light, diffuse), data->set.sp[befor].color);
+					// hit->color = multi_vec(add_vec(light, diffuse), data->set.sp[befor].color);
+					hit->color = multi_vec(add_vec(light, diffuse), data->set.pl[hit->i].color);
 					break ;
 				}
 			}
@@ -236,9 +215,11 @@ void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 				r.y = rando(data);
 				r.z = rando(data);
 				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-				ray.direction = reflect_vec(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.sp[hit->i].material)));
+				// ray.direction = reflect_vec(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.sp[hit->i].material)));
+				ray.direction = reflect_vec(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.pl[hit->i].material)));
 			}
-			hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[hit->i].color), multi));
+			// hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[hit->i].color), multi));
+			hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.pl[hit->i].color), multi));
 		}
 		else
 		{
