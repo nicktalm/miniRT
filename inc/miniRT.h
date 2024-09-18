@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 15:39:38 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/18 16:27:08 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,6 +274,7 @@ void	*loop_thread(void *param);
 // check_hit
 
 void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
+void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 void	calc_cy(t_cylinder pl, t_ray ray, t_hitpoint *hit, int i);

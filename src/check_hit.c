@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/18 15:08:59 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/18 18:56:05 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,32 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 	t = 0.0;
 	hit->i = 0;
 	hit->t = __FLT_MAX__;
+	// printf("ray origin x = %f y = %f z = %f ray direction x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.direction.x, ray.direction.y, ray.direction.z);
 	while (i < data->set.obj_count)
 	{
 		if (data->set.obj[i].type == SPHERE)
 			calc_sp(data->set.obj[i].form.sp, ray, hit, i);
 		else if (data->set.obj[i].type == PLANE)
 			calc_pl(data->set.obj[i].form.pl, ray, hit, i);
+		// else if (data->set.obj[i].type == CYLINDER)
+		// 	calc_cy(data->set.obj[i].form.cy, ray, hit, i);
+		i++;
+	}
+}
+
+void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data)
+{
+	int		i;
+	float	t;
+
+	i = 0;
+	t = 0.0;
+	hit->i = 0;
+	hit->t = __FLT_MAX__;
+	while (i < data->set.obj_count)
+	{
+		if (data->set.obj[i].type == SPHERE)
+			calc_sp(data->set.obj[i].form.sp, ray, hit, i);
 		// else if (data->set.obj[i].type == CYLINDER)
 		// 	calc_cy(data->set.obj[i].form.cy, ray, hit, i);
 		i++;
@@ -68,13 +88,18 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
 	float	t;
+	float	denom;
 
 	t = 0.0;
-	t = dot(pl.normalized, sub_vec(pl.coords, ray.origin)) / dot(pl.normalized, ray.direction);
-	if (t > 0.0 && hit->t > t)
+	denom = dot(pl.normalized, ray.direction);
+	if (fabs(denom) > 1e-6)
 	{
-		hit->i = i;
-		hit->t = t;
+		t = -dot(pl.normalized, sub_vec(ray.origin, pl.coords)) / dot(pl.normalized, ray.direction);
+		if (t > 0.0 && hit->t > t)
+		{
+			hit->i = i;
+			hit->t = t;
+		}
 	}
 }
 
