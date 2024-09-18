@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_actions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/17 18:46:08 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/18 15:41:56 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	hook(void *param)
 	mlx_delete_image(data->window, data->img);
 	mlx_resize_hook(data->window, resize, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
-	if (!ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
+	if (data->name)
 		create_img(data);
 	else
 		creat_img_multi(data);

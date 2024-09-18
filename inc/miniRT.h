@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 13:05:51 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/18 15:39:38 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,14 @@ typedef struct s_light
 	t_vec	normalized;
 }				t_light;
 
+typedef struct s_lighting
+{
+	t_vec	light;
+	t_vec	light_dir;
+	t_vec	diffuse;
+	float	diffuse_strength;
+}				t_lighting;
+
 typedef struct s_camera
 {
 	t_vec	coords;
@@ -134,7 +142,7 @@ typedef struct s_hitpoint
 
 typedef struct s_data
 {
-	char		*name;
+	bool		name;
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
@@ -249,12 +257,11 @@ void	init_data_b(t_data *data);
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, int a);
-void	hit_sphere(t_ray ray, t_hitpoint *hit, t_data *data);
-void	hit_plane(t_ray ray, t_hitpoint *hit, t_data *data);
 void	in_out_object(t_ray ray, t_hitpoint *hit);
 bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
-void	super_sampling(t_data *data, int x, int y);
 void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
+void	lighting(t_data *data, t_ray ray, t_hitpoint *hit);
+void	lighting_b(t_data *data, t_ray ray, t_hitpoint *hit);
 float	rando(t_data *data);
 
 // multi_threading
@@ -264,8 +271,11 @@ void	creat_img_multi(t_data *data);
 void	fill_range(t_range *range, t_vec *min, int i, t_data *data);
 void	*loop_thread(void *param);
 
-// thread_helper
+// check_hit
 
-int		sp_count(t_data *data);
+void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
+void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
+void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	calc_cy(t_cylinder pl, t_ray ray, t_hitpoint *hit, int i);
 
 #endif
