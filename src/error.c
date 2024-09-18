@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/17 16:59:09 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/18 13:04:49 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,8 @@ void	free_params(char **params, int count)
 
 void	free_all(t_data *data)
 {
-	if (data->set.sp)
-		free(data->set.sp);
-	if (data->set.pl)
-		free(data->set.pl);
-	if (data->set.cy)
-		free(data->set.cy);
+	if (data->set.obj)
+		free(data->set.obj);
 	if (ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
 		pthread_mutex_destroy(&data->random);
 }

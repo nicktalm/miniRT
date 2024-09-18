@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/17 17:37:10 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/18 13:05:17 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ void	init_data(t_data *data, int argc, char **argv)
 	if (argc == 2)
 	{
 		data->name = argv[0];
-		data->set.sp = NULL;
-		data->set.pl = NULL;
-		data->set.cy = NULL;
+		data->set.obj = NULL;
 		data->width = 1600;
 		data->height = 900;
 		data->bg.x = 0.4;
@@ -28,7 +26,7 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
 		open_file(argv[1], data);
-		init_data_b(data);
+		// init_data_b(data);
 	}
 	else
 		error("Wrong nbr of Arguments", data);
@@ -68,32 +66,32 @@ void	init_viewport(t_data *data)
 	}
 }
 
-void	init_data_b(t_data *data)
-{
-	int	i;
+// void	init_data_b(t_data *data)
+// {
+// 	int	i;
 
-	i = 0;
-	if (!ft_strncmp(data->name, "./miniRT_Bonus", ft_strlen(data->name)))
-	{
-		pthread_mutex_init(&data->random, NULL);
-		pthread_mutex_init(&data->count, NULL);
-		data->range = NULL;
-		data->i = 1;
-		data->range = (t_range *)malloc (200 * sizeof(t_range));
-		if (!data->range)
-			error("malloc failed", data);
-		while (i++ < 200)
-		{
-			data->range[i].hit = (t_hitpoint *)malloc
-				(data->width * data->height * sizeof(t_hitpoint));
-			if (!data->range[i].hit)
-				error("malloc failed", data);
-			data->range[i].hit->color.x = 0.0;
-			data->range[i].hit->color.y = 0.0;
-			data->range[i].hit->color.z = 0.0;
-		}
-		data->set.sp[0].material = 1.0f;
-		data->set.sp[1].material = 0.04f;
-		data->set.sp[2].material = 0.0f;
-	}
-}
+// 	i = 0;
+// 	if (!ft_strncmp(data->name, "./miniRT_Bonus", ft_strlen(data->name)))
+// 	{
+// 		pthread_mutex_init(&data->random, NULL);
+// 		pthread_mutex_init(&data->count, NULL);
+// 		data->range = NULL;
+// 		data->i = 1;
+// 		data->range = (t_range *)malloc (200 * sizeof(t_range));
+// 		if (!data->range)
+// 			error("malloc failed", data);
+// 		while (i++ < 200)
+// 		{
+// 			data->range[i].hit = (t_hitpoint *)malloc
+// 				(data->width * data->height * sizeof(t_hitpoint));
+// 			if (!data->range[i].hit)
+// 				error("malloc failed", data);
+// 			data->range[i].hit->color.x = 0.0;
+// 			data->range[i].hit->color.y = 0.0;
+// 			data->range[i].hit->color.z = 0.0;
+// 		}
+// 		data->set.sp[0].material = 1.0f;
+// 		data->set.sp[1].material = 0.04f;
+// 		data->set.sp[2].material = 0.0f;
+// 	}
+// }

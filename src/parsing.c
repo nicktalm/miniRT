@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 21:49:55 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/18 12:44:07 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void	check_wrong_line(char *line, t_data *data)
 
 int	parse_line(t_data *data, char **line)
 {
+	static int	i = 0;
+
 	if (ft_strncmp(*line, "A ", 2) == 0)
 		parse_ambient(data, line);
 	if (ft_strncmp(*line, "C ", 2) == 0)
@@ -71,11 +73,11 @@ int	parse_line(t_data *data, char **line)
 	if (ft_strncmp(*line, "L ", 2) == 0)
 		parse_light(data, line);
 	if (ft_strncmp(*line, "sp ", 3) == 0)
-		parse_sphere(data, line);
+		parse_sphere(data, line, &i);
 	if (ft_strncmp(*line, "pl ", 3) == 0)
-		parse_plane(data, line);
+		parse_plane(data, line, &i);
 	if (ft_strncmp(*line, "cy ", 3) == 0)
-		parse_cylinder(data, line);
+		parse_cylinder(data, line, &i);
 	check_wrong_line(*line, data);
 	return (0);
 }

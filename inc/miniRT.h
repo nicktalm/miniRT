@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 10:59:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/18 13:05:51 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef enum s_type
 
 typedef struct s_objects
 {
-	t_obj	obj;
+	t_obj	form;
 	t_type	type;
 }				t_objects;
 
@@ -102,12 +102,8 @@ typedef struct s_settings
 	t_ambient	ambient;
 	t_camera	cam;
 	t_light		light;
-	t_sphere	*sp;
-	t_plane		*pl;
-	t_cylinder	*cy;
-	int			sp_count;
-	int			pl_count;
-	int			cy_count;
+	int			obj_count;
+	t_objects	*obj;
 }				t_settings;
 
 typedef struct s_viewport
@@ -189,9 +185,9 @@ int		parse_line(t_data *data, char **line);
 
 //parsing_obj
 
-void	parse_sphere(t_data *data, char **line);
-void	parse_plane(t_data *data, char **line);
-void	parse_cylinder(t_data *data, char **line);
+void	parse_sphere(t_data *data, char **line, int *i);
+void	parse_plane(t_data *data, char **line, int *i);
+void	parse_cylinder(t_data *data, char **line, int *i);
 
 //parsing_helper
 
@@ -211,9 +207,7 @@ void	error_2(char *message, char *param, t_data *data);
 //helper
 
 void	check_param_nbr_2(char **params, int nbr, t_data *data);
-void	sphere_count(t_data *data, char **line);
-void	plane_count(t_data *data, char **line);
-void	cylinder_count(t_data *data, char **line);
+void	obj_count(t_data *data, char **line);
 double	ft_atof(const char *str);
 
 //helper_2

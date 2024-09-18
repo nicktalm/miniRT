@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/10 17:11:08 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/18 13:05:32 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 void	ft_count(t_data *data, char **line)
 {
 	check_param_nbr(data, line);
-	sphere_count(data, line);
-	plane_count(data, line);
-	cylinder_count(data, line);
+	obj_count(data, line);
 }
 
 void	free_values(char **values)

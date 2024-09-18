@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/02 16:06:46 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/18 13:04:58 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	check_param_nbr_2(char **params, int nbr, t_data *data)
 		error_2("Wrong number of parameters for ", params[0], data);
 }
 
-void	sphere_count(t_data *data, char **line)
+void	obj_count(t_data *data, char **line)
 {
 	int	i;
 	int	count;
@@ -34,44 +34,14 @@ void	sphere_count(t_data *data, char **line)
 	{
 		if (ft_strncmp(line[i], "sp ", 3) == 0)
 			count++;
-		i++;
-	}
-	data->set.sp = malloc(sizeof(t_sphere) * count);
-	data->set.sp_count = count;
-}
-
-void	plane_count(t_data *data, char **line)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (line[i])
-	{
-		if (ft_strncmp(line[i], "pl ", 3) == 0)
+		else if (ft_strncmp(line[i], "pl ", 3) == 0)
+			count++;
+		else if (ft_strncmp(line[i], "cy ", 3) == 0)
 			count++;
 		i++;
 	}
-	data->set.pl = malloc(sizeof(t_plane) * count);
-	data->set.pl_count = count;
-}
-
-void	cylinder_count(t_data *data, char **line)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (line[i])
-	{
-		if (ft_strncmp(line[i], "cy ", 3) == 0)
-			count++;
-		i++;
-	}
-	data->set.cy = malloc(sizeof(t_cylinder) * count);
-	data->set.cy_count = count;
+	data->set.obj = malloc(sizeof(t_objects) * count);
+	data->set.obj_count = count;
 }
 
 double	ft_atof(const char *str)
