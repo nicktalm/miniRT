@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/17 20:17:55 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/18 11:04:37 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	hit_plane(t_ray ray, t_hitpoint *hit, t_data *data)
 	while (i < data->set.pl_count)
 	{
 		t = dot(data->set.pl[i].normalized, sub_vec(data->set.pl[i].coords, ray.origin)) / dot(data->set.pl[i].normalized, ray.direction);
+		printf("t = %f\n", t);
 		if (t > 0.0)
 		{
 			hit->i = i;
@@ -204,7 +205,7 @@ void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 				if (re == 1)
 				{
 					// hit->color = multi_vec(add_vec(light, diffuse), data->set.sp[befor].color);
-					hit->color = multi_vec(add_vec(light, diffuse), data->set.pl[hit->i].color);
+					hit->color = data->set.pl[hit->i].color;
 					break ;
 				}
 			}

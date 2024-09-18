@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/17 20:00:17 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/18 10:59:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,6 @@ typedef struct s_vec
 	float	y;
 	float	z;
 }				t_vec;
-
-typedef struct s_color
-{
-	float	r;
-	float	g;
-	float	b;
-	float	a;
-}				t_color;
 
 typedef struct s_cylinder
 {
@@ -63,6 +55,26 @@ typedef struct s_sphere
 	t_vec			color;
 	float			material;
 }				t_sphere;
+
+typedef union s_obj
+{
+	t_sphere	sp;
+	t_plane		pl;
+	t_cylinder	cy;
+}				t_obj;
+
+typedef enum s_type
+{
+	SPHERE,
+	PLANE,
+	CYLINDER,
+}			t_type;
+
+typedef struct s_objects
+{
+	t_obj	obj;
+	t_type	type;
+}				t_objects;
 
 typedef struct s_light
 {
