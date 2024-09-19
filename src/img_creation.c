@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/18 18:59:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/19 16:09:29 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,16 +168,8 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 	while (re++ < 2)
 	{
 		check_hit(ray, hit, data);
-		// printf("type = %i\n", data->set.obj[hit->i].type);
 		if (hit->t != __FLT_MAX__)
 		{
-			hit->p = ray_vec(ray.origin, hit->t, ray.direction);
-			if (data->set.obj[hit->i].type == SPHERE)
-				hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
-			else
-				hit->normal = data->set.obj[hit->i].form.pl.normalized;
-			in_out_object(ray, hit);
-			// printf("normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 			nlight.light = multi_vec_wnbr(data->set.light.color, data->set.light.brightness);
 			nlight.light_dir = norm_vec(sub_vec(data->set.light.coords, hit->p));
 			nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
@@ -185,22 +177,26 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 			nlight.diffuse = multi_vec_wnbr(data->set.light.color, nlight.diffuse_strength);
 			if (re == 1)
 				befor = hit->i;
-			// printf("hit point x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
 			ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-			// printf("ray origin after x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z);
 			ray.direction = nlight.light_dir;
 			if (re == 2)
 			{
+				if (data->set.obj[befor].type == PLANE && data->set.obj[hit->i].type == PLANE)
+					break;
 				if (data->set.obj[befor].type == SPHERE)
 					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
+				else if (data->set.obj[befor].type == CYLINDER)
+					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
 				else
 					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
 				break ;
 			}
 			if (data->set.obj[hit->i].type == PLANE)
 				hit->color = data->set.obj[hit->i].form.pl.color;
-			else
+			else if (data->set.obj[hit->i].type == SPHERE)
 				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.sp.color);
+			else
+				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.cy.color);
 		}
 		else
 		{
