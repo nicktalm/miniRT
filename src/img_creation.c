@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/18 15:41:09 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/18 16:45:09 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,11 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 				hit->p = ray_vec(ray.origin, hit->t, ray.direction);
 				hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
 				in_out_object(ray, hit);
-				nlight.light = multi_vec_wnbr(data->set.light.color, data->set.light.brightness);
-				nlight.light_dir = norm_vec(sub_vec(data->set.light.coords, hit->p));
+				nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
+				nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
 				nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
 				nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
-				nlight.diffuse = multi_vec_wnbr(data->set.light.color, nlight.diffuse_strength);
+				nlight.diffuse = multi_vec_wnbr(data->set.light[0].color, nlight.diffuse_strength);
 				if (re == 1)
 					befor = hit->i;
 				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 15:39:38 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/19 13:14:16 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,22 @@ typedef struct s_vec
 typedef struct s_cylinder
 {
 	t_vec				coords;
-	t_vec				normalized;
+	t_vec				norm;
 	float				diameter;
 	float				radius;
 	float				height;
 	t_vec				color;
+	float				material;
 }				t_cylinder;
 
 typedef struct s_plane
 {
 	t_vec			coords;
-	t_vec			normalized;
+	t_vec			norm;
 	t_vec			color;
 	float			material;
+	float			length;
+	float			width;
 }				t_plane;
 
 typedef struct s_sphere
@@ -109,8 +112,9 @@ typedef struct s_settings
 {
 	t_ambient	ambient;
 	t_camera	cam;
-	t_light		light;
+	t_light		*light;
 	int			obj_count;
+	int			light_count;
 	t_objects	*obj;
 }				t_settings;
 
@@ -187,7 +191,7 @@ int		open_file(char *argv, t_data *data);
 
 void	parse_ambient(t_data *data, char **line);
 void	parse_camera(t_data *data, char **line);
-void	parse_light(t_data *data, char **line);
+void	parse_light(t_data *data, char **line, int *l);
 void	check_wrong_line(char *line, t_data *data);
 int		parse_line(t_data *data, char **line);
 
@@ -200,14 +204,14 @@ void	parse_cylinder(t_data *data, char **line, int *i);
 //parsing_helper
 
 void	ft_count(t_data *data, char **line);
-void	free_values(char **values);
 void	parse_coords(t_vec *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec *vec, char *line, t_data *data);
 void	parse_color(t_vec *vec, char *line, t_data *data);
+void	parse_surface(t_plane *pl, char *param, t_data *data);
 
 //error
 
-void	free_params(char **params, int count);
+void	free_double_p(char **double_p);
 void	free_all(t_data *data);
 void	error(char *message, t_data *data);
 void	error_2(char *message, char *param, t_data *data);
@@ -216,6 +220,7 @@ void	error_2(char *message, char *param, t_data *data);
 
 void	check_param_nbr_2(char **params, int nbr, t_data *data);
 void	obj_count(t_data *data, char **line);
+void	light_count(t_data *data, char **line);
 double	ft_atof(const char *str);
 
 //helper_2

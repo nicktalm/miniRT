@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 13:05:32 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/19 13:13:38 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,8 @@
 void	ft_count(t_data *data, char **line)
 {
 	check_param_nbr(data, line);
+	light_count(data, line);
 	obj_count(data, line);
-}
-
-void	free_values(char **values)
-{
-	free(values[0]);
-	free(values[1]);
-	free(values[2]);
-	free(values);
 }
 
 void	parse_coords(t_vec *coords, char *param, t_data *data)
@@ -36,7 +29,7 @@ void	parse_coords(t_vec *coords, char *param, t_data *data)
 	coords->x = ft_atof(values[0]);
 	coords->y = ft_atof(values[1]);
 	coords->z = ft_atof(values[2]);
-	free_values(values);
+	free_double_p(values);
 }
 
 void	parse_color(t_vec *color, char *param, t_data *data)
@@ -56,7 +49,7 @@ void	parse_color(t_vec *color, char *param, t_data *data)
 	if (color->z < 0 || color->z > 255)
 		error("RGB values must be between 0 and 255", data);
 	*color = dev_vec_wnbr(*color, 255.0);
-	free_values(values);
+	free_double_p(values);
 }
 
 void	parse_normalized_vector(t_vec *vec, char *param, t_data *data)
@@ -75,5 +68,21 @@ void	parse_normalized_vector(t_vec *vec, char *param, t_data *data)
 	vec->z = ft_atof(values[2]);
 	if (vec->z < -1 || vec->z > 1)
 		error("Normalized vector must be between -1 and 1", data);
-	free_values(values);
+	free_double_p(values);
+}
+
+void	parse_surface(t_plane *pl, char *param, t_data *data)
+{
+	char	**values;
+
+	values = ft_split(param, ',');
+	if (values[2] != NULL || !values[0] || !values[1])
+		error("Surface must have 2 values", data);
+	pl->length = ft_atof(values[0]);
+	if (pl->length < 0)
+		error("Surface length must be positive", data);
+	pl->width = ft_atof(values[1]);
+	if (pl->width < 0)
+		error("Surface width must be positive", data);
+	free_double_p(values);
 }

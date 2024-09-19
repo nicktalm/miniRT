@@ -3,28 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 15:42:18 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/19 13:14:20 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	free_params(char **params, int count)
+void	free_double_p(char **double_p)
 {
-	while (count--)
-		free(params[count]);
-	free(params);
+	int	count;
+
+	count = 0;
+	while (double_p[count])
+	{
+		free(double_p[count]);
+		count++;
+	}
+	free(double_p);
 }
 
 void	free_all(t_data *data)
 {
 	if (data->set.obj)
 		free(data->set.obj);
-	if (!data->name)
-		pthread_mutex_destroy(&data->random);
+	// if (!data->name)
+	// 	pthread_mutex_destroy(&data->random);
 }
 
 void	error_2(char *message, char *param, t_data *data)
