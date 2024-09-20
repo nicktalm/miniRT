@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/19 18:12:12 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/20 12:53:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,21 +126,41 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			hit->i = i;
 		}
 	}
-	if (dot(ray_vec(cy.coords, cy.height / 2.0f, cy.normalized), ray.direction) < 0.0)
+	if (hit->t == __FLT_MAX__)
 	{
-		t = -dot(cy.normalized, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.normalized))) / dot(cy.normalized, ray.direction);
-		if (t > 0.0 && hit->t > t)
+		if (dot(ray.direction, cy.normalized) < 0.0)
 		{
-			t_vec	testh = ray_vec(ray.origin, t, ray.direction);
-			t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, cy.normalized);
-			float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
-			if (d <= cy.radius)
+			t = -dot(cy.normalized, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.normalized))) / dot(cy.normalized, ray.direction);
+			if (t > 0.0 && hit->t > t)
 			{
-				hit->i = i;
-				hit->t = t;
+				t_vec	testh = ray_vec(ray.origin, t, ray.direction);
+				t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, cy.normalized);
+				float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
+				if (d <= cy.radius)
+				{
+					hit->i = i;
+					hit->t = t;
+				}
+				else
+					hit->t = __FLT_MAX__;
 			}
-			else
-				hit->t = __FLT_MAX__;
+		}
+		else
+		{
+			t = -dot(multi_vec_wnbr(cy.normalized, -1.0), sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.normalized, -1.0)))) / dot(multi_vec_wnbr(cy.normalized, -1.0), ray.direction);
+			if (t > 0.0 && hit->t > t)
+			{
+				t_vec	testh = ray_vec(ray.origin, t, ray.direction);
+				t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.normalized, -1.0));
+				float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
+				if (d <= cy.radius)
+				{
+					hit->i = i;
+					hit->t = t;
+				}
+				else
+					hit->t = __FLT_MAX__;
+			}
 		}
 	}
 }
