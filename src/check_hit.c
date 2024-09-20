@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/19 18:12:12 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/20 13:26:34 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 		if (data->set.obj[hit->i].type == SPHERE)
 			hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
 		else if (data->set.obj[hit->i].type == CYLINDER)
-			norm_vec(sub_vec(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), multi_vec_wnbr(data->set.obj[hit->i].form.cy.normalized, dot(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), data->set.obj[hit->i].form.cy.normalized))));
+			norm_vec(sub_vec(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), multi_vec_wnbr(data->set.obj[hit->i].form.cy.norm, dot(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), data->set.obj[hit->i].form.cy.norm))));
 		else
-			hit->normal = data->set.obj[hit->i].form.pl.normalized;
+			hit->normal = data->set.obj[hit->i].form.pl.norm;
 		in_out_object(ray, hit);
 	}
 }
@@ -81,7 +81,7 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 	float	t;
 
 	t = 0.0;
-	t = -dot(pl.normalized, sub_vec(ray.origin, pl.coords)) / dot(pl.normalized, ray.direction);
+	t = -dot(pl.norm, sub_vec(ray.origin, pl.coords)) / dot(pl.norm, ray.direction);
 	if (t > 0.0 && hit->t > t)
 	{
 		hit->i = i;
@@ -101,9 +101,9 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 
 	t = 0.0;
 	oc = sub_vec(ray.origin, cy.coords);
-	a = dot(ray.direction, ray.direction) - pow(dot(ray.direction, cy.normalized), 2);
-	b = 2.0f * (dot(ray.direction, oc) - dot(ray.direction, cy.normalized) * dot(oc, cy.normalized));
-	c = dot(oc, oc) - pow(dot(oc, cy.normalized), 2) - pow(cy.radius, 2);
+	a = dot(ray.direction, ray.direction) - pow(dot(ray.direction, cy.norm), 2);
+	b = 2.0f * (dot(ray.direction, oc) - dot(ray.direction, cy.norm) * dot(oc, cy.norm));
+	c = dot(oc, oc) - pow(dot(oc, cy.norm), 2) - pow(cy.radius, 2);
 	dis = (b * b) - (4.0f * a * c);
 	if (dis > 0.0)
 	{
@@ -116,7 +116,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		}
 		if (t != __FLT_MAX__)
 		{
-			z = dot(sub_vec(ray_vec(ray.origin, t, ray.direction), cy.coords), cy.normalized);
+			z = dot(sub_vec(ray_vec(ray.origin, t, ray.direction), cy.coords), cy.norm);
 			if (z < (cy.height / 2.0f) * -1 || z > (cy.height / 2.0f))
 				t = __FLT_MAX__;
 		}
@@ -126,13 +126,13 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			hit->i = i;
 		}
 	}
-	if (dot(ray_vec(cy.coords, cy.height / 2.0f, cy.normalized), ray.direction) < 0.0)
+	if (dot(ray_vec(cy.coords, cy.height / 2.0f, cy.norm), ray.direction) < 0.0)
 	{
-		t = -dot(cy.normalized, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.normalized))) / dot(cy.normalized, ray.direction);
+		t = -dot(cy.norm, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.norm))) / dot(cy.norm, ray.direction);
 		if (t > 0.0 && hit->t > t)
 		{
 			t_vec	testh = ray_vec(ray.origin, t, ray.direction);
-			t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, cy.normalized);
+			t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, cy.norm);
 			float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
 			if (d <= cy.radius)
 			{

@@ -8,6 +8,7 @@ NC = \033[0m
 CLEAR_LINE = \033[2K\r
 
 NAME = miniRT
+BONUS_NAME = miniRT_Bonus
 CXX = cc
 CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
@@ -23,7 +24,6 @@ INLIBFT = -L $(LIBFT) -lft
 INGET_NEXT = -L $(GET_NEXT) -l_get_next_line
 INMLX = -L $(MLX)/build -lmlx42 -ldl -L /usr/local/lib/ -lglfw -pthread -lm
 
-# /opt/homebrew/Cellar/glfw/3.3.8/lib/
 all: $(NAME)
 
 $(NAME): $(OBJ)
@@ -34,6 +34,18 @@ $(NAME): $(OBJ)
 	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ) -fsanitize=address
 	@if [ -f $(NAME) ]; then\
 		echo "$(GREEN)\nCompilation successful! Executable $(NAME) created.$(NC)";\
+	else\
+		echo "$(RED)\nCompilation failed!$(NC)";\
+	fi
+
+bonus: $(OBJ)
+	@cd $(LIBFT) && $(MAKE) bonus
+	@cd $(GET_NEXT) && $(MAKE) all
+	@printf "\n"
+	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
+	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(BONUS_NAME) $(OBJ) -fsanitize=address
+	@if [ -f $(BONUS_NAME) ]; then\
+		echo "$(GREEN)\nCompilation successful! Executable $(BONUS_NAME) created.$(NC)";\
 	else\
 		echo "$(RED)\nCompilation failed!$(NC)";\
 	fi
@@ -69,7 +81,9 @@ fclean: clean
 	@cd $(LIBFT) && $(MAKE) fclean
 	@cd $(GET_NEXT) && $(MAKE) fclean
 	@rm -f $(NAME)
+	@echo "$(RED)Removing executable $(BONUS_NAME)...$(NC)"
+	@rm -f $(BONUS_NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus

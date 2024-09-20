@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/18 13:04:58 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/19 11:25:59 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,23 @@ void	check_param_nbr_2(char **params, int nbr, t_data *data)
 		i++;
 	if (i != nbr)
 		error_2("Wrong number of parameters for ", params[0], data);
+}
+
+void	light_count(t_data *data, char **line)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (line[i])
+	{
+		if (ft_strncmp(line[i], "L ", 2) == 0)
+			count++;
+		i++;
+	}
+	data->set.light = malloc(sizeof(t_light) * count);
+	data->set.light_count = count;
 }
 
 void	obj_count(t_data *data, char **line)
