@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/20 13:25:42 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/23 17:42:57 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,7 @@ t_vec	add_vec_wnbr(t_vec s1, float nbr);
 t_vec	ray_vec(t_vec origin, float t, t_vec dir);
 t_vec	cross_vec(t_vec s1, t_vec s2);
 t_vec	reflect_vec(t_vec s1, t_vec s2);
+int		cmp_vec(t_vec s1, t_vec s2);
 
 // init_data
 

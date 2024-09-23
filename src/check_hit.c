@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/20 13:32:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/23 17:43:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 			calc_cy(data->set.obj[i].form.cy, ray, hit, i);
 		i++;
 	}
-	if (hit->i != __FLT_MAX__)
+	if (hit->t != __FLT_MAX__)
 	{
 		hit->p = ray_vec(ray.origin, hit->t, ray.direction);
 		if (data->set.obj[hit->i].type == SPHERE)
 			hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
 		else if (data->set.obj[hit->i].type == CYLINDER)
-			norm_vec(sub_vec(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), multi_vec_wnbr(data->set.obj[hit->i].form.cy.norm, dot(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), data->set.obj[hit->i].form.cy.norm))));
+		{
+			if (cmp_vec(hit->normal, data->set.obj[hit->i].form.cy.norm))
+				hit->normal = norm_vec(sub_vec(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), multi_vec_wnbr(data->set.obj[hit->i].form.cy.norm, dot(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), data->set.obj[hit->i].form.cy.norm))));
+		}
 		else
 			hit->normal = data->set.obj[hit->i].form.pl.norm;
 		in_out_object(ray, hit);
@@ -140,6 +143,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 				{
 					hit->i = i;
 					hit->t = t;
+					hit->normal = cy.norm;
 				}
 				else
 					hit->t = __FLT_MAX__;
@@ -157,6 +161,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 				{
 					hit->i = i;
 					hit->t = t;
+					hit->normal = multi_vec_wnbr(cy.norm, -1.0);
 				}
 				else
 					hit->t = __FLT_MAX__;
