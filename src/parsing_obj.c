@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/19 13:14:02 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/20 13:24:21 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	parse_cylinder(t_data *data, char **line, int *i)
 	data->set.obj[*i].type = CYLINDER;
 	parse_coords(&data->set.obj[*i].form.cy.coords, params[1], data);
 	parse_normalized_vector(&data->set.obj[*i].form.cy.norm, params[2], data);
+	if (ft_atof(params[3]) <= 0 | ft_atof(params[4]) <= 0)
+		error("Cylinder height and diameter must be positive", data);
 	data->set.obj[*i].form.cy.diameter = ft_atof(params[3]);
 	data->set.obj[*i].form.cy.radius = data->set.obj[*i].form.cy.diameter / 2.0;
 	data->set.obj[*i].form.cy.height = ft_atof(params[4]);
