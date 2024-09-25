@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:19:03 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/17 16:55:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 10:39:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	calc_pixels(t_data *data)
 void	creat_img_multi(t_data *data)
 {
 	int		i;
-	t_vec	min;
+	t_vec3	min;
 
 	i = 0;
 	min.x = 0;
@@ -54,7 +54,7 @@ void	creat_img_multi(t_data *data)
 	data->i++;
 }
 
-void	fill_range(t_range *range, t_vec *min, int i, t_data *data)
+void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data)
 {
 	if (min->x < data->width && min->y < data->height)
 	{
@@ -80,7 +80,7 @@ void	*loop_thread(void *param)
 	t_range		*range;
 	int			x;
 	int			y;
-	t_vec		testc;
+	t_vec3		testc;
 
 	range = param;
 	printf("nbr = %i\n", range->th_nbr);

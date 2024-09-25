@@ -6,13 +6,13 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/23 17:42:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 10:41:18 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-t_vec	norm_vec(t_vec s1)
+t_vec3	norm_vec(t_vec3 s1)
 {
 	float	len;
 
@@ -23,14 +23,14 @@ t_vec	norm_vec(t_vec s1)
 	return (s1);
 }
 
-float	dot(t_vec s1, t_vec s2)
+float	dot(t_vec3 s1, t_vec3 s2)
 {
 	return (s1.x * s2.x + s1.y * s2.y + s1.z * s2.z);
 }
 
-t_vec	sub_vec(t_vec s1, t_vec s2)
+t_vec3	sub_vec(t_vec3 s1, t_vec3 s2)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x - s2.x;
 	result.y = s1.y - s2.y;
@@ -38,9 +38,9 @@ t_vec	sub_vec(t_vec s1, t_vec s2)
 	return (result);
 }
 
-t_vec	multi_vec(t_vec s1, t_vec s2)
+t_vec3	multi_vec(t_vec3 s1, t_vec3 s2)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x * s2.x;
 	result.y = s1.y * s2.y;
@@ -48,9 +48,9 @@ t_vec	multi_vec(t_vec s1, t_vec s2)
 	return (result);
 }
 
-t_vec	multi_vec_wnbr(t_vec s1, float nbr)
+t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x * nbr;
 	result.y = s1.y * nbr;
@@ -58,9 +58,9 @@ t_vec	multi_vec_wnbr(t_vec s1, float nbr)
 	return (result);
 }
 
-t_vec	dev_vec(t_vec s1, t_vec s2)
+t_vec3	dev_vec(t_vec3 s1, t_vec3 s2)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x / s2.x;
 	result.y = s1.y / s2.y;
@@ -68,9 +68,9 @@ t_vec	dev_vec(t_vec s1, t_vec s2)
 	return (result);
 }
 
-t_vec	dev_vec_wnbr(t_vec s1, float nbr)
+t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x / nbr;
 	result.y = s1.y / nbr;
@@ -78,9 +78,9 @@ t_vec	dev_vec_wnbr(t_vec s1, float nbr)
 	return (result);
 }
 
-t_vec	add_vec(t_vec s1, t_vec s2)
+t_vec3	add_vec(t_vec3 s1, t_vec3 s2)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x + s2.x;
 	result.y = s1.y + s2.y;
@@ -88,9 +88,9 @@ t_vec	add_vec(t_vec s1, t_vec s2)
 	return (result);
 }
 
-t_vec	add_vec_wnbr(t_vec s1, float nbr)
+t_vec3	add_vec_wnbr(t_vec3 s1, float nbr)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = s1.x + nbr;
 	result.y = s1.y + nbr;
@@ -98,14 +98,14 @@ t_vec	add_vec_wnbr(t_vec s1, float nbr)
 	return (result);
 }
 
-t_vec	ray_vec(t_vec origin, float t, t_vec dir)
+t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir)
 {
 	return (add_vec(origin, multi_vec_wnbr(dir, t)));
 }
 
-t_vec	cross_vec(t_vec s1, t_vec s2)
+t_vec3	cross_vec(t_vec3 s1, t_vec3 s2)
 {
-	t_vec	result;
+	t_vec3	result;
 
 	result.x = (s1.y * s2.z) - (s1.z * s2.y);
 	result.y = (s1.z * s2.x) - (s1.x * s2.z);
@@ -113,12 +113,12 @@ t_vec	cross_vec(t_vec s1, t_vec s2)
 	return (result);
 }
 
-t_vec	reflect_vec(t_vec s1, t_vec s2)
+t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2)
 {
 	return (sub_vec(s1, multi_vec_wnbr(s2, 2 * dot(s1, s2))));
 }
 
-int	cmp_vec(t_vec s1, t_vec s2)
+int	cmp_vec(t_vec3 s1, t_vec3 s2)
 {
 	if (s1.x == s2.x)
 	{

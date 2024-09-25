@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/19 13:13:38 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/25 10:39:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_count(t_data *data, char **line)
 	obj_count(data, line);
 }
 
-void	parse_coords(t_vec *coords, char *param, t_data *data)
+void	parse_coords(t_vec3 *coords, char *param, t_data *data)
 {
 	char	**values;
 
@@ -32,7 +32,7 @@ void	parse_coords(t_vec *coords, char *param, t_data *data)
 	free_double_p(values);
 }
 
-void	parse_color(t_vec *color, char *param, t_data *data)
+void	parse_color(t_vec3 *color, char *param, t_data *data)
 {
 	char	**values;
 
@@ -52,7 +52,7 @@ void	parse_color(t_vec *color, char *param, t_data *data)
 	free_double_p(values);
 }
 
-void	parse_normalized_vector(t_vec *vec, char *param, t_data *data)
+void	parse_normalized_vector(t_vec3 *vec, char *param, t_data *data)
 {
 	char	**values;
 

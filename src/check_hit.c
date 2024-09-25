@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/23 17:43:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 11:02:19 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 {
-	t_vec	oc;
+	t_vec3	oc;
 	float	a;
 	float	b;
 	float	c;
@@ -100,7 +100,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	float	dis;
 	float	t;
 	float	z;
-	t_vec	oc;
+	t_vec3	oc;
 
 	t = 0.0;
 	oc = sub_vec(ray.origin, cy.coords);
@@ -129,43 +129,62 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			hit->i = i;
 		}
 	}
-	if (hit->t == __FLT_MAX__)
+	if (dot(ray.direction, cy.norm) < 0.0)
 	{
-		if (dot(ray.direction, cy.norm) < 0.0)
+		t = -dot(cy.norm, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.norm))) / dot(cy.norm, ray.direction);
+		if (t > 0.0 && hit->t > t)
 		{
-			t = -dot(cy.norm, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.norm))) / dot(cy.norm, ray.direction);
-			if (t > 0.0 && hit->t > t)
+			t_vec3	testh = ray_vec(ray.origin, t, ray.direction);
+			t_vec3	top = ray_vec(cy.coords, cy.height / 2.0f, cy.norm);
+			float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
+			if (d <= cy.radius)
 			{
-				t_vec	testh = ray_vec(ray.origin, t, ray.direction);
-				t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, cy.norm);
-				float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
-				if (d <= cy.radius)
-				{
-					hit->i = i;
-					hit->t = t;
-					hit->normal = cy.norm;
-				}
-				else
-					hit->t = __FLT_MAX__;
+				hit->i = i;
+				hit->t = t;
+				hit->normal = cy.norm;
 			}
+			else
+				hit->t = __FLT_MAX__;
 		}
-		else
+	}
+	else
+	{
+		t = -dot(multi_vec_wnbr(cy.norm, -1.0), sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.norm, -1.0)))) / dot(multi_vec_wnbr(cy.norm, -1.0), ray.direction);
+		if (t > 0.0 && hit->t > t)
 		{
-			t = -dot(multi_vec_wnbr(cy.norm, -1.0), sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.norm, -1.0)))) / dot(multi_vec_wnbr(cy.norm, -1.0), ray.direction);
-			if (t > 0.0 && hit->t > t)
+			t_vec3	testh = ray_vec(ray.origin, t, ray.direction);
+			t_vec3	top = ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.norm, -1.0));
+			float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
+			if (d <= cy.radius)
 			{
-				t_vec	testh = ray_vec(ray.origin, t, ray.direction);
-				t_vec	top = ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.norm, -1.0));
-				float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
-				if (d <= cy.radius)
-				{
-					hit->i = i;
-					hit->t = t;
-					hit->normal = multi_vec_wnbr(cy.norm, -1.0);
-				}
-				else
-					hit->t = __FLT_MAX__;
+				hit->i = i;
+				hit->t = t;
+				hit->normal = multi_vec_wnbr(cy.norm, -1.0);
 			}
+			else
+				hit->t = __FLT_MAX__;
 		}
 	}
 }
+
+// void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
+// {
+// 	float	angle;
+// 	t_vec3	y_axis;
+// 	t_vec3	v;
+// 	t_vec4	q;
+
+// 	y_axis.x = 0;
+// 	y_axis.y = 1;
+// 	y_axis.z = 0;
+// 	v = cross_vec(cy.norm, y_axis);
+// 	printf("cross vec x = %f y = %f z = %f\n", v.x, v.y, v.z);
+// 	angle = acos(dot(cy.norm, y_axis) / sqrt(dot(cy.norm, cy.norm)));
+// 	printf("angle = %f\n", angle);
+// 	q.w = cos(angle / 2.0);
+// 	q.x = v.x * sin(angle / 2.0);
+// 	q.y = v.y * sin(angle / 2.0);
+// 	q.z = v.z * sin(angle / 2.0);
+// 	printf("q w = %f x = %f y = %f z = %f\n", q.w, q.x, q.y, q.z);
+// 	exit (0);
+// }
