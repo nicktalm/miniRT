@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/20 13:25:42 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 10:40:26 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,37 @@
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
 
-typedef struct s_vec
+typedef struct s_vec3
 {
 	float	x;
 	float	y;
 	float	z;
-}				t_vec;
+}				t_vec3;
+
+typedef struct s_vec4
+{
+	float	w;
+	float	x;
+	float	y;
+	float	z;
+}				t_vec4;
 
 typedef struct s_cylinder
 {
-	t_vec				coords;
-	t_vec				norm;
+	t_vec3				coords;
+	t_vec3				norm;
 	float				diameter;
 	float				radius;
 	float				height;
-	t_vec				color;
+	t_vec3				color;
 	float				material;
 }				t_cylinder;
 
 typedef struct s_plane
 {
-	t_vec			coords;
-	t_vec			norm;
-	t_vec			color;
+	t_vec3			coords;
+	t_vec3			norm;
+	t_vec3			color;
 	float			material;
 	float			length;
 	float			width;
@@ -52,10 +60,10 @@ typedef struct s_plane
 
 typedef struct s_sphere
 {
-	t_vec			coords;
+	t_vec3			coords;
 	float			diameter;
 	float			radius;
-	t_vec			color;
+	t_vec3			color;
 	float			material;
 }				t_sphere;
 
@@ -81,31 +89,31 @@ typedef struct s_objects
 
 typedef struct s_light
 {
-	t_vec	coords;
+	t_vec3	coords;
 	float	brightness;
-	t_vec	color;
-	t_vec	norm;
+	t_vec3	color;
+	t_vec3	norm;
 }				t_light;
 
 typedef struct s_lighting
 {
-	t_vec	light;
-	t_vec	light_dir;
-	t_vec	diffuse;
+	t_vec3	light;
+	t_vec3	light_dir;
+	t_vec3	diffuse;
 	float	diffuse_strength;
 }				t_lighting;
 
 typedef struct s_camera
 {
-	t_vec	coords;
-	t_vec	direction;
+	t_vec3	coords;
+	t_vec3	direction;
 	float	fov;
 }				t_camera;
 
 typedef struct s_ambient
 {
 	float	ratio;
-	t_vec	color;
+	t_vec3	color;
 }				t_ambient;
 
 typedef struct s_settings
@@ -120,26 +128,26 @@ typedef struct s_settings
 
 typedef struct s_viewport
 {
-	t_vec	size;
-	t_vec	u;
-	t_vec	v;
-	t_vec	du;
-	t_vec	dv;
-	t_vec	upper_left;
-	t_vec	p00;
+	t_vec3	size;
+	t_vec3	u;
+	t_vec3	v;
+	t_vec3	du;
+	t_vec3	dv;
+	t_vec3	upper_left;
+	t_vec3	p00;
 }				t_viewport;
 
 typedef struct s_ray
 {
-	t_vec	origin;
-	t_vec	direction;
+	t_vec3	origin;
+	t_vec3	direction;
 }				t_ray;
 
 typedef struct s_hitpoint
 {
-	t_vec		p;
-	t_vec		normal;
-	t_vec		color;
+	t_vec3		p;
+	t_vec3		normal;
+	t_vec3		color;
 	float		t;
 	int			i;
 }				t_hitpoint;
@@ -151,7 +159,7 @@ typedef struct s_data
 	mlx_t		*window;
 	mlx_image_t	*img;
 	t_viewport	vp;
-	t_vec		bg;
+	t_vec3		bg;
 	pthread_mutex_t	random;
 	pthread_mutex_t	count;
 	struct s_range	*range;
@@ -204,9 +212,9 @@ void	parse_cylinder(t_data *data, char **line, int *i);
 //parsing_helper
 
 void	ft_count(t_data *data, char **line);
-void	parse_coords(t_vec *vec, char *line, t_data *data);
-void	parse_normalized_vector(t_vec *vec, char *line, t_data *data);
-void	parse_color(t_vec *vec, char *line, t_data *data);
+void	parse_coords(t_vec3 *vec, char *line, t_data *data);
+void	parse_normalized_vector(t_vec3 *vec, char *line, t_data *data);
+void	parse_color(t_vec3 *vec, char *line, t_data *data);
 void	parse_surface(t_plane *pl, char *param, t_data *data);
 
 //error
@@ -238,18 +246,19 @@ void	key(mlx_key_data_t keydata, void *param);
 
 // vec_calc
 
-t_vec	norm_vec(t_vec s1);
-float	dot(t_vec s1, t_vec s2);
-t_vec	sub_vec(t_vec s1, t_vec s2);
-t_vec	multi_vec(t_vec s1, t_vec s2);
-t_vec	multi_vec_wnbr(t_vec s1, float nbr);
-t_vec	dev_vec(t_vec s1, t_vec s2);
-t_vec	dev_vec_wnbr(t_vec s1, float nbr);
-t_vec	add_vec(t_vec s1, t_vec s2);
-t_vec	add_vec_wnbr(t_vec s1, float nbr);
-t_vec	ray_vec(t_vec origin, float t, t_vec dir);
-t_vec	cross_vec(t_vec s1, t_vec s2);
-t_vec	reflect_vec(t_vec s1, t_vec s2);
+t_vec3	norm_vec(t_vec3 s1);
+float	dot(t_vec3 s1, t_vec3 s2);
+t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
+t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
+t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
+t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
+t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
+int		cmp_vec(t_vec3 s1, t_vec3 s2);
 
 // init_data
 
@@ -273,7 +282,7 @@ float	rando(t_data *data);
 
 void	calc_pixels(t_data *data);
 void	creat_img_multi(t_data *data);
-void	fill_range(t_range *range, t_vec *min, int i, t_data *data);
+void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
 void	*loop_thread(void *param);
 
 // check_hit

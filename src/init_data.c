@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/18 16:50:17 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/25 10:39:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	init_mlx(t_data *data)
 
 void	init_viewport(t_data *data)
 {
-	t_vec	right;
-	t_vec	up;
+	t_vec3	right;
+	t_vec3	up;
 
 	up.x = 0.0;
 	up.y = 1.0;

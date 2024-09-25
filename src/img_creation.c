@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/20 13:27:39 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 10:45:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	create_img(t_data *data)
 {
-	t_vec		coords;
+	t_vec3		coords;
 	t_hitpoint	hit;
 
 	coords.x = 0.0;
@@ -65,7 +65,7 @@ void	in_out_object(t_ray ray, t_hitpoint *hit)
 
 bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 {
-	t_vec		pixle_center;
+	t_vec3		pixle_center;
 	t_ray		ray;
 
 	if (x >= 0 && x < data->width && y >= 0 && y < data->height)
@@ -83,10 +83,10 @@ bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 
 // void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 // {
-// 	t_vec		light;
-// 	t_vec		light_dir;
-// 	t_vec		diffuse;
-// 	t_vec		r;
+// 	t_vec3		light;
+// 	t_vec3		light_dir;
+// 	t_vec3		diffuse;
+// 	t_vec3		r;
 // 	float		diffuse_strength;
 // 	int			re;
 // 	float		multi;
@@ -130,8 +130,8 @@ bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 // 				r.y = rando(data);
 // 				r.z = rando(data);
 // 				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-// 				// ray.direction = reflect_vec(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.sp[hit->i].material)));
-// 				ray.direction = reflect_vec(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.pl[hit->i].material)));
+// 				// ray.direction = reflect_vec3(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.sp[hit->i].material)));
+// 				ray.direction = reflect_vec3(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.pl[hit->i].material)));
 // 			}
 // 			// hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[hit->i].color), multi));
 // 			hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.pl[hit->i].color), multi));
@@ -172,9 +172,6 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 		{
 			if (data->set.obj[hit->i].type != PLANE)
 			{
-				hit->p = ray_vec(ray.origin, hit->t, ray.direction);
-				hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
-				in_out_object(ray, hit);
 				nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
 				nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
 				nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
