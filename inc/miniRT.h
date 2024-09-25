@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/25 10:40:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 16:21:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ typedef struct s_vec3
 
 typedef struct s_vec4
 {
-	float	w;
 	float	x;
 	float	y;
 	float	z;
+	float	w;
 }				t_vec4;
 
 typedef struct s_cylinder
@@ -67,14 +67,14 @@ typedef struct s_sphere
 	float			material;
 }				t_sphere;
 
-typedef union s_obj
+typedef union u_obj
 {
 	t_sphere	sp;
 	t_plane		pl;
 	t_cylinder	cy;
 }				t_obj;
 
-typedef enum s_type
+typedef enum e_type
 {
 	SPHERE,
 	PLANE,
@@ -248,6 +248,7 @@ void	key(mlx_key_data_t keydata, void *param);
 
 t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
+float	dot4(t_vec4 s1, t_vec4 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
@@ -259,6 +260,7 @@ t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
 t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
 int		cmp_vec(t_vec3 s1, t_vec3 s2);
+t_vec4	multi_quat(t_vec4 s1, t_vec4 s2);
 
 // init_data
 
@@ -270,7 +272,7 @@ void	init_data_b(t_data *data);
 // img_creation
 
 void	create_img(t_data *data);
-int		create_color(float x, float y, float z, int a);
+int		create_color(float x, float y, float z, float w);
 void	in_out_object(t_ray ray, t_hitpoint *hit);
 bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
@@ -292,5 +294,6 @@ void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 void	calc_cy(t_cylinder pl, t_ray ray, t_hitpoint *hit, int i);
+t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
 #endif

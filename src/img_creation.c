@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/25 10:45:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/25 16:16:00 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	create_img(t_data *data)
 			mlx_put_pixel(data->img, coords.x, coords.y,
 				create_color(hit.color.x,
 					hit.color.y,
-					hit.color.z, 255));
+					hit.color.z, data->set.ambient.ratio));
 			coords.x++;
 		}
 		coords.y++;
@@ -41,18 +41,21 @@ void	create_img(t_data *data)
 	data->moved = false;
 }
 
-int	create_color(float x, float y, float z, int a)
+int	create_color(float x, float y, float z, float w)
 {
 	int	r;
 	int	g;
 	int	b;
+	int	a;
 
 	r = 255.0 * x;
 	g = 255.0 * y;
 	b = 255.0 * z;
+	a = 255.0 * w;
 	r < 0 ? r = 0 : r > 255 ? r = 255 : r;
 	g < 0 ? g = 0 : g > 255 ? g = 255 : g;
 	b < 0 ? b = 0 : b > 255 ? b = 255 : b;
+	a < 0 ? a = 0 : a > 255 ? a = 255 : a;
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
@@ -182,12 +185,15 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
 				ray.direction = nlight.light_dir;
 				if (re == 2)
-					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
-				else if (data->set.obj[befor].type == CYLINDER)
-					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
-				else
-					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
-				break ;
+				{
+					if (data->set.obj[befor].type == SPHERE)
+						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
+					else if (data->set.obj[befor].type == CYLINDER)
+						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
+					else
+						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
+					break ;
+				}
 			}
 			if (data->set.obj[hit->i].type == PLANE)
 				hit->color = data->set.obj[hit->i].form.pl.color;
