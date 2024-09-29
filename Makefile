@@ -13,7 +13,7 @@ CXX = cc
 # CXXFLAGS = -Wall -Wextra -Werror
 SRCDIR = ./src
 OBJDIR = ./obj
-SRC = $(addprefix $(SRCDIR)/, main.c check_hit.c multi_threading.c img_creation.c init_data.c key_actions.c vec_calc.c check_file.c error.c parsing.c helper.c parsing_obj.c parsing_helper.c helper_2.c)
+SRC = $(addprefix $(SRCDIR)/, main.c cylinder.c check_hit.c multi_threading.c img_creation.c init_data.c key_actions.c vec_calc.c check_file.c error.c parsing.c helper.c parsing_obj.c parsing_helper.c helper_2.c)
 OBJ = $(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 TOTAL_FILES = $(words $(SRC))
 CURRENT = 0
@@ -22,8 +22,8 @@ GET_NEXT = lib/get_next_line
 MLX = lib/mlx
 INLIBFT = -L $(LIBFT) -lft
 INGET_NEXT = -L $(GET_NEXT) -l_get_next_line
-INMLX = -L $(MLX)/build -lmlx42 -ldl -L /usr/local/lib/ -lglfw -pthread -lm
-
+INMLX = -L $(MLX)/build -lmlx42 -ldl -L /opt/homebrew/Cellar/glfw/3.3.8/lib/ -lglfw -pthread -lm
+# /usr/local/lib/
 all: $(NAME)
 
 $(NAME): $(OBJ)

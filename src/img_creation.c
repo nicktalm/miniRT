@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/25 16:16:00 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/29 18:15:06 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	create_img(t_data *data)
 			mlx_put_pixel(data->img, coords.x, coords.y,
 				create_color(hit.color.x,
 					hit.color.y,
-					hit.color.z, data->set.ambient.ratio));
+					hit.color.z, 255));
 			coords.x++;
 		}
 		coords.y++;
@@ -78,7 +78,6 @@ bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		ray.origin = data->set.cam.coords;
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
 		get_obj_color(data, ray, hit);
-		// exit(0);
 		return (true);
 	}
 	return (false);
@@ -168,7 +167,7 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 
 	re = 0;
 	befor = 0;
-	while (re++ < 2)
+	while (re++ < 1)
 	{
 		check_hit(ray, hit, data);
 		if (hit->t != __FLT_MAX__)

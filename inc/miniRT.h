@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/25 16:21:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/28 21:27:17 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ typedef struct s_cylinder
 	float				height;
 	t_vec3				color;
 	float				material;
+	t_vec4				q;
+	t_vec4				qi;
 }				t_cylinder;
 
 typedef struct s_plane
@@ -250,10 +252,12 @@ t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
 float	dot4(t_vec4 s1, t_vec4 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
+t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
+t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);
 t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
@@ -293,7 +297,11 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
 void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	calc_cy(t_cylinder pl, t_ray ray, t_hitpoint *hit, int i);
 t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
+
+// cylinder
+
+void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+void	calc_quation(t_cylinder *cy);
 
 #endif
