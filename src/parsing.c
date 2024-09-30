@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/20 13:29:02 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/09/30 17:25:11 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	parse_ambient(t_data *data, char **line)
 	if (data->set.ambient.ratio < 0 || data->set.ambient.ratio > 1)
 		error("Ambient light ratio must be between 0 and 1", data);
 	parse_color(&data->set.ambient.color, params[2], data);
+	data->set.ambient.color = multi_vec_wnbr(data->set.ambient.color, data->set.ambient.ratio);
 	free_double_p(params);
 }
 
@@ -48,7 +49,8 @@ void	parse_light(t_data *data, char **line, int *l)
 	check_param_nbr_2(params, 4, data);
 	parse_coords(&data->set.light[*l].coords, params[1], data);
 	data->set.light[*l].brightness = ft_atof(params[2]);
-	if (data->set.light[*l].brightness < 0 || data->set.light[*l].brightness > 1)
+	if (data->set.light[*l].brightness < 0 \
+		|| data->set.light[*l].brightness > 1)
 		error("Brightness must be between 0 and 1", data);
 	parse_color(&data->set.light[*l].color, params[3], data);
 	(*l)++;
