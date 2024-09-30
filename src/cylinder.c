@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/09/30 18:19:28 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/30 22:30:19 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,10 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			}
 		}
 	}
-	tmp.rrori.w = 0.0;
-	tmp.rrori.x = ray.origin.x;
-	tmp.rrori.y = ray.origin.y;
-	tmp.rrori.z = ray.origin.z;
-	tmp.rrori = multi_quat(multi_quat(cy.q, tmp.rrori), cy.qi);
+	tmp.coords.w = 0.0;
+	tmp.coords.x = 0.0;
+	tmp.coords.y = 0.0;
+	tmp.coords.z = cy.coords.z;
 	tmp.coords.z += cy.height / 2.0;
 	top_bottom(cy, hit, tmp, i);
 	tmp.coords.z -= cy.height;

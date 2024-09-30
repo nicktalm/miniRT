@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/30 18:14:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/30 22:44:11 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,35 +168,38 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 
 	re = 0;
 	befor = 0;
-	while (re++ < 2)
+	while (re++ < 1)
 	{
 		check_hit(ray, hit, data);
 		if (hit->t != __FLT_MAX__)
 		{
-			if (data->set.obj[hit->i].type != PLANE)
+			// if (data->set.obj[hit->i].type != PLANE)
+			// {
+			nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
+			nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
+			nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
+			nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
+			nlight.diffuse = multi_vec_wnbr(data->set.light[0].color, nlight.diffuse_strength);
+			if (re == 1)
+				befor = hit->i;
+			ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
+			ray.direction = nlight.light_dir;
+			if (re == 2)
 			{
-				nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
-				nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
-				nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
-				nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
-				nlight.diffuse = multi_vec_wnbr(data->set.light[0].color, nlight.diffuse_strength);
-				if (re == 1)
-					befor = hit->i;
-				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-				ray.direction = nlight.light_dir;
-				if (re == 2)
-				{
-					if (data->set.obj[befor].type == SPHERE)
-						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
-					else if (data->set.obj[befor].type == CYLINDER)
-						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
-					else
-						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
-					break ;
-				}
+				if (data->set.obj[befor].type == SPHERE)
+					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
+				else if (data->set.obj[befor].type == CYLINDER)
+					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
+				else
+					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
+				break ;
 			}
+			// }
 			if (data->set.obj[hit->i].type == PLANE)
-				hit->color = data->set.obj[hit->i].form.pl.color;
+			{
+				// hit->color = data->set.obj[hit->i].form.pl.color;
+				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.pl.color);
+			}
 			else if (data->set.obj[hit->i].type == SPHERE)
 				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.sp.color);
 			else

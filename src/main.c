@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/30 18:20:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/30 19:21:10 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 	data.set.ambient.color = multi_vec_wnbr(data.set.ambient.color, data.set.ambient.ratio);
 	calc_quation(&data.set.obj[0].form.cy);
 	calc_quation(&data.set.obj[1].form.cy);
-	calc_quation(&data.set.obj[2].form.cy);
+	// calc_quation(&data.set.obj[2].form.cy);
 	// calc_quation(&data.set.obj[3].form.cy);
 	if (data.name)
 		create_img(&data);
