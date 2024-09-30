@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_calc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/29 21:25:35 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:17:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,18 @@ t_vec3	norm_vec(t_vec3 s1)
 	float	len;
 
 	len = sqrt((s1.x * s1.x) + (s1.y * s1.y) + (s1.z * s1.z));
+	s1.x /= len;
+	s1.y /= len;
+	s1.z /= len;
+	return (s1);
+}
+
+t_vec4	norm_vec4(t_vec4 s1)
+{
+	float	len;
+
+	len = sqrt((s1.w * s1.w) + (s1.x * s1.x) + (s1.y * s1.y) + (s1.z * s1.z));
+	s1.w /= len;
 	s1.x /= len;
 	s1.y /= len;
 	s1.z /= len;
@@ -109,6 +121,17 @@ t_vec3	add_vec(t_vec3 s1, t_vec3 s2)
 {
 	t_vec3	result;
 
+	result.x = s1.x + s2.x;
+	result.y = s1.y + s2.y;
+	result.z = s1.z + s2.z;
+	return (result);
+}
+
+t_vec4	add_vec4(t_vec4 s1, t_vec4 s2)
+{
+	t_vec4	result;
+
+	result.w = s1.w + s2.w;
 	result.x = s1.x + s2.x;
 	result.y = s1.y + s2.y;
 	result.z = s1.z + s2.z;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_hit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/29 18:14:38 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:13:52 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,21 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 	hit->t = __FLT_MAX__;
 	while (i < data->set.obj_count)
 	{
-		// if (data->set.obj[i].type == SPHERE)
-		// 	calc_sp(data->set.obj[i].form.sp, ray, hit, i);
-		// else if (data->set.obj[i].type == PLANE)
-		// 	calc_pl(data->set.obj[i].form.pl, ray, hit, i);
+		if (data->set.obj[i].type == SPHERE)
+			calc_sp(data->set.obj[i].form.sp, ray, hit, i);
+		else if (data->set.obj[i].type == PLANE)
+			calc_pl(data->set.obj[i].form.pl, ray, hit, i);
 		if (data->set.obj[i].type == CYLINDER)
 			calc_cy(data->set.obj[i].form.cy, ray, hit, i);
 		i++;
 	}
-	// if (hit->t != __FLT_MAX__)
-	// {
-	// 	if (data->set.obj[hit->i].type != CYLINDER)
-	// 		hit->p = ray_vec(ray.origin, hit->t, ray.direction);
-	// 	if (data->set.obj[hit->i].type == SPHERE)
-	// 		hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
+	if (hit->t != __FLT_MAX__ && data->set.obj[hit->i].type != CYLINDER)
+	{
+		hit->p = ray_vec(ray.origin, hit->t, ray.direction);
+		if (data->set.obj[hit->i].type == SPHERE)
+			hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
+	}
 	in_out_object(ray, hit);
-	// }
 }
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/28 21:27:17 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:17:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,15 @@ typedef struct s_hitpoint
 	int			i;
 }				t_hitpoint;
 
+typedef struct s_tmp
+{
+	t_vec4	rrdir;
+	t_vec4	rrori;
+	t_vec4	hitp;
+	t_vec4	zdir;
+	t_vec4	coords;
+}				t_tmp;
+
 typedef struct s_data
 {
 	bool		name;
@@ -162,8 +171,6 @@ typedef struct s_data
 	mlx_image_t	*img;
 	t_viewport	vp;
 	t_vec3		bg;
-	pthread_mutex_t	random;
-	pthread_mutex_t	count;
 	struct s_range	*range;
 	float		aspect_ratio;
 	int			width;
@@ -249,6 +256,7 @@ void	key(mlx_key_data_t keydata, void *param);
 // vec_calc
 
 t_vec3	norm_vec(t_vec3 s1);
+t_vec4	norm_vec4(t_vec4 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
 float	dot4(t_vec4 s1, t_vec4 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
@@ -259,6 +267,7 @@ t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
 t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);
 t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
+t_vec4	add_vec4(t_vec4 s1, t_vec4 s2);
 t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
 t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
@@ -302,6 +311,9 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 // cylinder
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i);
 void	calc_quation(t_cylinder *cy);
+void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp);
+void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp);
 
 #endif

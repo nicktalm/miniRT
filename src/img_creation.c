@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/29 18:15:06 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:14:04 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	create_img(t_data *data)
 		coords.x = 0.0;
 		while (coords.x < data->width)
 		{
+			// printf("pixel x = %f y = %f\n", coords.x, coords.y);
 			hit.color.x = 0.0;
 			hit.color.y = 0.0;
 			hit.color.z = 0.0;
@@ -167,7 +168,7 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 
 	re = 0;
 	befor = 0;
-	while (re++ < 1)
+	while (re++ < 2)
 	{
 		check_hit(ray, hit, data);
 		if (hit->t != __FLT_MAX__)
@@ -199,26 +200,28 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 			else if (data->set.obj[hit->i].type == SPHERE)
 				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.sp.color);
 			else
+			{
 				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.cy.color);
+			}
 		}
 		else
 		{
 			if (re == 2)
 				break ;
-			hit->color = data->bg;
+			hit->color = multi_vec(data->bg, data->set.ambient.color);
 		}
 	}
 }
 
-float	rando(t_data *data)
-{
-	float	nbr;
-	int		random;
+// float	rando(t_data *data)
+// {
+// 	float	nbr;
+// 	int		random;
 
-	pthread_mutex_lock(&data->random);
-	random = rand();
-	pthread_mutex_unlock(&data->random);
-	nbr = (float)random / (float)RAND_MAX;
-	nbr = (nbr * 1.0f) - 0.5f;
-	return (nbr);
-}
+// 	pthread_mutex_lock(&data->random);
+// 	random = rand();
+// 	pthread_mutex_unlock(&data->random);
+// 	nbr = (float)random / (float)RAND_MAX;
+// 	nbr = (nbr * 1.0f) - 0.5f;
+// 	return (nbr);
+// }
