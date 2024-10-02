@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/01 16:45:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/02 13:12:17 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		ray.origin = data->set.cam.coords;
+		// printf("rrori befor x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z);
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
 		get_obj_color(data, ray, hit);
 		return (true);
@@ -155,8 +156,6 @@ void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 {
 	if (data->name)
 		lighting(data, ray, hit);
-	// else
-	// 	lighting_b(data, ray, hit);
 }
 
 void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)

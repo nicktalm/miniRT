@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/30 17:17:16 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/02 12:57:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ typedef struct s_cylinder
 	float				material;
 	t_vec4				q;
 	t_vec4				qi;
+	float				m[4][4];
+	float				mi[4][4];
 }				t_cylinder;
 
 typedef struct s_plane
@@ -315,5 +317,17 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i);
 void	calc_quation(t_cylinder *cy);
 void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp);
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp);
+void	print_m(float m[4][4]);
+
+// transformation
+
+void	create_matrix(t_cylinder *cy);
+void	rotate_x(float m[4][4], float angle, t_vec3 axis);
+void	rotate_y(float m[4][4], float angle, t_vec3 axis);
+void	rotate_z(float m[4][4], float angle, t_vec3 axis);
+void	translation(float m[4][4], t_vec3 t);
+void	m_multi(float result[4][4], float mat1[4][4], float mat2[4][4]);
+t_vec4	r_vec(float m[4][4], t_vec4 v);
+void	invers_m(float result[4][4], float m[4][4]);
 
 #endif

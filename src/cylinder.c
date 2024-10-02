@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/01 12:29:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/02 13:12:11 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,20 @@ void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp)
 	tmp->coords = multi_quat(multi_quat(cy.q, tmp->coords), cy.qi);
 	tmp->rrdir = multi_quat(multi_quat(cy.q, tmp->rrdir), cy.qi);
 	tmp->rrori = multi_quat(multi_quat(cy.q, tmp->rrori), cy.qi);
+	// printf("rrori x = %f y = %f z = %f w = %f\n", tmp->rrori.x, tmp->rrori.y, tmp->rrori.z, tmp->rrori.w);
+	// t_vec4	test;
+	// test.w = 0.0;
+	// test.x = ray.origin.x;
+	// test.y = ray.origin.y;
+	// test.z = ray.origin.z;
+	// create_matrix(&cy);
+	// printf("\n");
+	// print_m(cy.m);
+	// t_vec4	result = r_vec(cy.m, test);
+	// printf("m rrori x = %f y = %f z = %f w = %f\n", result.x, result.y, result.z, result.w);
+	// t_vec4	check = r_vec(cy.mi, result);
+	// printf("mi rrori x = %f y = %f z = %f w = %f\n", result.x, result.y, result.z, result.w);
+	// exit (0);
 }
 
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp)
@@ -145,4 +159,16 @@ void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp)
 	hit->normal.x = n.x;
 	hit->normal.y = n.y;
 	hit->normal.z = n.z;
+}
+
+void	print_m(float m[4][4])
+{
+	for(int i = 0; i < 4; i++)
+	{
+		for(int j = 0; j < 4; j++)
+		{
+			printf("m[%i][%i] = %f ", i, j, m[i][j]);
+		}
+		printf("\n");
+	}
 }
