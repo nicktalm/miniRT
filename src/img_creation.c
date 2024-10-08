@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/25 10:45:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/09/30 17:59:01 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,12 +182,15 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
 				ray.direction = nlight.light_dir;
 				if (re == 2)
-					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
-				else if (data->set.obj[befor].type == CYLINDER)
-					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
-				else
-					hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
-				break ;
+				{
+					if (data->set.obj[befor].type == PLANE)
+						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
+					else if (data->set.obj[befor].type == CYLINDER)
+						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
+					else
+						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
+					break ;
+				}
 			}
 			if (data->set.obj[hit->i].type == PLANE)
 				hit->color = data->set.obj[hit->i].form.pl.color;

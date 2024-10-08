@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/25 10:40:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/08 15:16:07 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,6 +230,7 @@ void	check_param_nbr_2(char **params, int nbr, t_data *data);
 void	obj_count(t_data *data, char **line);
 void	light_count(t_data *data, char **line);
 double	ft_atof(const char *str);
+bool	is_valid_float(const char *str);
 
 //helper_2
 

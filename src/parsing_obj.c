@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/20 13:24:21 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/10/08 15:27:16 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ void	parse_sphere(t_data *data, char **line, int *i)
 		check_param_nbr_2(params, 5, data);
 	data->set.obj[*i].type = SPHERE;
 	parse_coords(&data->set.obj[*i].form.sp.coords, params[1], data);
+	if (!is_valid_float(params[2]))
+		error("Invalid sphere diameter", data);
+	if (ft_atof(params[2]) <= 0)
+		error("Sphere diameter must be positive", data);
 	data->set.obj[*i].form.sp.diameter = ft_atof(params[2]);
 	data->set.obj[*i].form.sp.radius = data->set.obj[*i].form.sp.diameter / 2.0;
 	parse_color(&data->set.obj[*i].form.sp.color, params[3], data);
@@ -74,6 +78,8 @@ void	parse_cylinder(t_data *data, char **line, int *i)
 	data->set.obj[*i].type = CYLINDER;
 	parse_coords(&data->set.obj[*i].form.cy.coords, params[1], data);
 	parse_normalized_vector(&data->set.obj[*i].form.cy.norm, params[2], data);
+	if (!is_valid_float(params[3]) || !is_valid_float(params[4]))
+		error("Invalid cylinder height or diameter", data);
 	if (ft_atof(params[3]) <= 0 | ft_atof(params[4]) <= 0)
 		error("Cylinder height and diameter must be positive", data);
 	data->set.obj[*i].form.cy.diameter = ft_atof(params[3]);

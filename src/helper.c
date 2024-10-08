@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/19 11:25:59 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/10/08 15:15:44 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,32 @@ double	ft_atof(const char *str)
 			dec_part += (pow(10, i--) * (*str++ - '0'));
 	}
 	return (sign * (int_part + dec_part));
+}
+
+bool	is_valid_float(const char *str)
+{
+	int		i;
+	bool	has_decimal_point;
+	bool	has_digits;
+
+	i = 0;
+	has_decimal_point = false;
+	has_digits = false;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i] != '\0')
+	{
+		if (ft_isdigit(str[i]))
+			has_digits = true;
+		else if (str[i] == '.')
+		{
+			if (has_decimal_point)
+				return (false);
+			has_decimal_point = true;
+		}
+		else
+			return (false);
+		i++;
+	}
+	return (has_digits);
 }
