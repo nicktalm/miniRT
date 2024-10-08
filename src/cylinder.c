@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/02 13:12:11 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/08 20:59:15 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	t_tmp	tmp;
 
 	init_tmp(cy, ray, &tmp);
-	a = pow(tmp.rrdir.x, 2) + pow(tmp.rrdir.y, 2);
-	b = 2 * (tmp.rrori.x * tmp.rrdir.x + tmp.rrori.y * tmp.rrdir.y);
-	c = pow(tmp.rrori.x, 2) + pow(tmp.rrori.y, 2) - pow(cy.radius, 2);
+	a = pow(tmp.rrdir.x, 2) + pow(tmp.rrdir.z, 2);
+	b = 2 * (tmp.rrori.x * tmp.rrdir.x + tmp.rrori.z * tmp.rrdir.z);
+	c = pow(tmp.rrori.x, 2) + pow(tmp.rrori.z, 2) - 1.0;
 	dis = (b * b) - (4.0f * a * c);
 	if (dis > 0.0)
 	{
@@ -37,12 +37,11 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		}
 		if (hit->t > t)
 		{
-			tmp.hitp = ray_vec4(tmp.rrori, t, tmp.rrdir);
-			if (tmp.hitp.z > cy.coords.z - cy.height / 2.0 && tmp.hitp.z < cy.coords.z + cy.height / 2.0)
+			tmp.hitp = ray_vec(tmp.rrori, t, tmp.rrdir);
+			if (tmp.hitp.y > cy.coords.y - cy.height / 2.0 && tmp.hitp.y < cy.coords.y + cy.height / 2.0)
 			{
-				tmp.hitp = add_vec4(tmp.hitp, tmp.coords);
+				tmp.hitp = r_vec(cy.mti, tmp.hitp);
 				cy_norm_calc(cy, hit, tmp);
-				tmp.hitp = multi_quat(multi_quat(cy.qi, tmp.hitp), cy.q);
 				hit->p.x = tmp.hitp.x;
 				hit->p.y = tmp.hitp.y;
 				hit->p.z = tmp.hitp.z;
@@ -51,14 +50,13 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			}
 		}
 	}
-	tmp.coords.w = 0.0;
-	tmp.coords.x = 0.0;
-	tmp.coords.y = 0.0;
-	tmp.coords.z = cy.coords.z;
-	tmp.coords.z += cy.height / 2.0;
-	top_bottom(cy, hit, tmp, i);
-	tmp.coords.z -= cy.height;
-	top_bottom(cy, hit, tmp, i);
+	// tmp.coords.x = 0.0;
+	// tmp.coords.y = 0.0;
+	// tmp.coords.z = cy.coords.z;
+	// tmp.coords.z += cy.height / 2.0;
+	// top_bottom(cy, hit, tmp, i);
+	// tmp.coords.z -= cy.height;
+	// top_bottom(cy, hit, tmp, i);
 }
 
 void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i)
@@ -66,16 +64,16 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i)
 	float	t;
 	float	dis;
 
-	t = -dot4(tmp.zdir, sub_vec4(tmp.rrori, tmp.coords))
-		/ dot4(tmp.zdir, tmp.rrdir);
+	t = -dot(tmp.zdir, tmp.rrori)
+		/ dot(tmp.zdir, tmp.rrdir);
 	if (t > 0.0 && hit->t > t)
 	{
-		tmp.hitp = ray_vec4(tmp.rrori, t, tmp.rrdir);
-		dis = sqrt(pow(tmp.hitp.x - tmp.coords.x, 2.0)
-				+ pow(tmp.hitp.y - tmp.coords.y, 2.0));
+		tmp.hitp = ray_vec(tmp.rrori, t, tmp.rrdir);
+		dis = sqrt(pow(tmp.hitp.x, 2.0)
+				+ pow(tmp.hitp.y, 2.0));
 		if (dis <= cy.radius)
 		{
-			tmp.hitp = multi_quat(multi_quat(cy.qi, tmp.hitp), cy.q);
+			tmp.hitp = r_vec(cy.mti, tmp.hitp);
 			hit->p.x = tmp.hitp.x;
 			hit->p.y = tmp.hitp.y;
 			hit->p.z = tmp.hitp.z;
@@ -98,7 +96,7 @@ void	calc_quation(t_cylinder *cy)
 	if (cy->norm.z < 0.0)
 		cy->norm.z *= -1.0;
 	v = cross_vec(cy->norm, y_axis);
-	angle = acos(dot(cy->norm, y_axis) / sqrt(dot(cy->norm, cy->norm)));
+	angle = acos(dot(cy->norm, y_axis)) / sqrt(dot(cy->norm, cy->norm) * sqrt(dot(y_axis, y_axis)));
 	cy->q.w = cos(angle / 2.0);
 	cy->q.x = v.x * sin(angle / 2.0);
 	cy->q.y = v.y * sin(angle / 2.0);
@@ -111,51 +109,32 @@ void	calc_quation(t_cylinder *cy)
 
 void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp)
 {
-	tmp->zdir.w = 0.0;
 	tmp->zdir.x = 0.0;
 	tmp->zdir.y = 0.0;
 	tmp->zdir.z = 1.0;
-	tmp->coords.w = 0.0;
 	tmp->coords.x = cy.coords.x;
 	tmp->coords.y = cy.coords.y;
 	tmp->coords.z = cy.coords.z;
-	tmp->rrdir.w = 0.0;
 	tmp->rrdir.x = ray.direction.x;
 	tmp->rrdir.y = ray.direction.y;
 	tmp->rrdir.z = ray.direction.z;
-	tmp->rrori.w = 0.0;
-	tmp->rrori.x = ray.origin.x - cy.coords.x;
-	tmp->rrori.y = ray.origin.y - cy.coords.y;
-	tmp->rrori.z = ray.origin.z - cy.coords.z;
-	tmp->coords = multi_quat(multi_quat(cy.q, tmp->coords), cy.qi);
-	tmp->rrdir = multi_quat(multi_quat(cy.q, tmp->rrdir), cy.qi);
-	tmp->rrori = multi_quat(multi_quat(cy.q, tmp->rrori), cy.qi);
-	// printf("rrori x = %f y = %f z = %f w = %f\n", tmp->rrori.x, tmp->rrori.y, tmp->rrori.z, tmp->rrori.w);
-	// t_vec4	test;
-	// test.w = 0.0;
-	// test.x = ray.origin.x;
-	// test.y = ray.origin.y;
-	// test.z = ray.origin.z;
-	// create_matrix(&cy);
-	// printf("\n");
-	// print_m(cy.m);
-	// t_vec4	result = r_vec(cy.m, test);
-	// printf("m rrori x = %f y = %f z = %f w = %f\n", result.x, result.y, result.z, result.w);
-	// t_vec4	check = r_vec(cy.mi, result);
-	// printf("mi rrori x = %f y = %f z = %f w = %f\n", result.x, result.y, result.z, result.w);
-	// exit (0);
+	tmp->rrori.x = ray.origin.x;
+	tmp->rrori.y = ray.origin.y;
+	tmp->rrori.z = ray.origin.z;
+	tmp->coords = r_vec(cy.mt, tmp->coords);
+	tmp->rrdir = r_vec(cy.mt, tmp->rrdir);
+	tmp->rrori = r_vec(cy.mt, tmp->rrori);
 }
 
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp)
 {
-	t_vec4	diff;
-	t_vec4	coordsn;
-	t_vec4	n;
+	t_vec3	diff;
+	t_vec3	coordsn;
+	t_vec3	n;
 
-	diff = sub_vec4(tmp.hitp, tmp.coords);
-	coordsn = ray_vec4(tmp.coords, diff.z, tmp.zdir);
-	n = norm_vec4(sub_vec4(tmp.hitp, coordsn));
-	n = multi_quat(multi_quat(cy.qi, n), cy.q);
+	diff = sub_vec(tmp.hitp, tmp.coords);
+	coordsn = ray_vec(tmp.coords, diff.z, tmp.zdir);
+	n = norm_vec(sub_vec(tmp.hitp, coordsn));
 	hit->normal.x = n.x;
 	hit->normal.y = n.y;
 	hit->normal.z = n.z;

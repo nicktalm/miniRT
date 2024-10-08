@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/02 13:12:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/08 17:41:37 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	create_img(t_data *data)
 	t_vec3		coords;
 	t_hitpoint	hit;
 
-	coords.x = 0.0;
 	coords.y = 0.0;
 	coords.z = 0.0;
 	init_viewport(data);
@@ -66,22 +65,19 @@ void	in_out_object(t_ray ray, t_hitpoint *hit)
 			= multi_vec_wnbr(hit->normal, -1.0);
 }
 
-bool	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
+void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 {
 	t_vec3		pixle_center;
 	t_ray		ray;
 
 	if (x >= 0 && x < data->width && y >= 0 && y < data->height)
 	{
+		ray.origin = data->set.cam.coords;
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
-		ray.origin = data->set.cam.coords;
-		// printf("rrori befor x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z);
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
 		get_obj_color(data, ray, hit);
-		return (true);
 	}
-	return (false);
 }
 
 // void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
@@ -175,7 +171,7 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 			nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
 			nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
 			nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
-			nlight.diffuse = multi_vec_wnbr(data->set.light[0].color, nlight.diffuse_strength);
+			nlight.diffuse = multi_vec_wnbr(nlight.light, nlight.diffuse_strength);
 			if (re == 1)
 			{
 				befor = hit->i;
@@ -187,34 +183,29 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 				if (dot(ray.direction, nlight.light_dir) > 0.0)
 				{
 					if (data->set.obj[befor].type == SPHERE)
-						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.sp.color);
+						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.sp.color);
 					else if (data->set.obj[befor].type == CYLINDER)
-						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.cy.color);
+						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.cy.color);
 					else
-						hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[befor].form.pl.color);
+						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.pl.color);
 				}
 				break ;
 			}
 			if (data->set.obj[hit->i].type == PLANE)
-				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.pl.color);
+				hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.pl.color);
 			else if (data->set.obj[hit->i].type == SPHERE)
-				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.sp.color);
+				hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.sp.color);
 			else
-				hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), data->set.obj[hit->i].form.cy.color);
+				hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[hit->i].form.cy.color);
 		}
 		else
 		{
 			if (re == 2)
 				break ;
-			hit->color = multi_vec(data->bg, data->set.ambient.color);
+			hit->color = data->bg;
 		}
 	}
 }
-
-// void	shading(t_ray ray, t_hitpoint *hit, t_data *data)
-// {
-	
-// }
 
 // float	rando(t_data *data)
 // {
