@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_calc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/30 17:17:02 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/09 21:13:25 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,5 +200,15 @@ t_vec4	multi_quat(t_vec4 s1, t_vec4 s2)
 	result.x = s1.w * s2.x + s1.x * s2.w + s1.y * s2.z - s1.z * s2.y;
 	result.y = s1.w * s2.y - s1.x * s2.z + s1.y * s2.w + s1.z * s2.x;
 	result.z = s1.w * s2.z + s1.x * s2.y - s1.y * s2.x + s1.z * s2.w;
+	return (result);
+}
+
+t_vec3	copy_vec(t_vec3 s1)
+{
+	t_vec3	result;
+
+	result.x = s1.x;
+	result.y = s1.y;
+	result.z = s1.z;
 	return (result);
 }

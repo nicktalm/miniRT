@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/09 17:12:45 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/09 21:21:46 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_vec4
 
 typedef struct s_matrix
 {
-	
+	float	m[4][4];
 }				t_matrix;
 
 typedef struct s_cylinder
@@ -283,6 +283,7 @@ t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
 int		cmp_vec(t_vec3 s1, t_vec3 s2);
 t_vec4	multi_quat(t_vec4 s1, t_vec4 s2);
+t_vec3	copy_vec(t_vec3 s1);
 
 // init_data
 
@@ -329,6 +330,7 @@ void	print_m(float m[4][4]);
 // transformation
 
 void	create_matrix(t_cylinder *cy);
+void	calc_angle(t_cylinder *cy, float *x, float *z);
 void	rotate_x(float m[4][4], float angle);
 void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/09 17:11:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/09 21:35:50 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,8 @@
 
 void	create_matrix(t_cylinder *cy)
 {
-	double	angle_x;
-	double	angle_z;
-	double	ratio;
+	float	angle_x;
+	float	angle_z;
 	float	mx[4][4];
 	float	my[4][4];
 	float	mz[4][4];
@@ -74,17 +73,9 @@ void	create_matrix(t_cylinder *cy)
 	float	tmp[4][4];
 	float	tmp2[4][4];
 
-	ratio = sqrt((cy->norm.x * cy->norm.x) + (cy->norm.y * cy->norm.y));
-	printf("ratio = %f\n", ratio);
-	if (ratio == 0.0)
-		angle_z = M_PI_2;
-	else
-		angle_z = acos(cy->norm.y / ratio);
-	angle_x = acos(ratio);
-	printf("angle z radiant = %f\n", angle_z);
-	printf("angle z = %f\n", angle_z * (180 / M_PI));
-	printf("angle x radiant = %f\n", angle_x);
-	printf("angle x = %f\n", angle_x * (180 / M_PI));
+	angle_x = 0.0;
+	angle_z = 0.0;
+	calc_angle(cy, &angle_x, &angle_z);
 	// scaling(s, cy->radius, 1, cy->radius);
 	// translation(t, cy->coords);
 	rotate_z(mz, angle_z);
@@ -95,6 +86,27 @@ void	create_matrix(t_cylinder *cy)
 	// m_multi(tmp2, tmp, s);
 	// m_multi(cy->mt, t, tmp2);
 	invers_m(cy->mti, cy->mt);
+}
+
+void	calc_angle(t_cylinder *cy, float *x, float *z)
+{
+	double	ratio;
+
+	*z = 0.0;
+	ratio = sqrt((cy->norm.x * cy->norm.x) + (cy->norm.y * cy->norm.y));
+	if (cy->norm.x == 0.0 && cy->norm.y == 0.0 && fabsf(cy->norm.z) == 1.0)
+		*x = atan2(cy->norm.z, ratio);
+	else
+	{
+		printf("ratio = %f\n", ratio);
+		if (ratio == 0.0)
+			*z = M_PI_2;
+		else
+			*z = acos(cy->norm.y / ratio);
+		*x = atan2(cy->norm.z, ratio);
+	}
+	printf("angle z = %f\n", *z * (180 / M_PI));
+	printf("angle x = %f\n", *x * (180 / M_PI));
 }
 
 void	rotate_x(float m[4][4], float angle)
@@ -197,10 +209,8 @@ void	scaling(float m[4][4], float x, float y, float z)
 	m[3][3] = 1;
 }
 
-float	**m_multi(float m1[4][4], float m2[4][4])
+void	m_multi(float result[4][4], float m1[4][4], float m2[4][4])
 {
-	float	tmp[4][4];
-	float	result[4][4];
 	int		i;
 	int		j;
 
@@ -218,7 +228,6 @@ float	**m_multi(float m1[4][4], float m2[4][4])
 		}
 		i++;
 	}
-	ft_memmove(result, tmp, sizeof(float) * 16);
 }
 
 t_vec4	r_vec(float m[4][4], t_vec4 v)
@@ -287,3 +296,4 @@ void	normal_m(float result[4][4])
 	result[3][2] = 0;
 	result[3][3] = 1;
 }
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/09 14:31:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/09 21:50:39 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		if (hit->t > t)
 		{
 			tmp.hitp = ray_vec4(tmp.rrori, t, tmp.rrdir);
-			// if (tmp.hitp.y > cy.coords.y - cy.height / 2.0 && tmp.hitp.y < cy.coords.y + cy.height / 2.0)
 			if (fabsf(tmp.hitp.y) < cy.height / 2.0)
 			{
 				tmp.hitp = r_vec(cy.mti, tmp.hitp);
