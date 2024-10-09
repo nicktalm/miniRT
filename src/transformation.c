@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/08 21:01:40 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/09 17:11:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,9 @@
 
 void	create_matrix(t_cylinder *cy)
 {
-	float	angle_x;
-	float	angle_z;
-	float	ratio;
+	double	angle_x;
+	double	angle_z;
+	double	ratio;
 	float	mx[4][4];
 	float	my[4][4];
 	float	mz[4][4];
@@ -75,18 +75,25 @@ void	create_matrix(t_cylinder *cy)
 	float	tmp2[4][4];
 
 	ratio = sqrt((cy->norm.x * cy->norm.x) + (cy->norm.y * cy->norm.y));
+	printf("ratio = %f\n", ratio);
 	if (ratio == 0.0)
 		angle_z = M_PI_2;
 	else
 		angle_z = acos(cy->norm.y / ratio);
 	angle_x = acos(ratio);
-	scaling(s, cy->radius, 1, cy->radius);
-	translation(t, cy->coords);
-	rotate_x(mx, angle_x);
+	printf("angle z radiant = %f\n", angle_z);
+	printf("angle z = %f\n", angle_z * (180 / M_PI));
+	printf("angle x radiant = %f\n", angle_x);
+	printf("angle x = %f\n", angle_x * (180 / M_PI));
+	// scaling(s, cy->radius, 1, cy->radius);
+	// translation(t, cy->coords);
 	rotate_z(mz, angle_z);
-	m_multi(tmp, mz, mx);
-	m_multi(tmp2, tmp, s);
-	m_multi(cy->mt, t, tmp2);
+	rotate_x(mx, angle_x);
+	m_multi(cy->mt, mz, mx);
+	printf("\n");
+	print_m(cy->mt);
+	// m_multi(tmp2, tmp, s);
+	// m_multi(cy->mt, t, tmp2);
 	invers_m(cy->mti, cy->mt);
 }
 
@@ -190,11 +197,12 @@ void	scaling(float m[4][4], float x, float y, float z)
 	m[3][3] = 1;
 }
 
-void	m_multi(float result[4][4], float m1[4][4], float m2[4][4])
+float	**m_multi(float m1[4][4], float m2[4][4])
 {
-	int	i;
-	int	j;
-	int	k;
+	float	tmp[4][4];
+	float	result[4][4];
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < 4)
@@ -210,15 +218,17 @@ void	m_multi(float result[4][4], float m1[4][4], float m2[4][4])
 		}
 		i++;
 	}
+	ft_memmove(result, tmp, sizeof(float) * 16);
 }
 
-t_vec3	r_vec(float m[4][4], t_vec3 v)
+t_vec4	r_vec(float m[4][4], t_vec4 v)
 {
-	t_vec3	result;
+	t_vec4	result;
 
-	result.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3];
-	result.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3];
-	result.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3];
+	result.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w;
+	result.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w;
+	result.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w;
+	result.w = m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w;
 	return (result);
 }
 

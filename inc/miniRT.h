@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/08 20:54:27 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/09 17:12:45 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ typedef struct s_vec4
 	float	z;
 	float	w;
 }				t_vec4;
+
+typedef struct s_matrix
+{
+	
+}				t_matrix;
 
 typedef struct s_cylinder
 {
@@ -160,11 +165,11 @@ typedef struct s_hitpoint
 
 typedef struct s_tmp
 {
-	t_vec3	rrdir;
-	t_vec3	rrori;
-	t_vec3	hitp;
-	t_vec3	zdir;
-	t_vec3	coords;
+	t_vec4	rrdir;
+	t_vec4	rrori;
+	t_vec4	hitp;
+	t_vec4	zdir;
+	t_vec4	coords;
 }				t_tmp;
 
 typedef struct s_data
@@ -330,7 +335,7 @@ void	rotate_z(float m[4][4], float angle);
 void	translation(float m[4][4], t_vec3 t);
 void	scaling(float m[4][4], float x, float y, float z);
 void	m_multi(float result[4][4], float m1[4][4], float m2[4][4]);
-t_vec3	r_vec(float m[4][4], t_vec3 v);
+t_vec4	r_vec(float m[4][4], t_vec4 v);
 void	invers_m(float result[4][4], float m[4][4]);
 void	copy_m(float result[4][4], float m[4][4]);
 void	normal_m(float result[4][4]);

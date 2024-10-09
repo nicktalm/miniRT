@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/08 16:34:19 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/09 15:19:37 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int argc, char **argv)
 	init_data(&data, argc, argv);
 	init_mlx(&data);
 	data.set.ambient.color = multi_vec_wnbr(data.set.ambient.color, data.set.ambient.ratio);
-	printf("ambient x = %f y = %f z = %f\n", data.set.ambient.color.x, data.set.ambient.color.y, data.set.ambient.color.z);
 	create_matrix(&data.set.obj[0].form.cy);
 	// calc_quation(&data.set.obj[0].form.cy);
 	// calc_quation(&data.set.obj[1].form.cy);
