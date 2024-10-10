@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/09 21:35:50 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:22:36 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,23 @@ void	create_matrix(t_cylinder *cy)
 	float	t[4][4];
 	float	s[4][4];
 	float	tmp[4][4];
-	float	tmp2[4][4];
+	float	full_r[4][4];
 
 	angle_x = 0.0;
 	angle_z = 0.0;
 	calc_angle(cy, &angle_x, &angle_z);
-	// scaling(s, cy->radius, 1, cy->radius);
-	// translation(t, cy->coords);
 	rotate_z(mz, angle_z);
 	rotate_x(mx, angle_x);
-	m_multi(cy->mt, mz, mx);
-	printf("\n");
-	print_m(cy->mt);
-	// m_multi(tmp2, tmp, s);
-	// m_multi(cy->mt, t, tmp2);
-	invers_m(cy->mti, cy->mt);
+	multi_m(full_r, mz, mx);
+	translation(t, cy->coords);
+	multi_m(cy->mt, full_r, t);
+	copy_m(tmp, cy->mt);
+	create_m_inverse(tmp, cy->mti);
+	t_vec4	test = {5,5,5,5};
+	test = r_vec(cy->mt, test);
+	printf("test after mt x = %f y = %f z = %f w = %f\n", test.x, test.y, test.z, test.w);
+	test = r_vec(cy->mti, test);
+	printf("test after mti x = %f y = %f z = %f w = %f\n", test.x, test.y, test.z, test.w);
 }
 
 void	calc_angle(t_cylinder *cy, float *x, float *z)
@@ -98,15 +100,12 @@ void	calc_angle(t_cylinder *cy, float *x, float *z)
 		*x = atan2(cy->norm.z, ratio);
 	else
 	{
-		printf("ratio = %f\n", ratio);
 		if (ratio == 0.0)
 			*z = M_PI_2;
 		else
 			*z = acos(cy->norm.y / ratio);
 		*x = atan2(cy->norm.z, ratio);
 	}
-	printf("angle z = %f\n", *z * (180 / M_PI));
-	printf("angle x = %f\n", *x * (180 / M_PI));
 }
 
 void	rotate_x(float m[4][4], float angle)
@@ -182,7 +181,7 @@ void	translation(float m[4][4], t_vec3 t)
 	m[2][0] = 0;
 	m[2][1] = 0;
 	m[2][2] = 1;
-	m[2][3] = t.z;
+	m[2][3] = t.z * -1;
 	m[3][0] = 0;
 	m[3][1] = 0;
 	m[3][2] = 0;
@@ -209,27 +208,6 @@ void	scaling(float m[4][4], float x, float y, float z)
 	m[3][3] = 1;
 }
 
-void	m_multi(float result[4][4], float m1[4][4], float m2[4][4])
-{
-	int		i;
-	int		j;
-
-	i = 0;
-	while (i < 4)
-	{
-		j = 0;
-		while (j < 4)
-		{
-			result[i][j] = m1[i][0] * m2[0][j]
-				+ m1[i][1] * m2[1][j]
-				+ m1[i][2] * m2[2][j]
-				+ m1[i][3] * m2[3][j];
-			j++;
-		}
-		i++;
-	}
-}
-
 t_vec4	r_vec(float m[4][4], t_vec4 v)
 {
 	t_vec4	result;
@@ -240,60 +218,3 @@ t_vec4	r_vec(float m[4][4], t_vec4 v)
 	result.w = m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w;
 	return (result);
 }
-
-void	invers_m(float result[4][4], float m[4][4])
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (i < 4)
-	{
-		while (j < 4)
-		{
-			result[i][j] = m[j][i];
-			j++;
-		}
-		i++;
-	}
-}
-
-void	copy_m(float result[4][4], float m[4][4])
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < 4)
-	{
-		j = 0;
-		while (j < 4)
-		{
-			result[i][j] = m[i][j];
-			j++;
-		}
-		i++;
-	}
-}
-
-void	normal_m(float result[4][4])
-{
-	result[0][0] = 1;
-	result[0][1] = 0;
-	result[0][2] = 0;
-	result[0][3] = 0;
-	result[1][0] = 0;
-	result[1][1] = 1;
-	result[1][2] = 0;
-	result[1][3] = 0;
-	result[2][0] = 0;
-	result[2][1] = 0;
-	result[2][2] = 1;
-	result[2][3] = 0;
-	result[3][0] = 0;
-	result[3][1] = 0;
-	result[3][2] = 0;
-	result[3][3] = 1;
-}
-

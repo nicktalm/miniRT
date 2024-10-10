@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/09 21:50:39 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:33:38 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			}
 		}
 	}
-	// tmp.coords.x = 0.0;
-	// tmp.coords.y = 0.0;
-	// tmp.coords.z = cy.coords.z;
-	// tmp.coords.z += cy.height / 2.0;
-	// top_bottom(cy, hit, tmp, i);
-	// tmp.coords.z -= cy.height;
-	// top_bottom(cy, hit, tmp, i);
+	tmp.coords.x = 0.0;
+	tmp.coords.y = 0.0;
+	tmp.coords.z = cy.coords.z;
+	tmp.coords.z += cy.height / 2.0;
+	top_bottom(cy, hit, tmp, i);
+	tmp.coords.z -= cy.height;
+	top_bottom(cy, hit, tmp, i);
 }
 
 void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i)
@@ -64,13 +64,12 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i)
 	float	t;
 	float	dis;
 
-	t = -dot4(tmp.zdir, tmp.rrori)
-		/ dot4(tmp.zdir, tmp.rrdir);
+	t = -dot4(tmp.zdir, tmp.rrori) / dot4(tmp.zdir, tmp.rrdir);
 	if (t > 0.0 && hit->t > t)
 	{
 		tmp.hitp = ray_vec4(tmp.rrori, t, tmp.rrdir);
 		dis = sqrt(pow(tmp.hitp.x, 2.0)
-				+ pow(tmp.hitp.y, 2.0));
+				+ pow(tmp.hitp.z, 2.0));
 		if (dis <= cy.radius)
 		{
 			tmp.hitp = r_vec(cy.mti, tmp.hitp);
@@ -112,8 +111,8 @@ void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp)
 	t_vec4	tmp1;
 
 	tmp->zdir.x = 0.0;
-	tmp->zdir.y = 0.0;
-	tmp->zdir.z = 1.0;
+	tmp->zdir.y = 1.0;
+	tmp->zdir.z = 0.0;
 	tmp->zdir.z = 0.0;
 	tmp1.x = cy.coords.x;
 	tmp1.y = cy.coords.y;

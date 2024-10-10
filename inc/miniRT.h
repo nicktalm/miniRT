@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/09 21:21:46 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/10 12:16:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -336,10 +336,13 @@ void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);
 void	translation(float m[4][4], t_vec3 t);
 void	scaling(float m[4][4], float x, float y, float z);
-void	m_multi(float result[4][4], float m1[4][4], float m2[4][4]);
 t_vec4	r_vec(float m[4][4], t_vec4 v);
-void	invers_m(float result[4][4], float m[4][4]);
+
+// matrix
+
+void	create_m_inverse(float m[4][4], float inverse[4][4]);
+void	identity_m(float m[4][4]);
 void	copy_m(float result[4][4], float m[4][4]);
-void	normal_m(float result[4][4]);
+void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
 
 #endif

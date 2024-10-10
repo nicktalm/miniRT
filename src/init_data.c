@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/03 15:25:20 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/10 14:10:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	init_viewport(t_data *data)
 	t_vec3	up;
 
 	up.x = 0.0;
-	up.y = -1.0;
+	up.y = 1.0;
 	up.z = 0.0;
 	if (data->moved)
 	{
