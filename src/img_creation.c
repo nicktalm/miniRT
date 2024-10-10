@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/10 13:36:07 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/10 16:04:32 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,7 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 
 	re = 0;
 	befor = 0;
-	while (re++ < 2)
+	while (re++ < 1)
 	{
 		check_hit(ray, hit, data);
 		if (hit->t != __FLT_MAX__)

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/10 14:22:36 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/10 17:18:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ void	calc_angle(t_cylinder *cy, float *x, float *z)
 			*z = acos(cy->norm.y / ratio);
 		*x = atan2(cy->norm.z, ratio);
 	}
+	printf("angle z = %f\n", *z * (180 / M_PI));
+	printf("angle x = %f\n", *x * (180 / M_PI));
 }
 
 void	rotate_x(float m[4][4], float angle)
