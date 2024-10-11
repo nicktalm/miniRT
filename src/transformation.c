@@ -6,60 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/10 17:18:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/11 17:27:01 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-// void	create_matrix(t_cylinder *cy)
-// {
-// 	t_vec3	rz;
-// 	t_vec3	rcy;
-// 	float	leange;
-// 	float	angle;
-// 	float	anglex;
-// 	float	angley;
-// 	float	anglez;
-// 	float	mx[4][4];
-// 	float	my[4][4];
-// 	float	mz[4][4];
-// 	float	t[4][4];
-// 	float	tmp[4][4];
-// 	float	tmp2[4][4];
-
-// 	rz.x = 0.0;
-// 	rz.y = 0.0;
-// 	rz.z = 1.0;
-// 	rcy = cross_vec(cy->norm, rz);
-// 	printf("rcy x = %f y = %f z = %f\n", rcy.x, rcy.y, rcy.z);
-// 	translation(t, cy->coords);
-// 	if (rcy.x == 0.0 && rcy.y == 0.0 && rcy.z == 0.0)
-// 	{
-// 		normal_m(cy->m);
-// 		copy_m(cy->mt, t);
-// 	}
-// 	else
-// 	{
-// 		angle = acos(dot(cy->norm, rz) / (sqrt(dot(cy->norm, cy->norm)) * sqrt(dot(rz, rz))));
-// 		anglex = angle * rcy.x;
-// 		angley = angle * rcy.y;
-// 		anglez = angle * rcy.z;
-// 		printf("anglex = %f angley = %f anglez = %f\n", anglex, angley, anglez);
-// 		rotate_x(mx, anglex);
-// 		rotate_y(my, angley);
-// 		rotate_z(mz, anglez);
-// 		m_multi(tmp, my, mx);
-// 		m_multi(cy->m, mz, tmp);
-// 		m_multi(tmp, my, mx);
-// 		m_multi(tmp2, mz, tmp);
-// 		m_multi(cy->mt, t, tmp2);
-// 	}
-// 	printf("mt\n");
-// 	print_m(cy->mt);
-// 	invers_m(cy->mi, cy->m);
-// 	invers_m(cy->mti, cy->mt);
-// }
 
 void	create_matrix(t_cylinder *cy)
 {
@@ -78,16 +29,11 @@ void	create_matrix(t_cylinder *cy)
 	calc_angle(cy, &angle_x, &angle_z);
 	rotate_z(mz, angle_z);
 	rotate_x(mx, angle_x);
-	multi_m(full_r, mz, mx);
+	multi_m(full_r, mx, mz);
 	translation(t, cy->coords);
 	multi_m(cy->mt, full_r, t);
 	copy_m(tmp, cy->mt);
 	create_m_inverse(tmp, cy->mti);
-	t_vec4	test = {5,5,5,5};
-	test = r_vec(cy->mt, test);
-	printf("test after mt x = %f y = %f z = %f w = %f\n", test.x, test.y, test.z, test.w);
-	test = r_vec(cy->mti, test);
-	printf("test after mti x = %f y = %f z = %f w = %f\n", test.x, test.y, test.z, test.w);
 }
 
 void	calc_angle(t_cylinder *cy, float *x, float *z)
@@ -106,8 +52,6 @@ void	calc_angle(t_cylinder *cy, float *x, float *z)
 			*z = acos(cy->norm.y / ratio);
 		*x = atan2(cy->norm.z, ratio);
 	}
-	printf("angle z = %f\n", *z * (180 / M_PI));
-	printf("angle x = %f\n", *x * (180 / M_PI));
 }
 
 void	rotate_x(float m[4][4], float angle)
