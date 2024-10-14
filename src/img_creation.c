@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/12 14:18:33 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/14 14:48:59 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,78 +76,10 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
-		ray.direction.z *= -1.0;
+		// printf("x = %f y = %f z = %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
 		get_obj_color(data, ray, hit);
 	}
 }
-
-// void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
-// {
-// 	t_vec3		light;
-// 	t_vec3		light_dir;
-// 	t_vec3		diffuse;
-// 	t_vec3		r;
-// 	float		diffuse_strength;
-// 	int			re;
-// 	float		multi;
-// 	// int			befor;
-
-// 	multi = 1.0f;
-// 	re = 0;
-// 	// befor = 0;
-// 	while (re++ < 5)
-// 	{
-// 		check_hit(ray, hit, data);
-// 		if (hit->t != __FLT_MAX__)
-// 		{
-// 			hit->p = ray_vec(ray.origin, hit->t, ray.direction);
-// 			// hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.sp[hit->i].coords), data->set.sp[hit->i].radius);
-// 			hit->normal = norm_vec(hit->p);
-// 			in_out_object(ray, hit);
-// 			light = multi_vec_wnbr(data->set.light.color, data->set.light.brightness);
-// 			light_dir = norm_vec(sub_vec(data->set.light.coords, hit->p));
-// 			diffuse_strength = dot(hit->normal, light_dir);
-// 			diffuse_strength < 0.0 ? diffuse_strength = 0 : diffuse_strength;
-// 			diffuse = multi_vec_wnbr(data->set.light.color, diffuse_strength);
-// 			if (!ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
-// 			{
-// 				// if (re == 1)
-// 				// 	befor = hit->i;
-// 				// ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-// 				// ray.direction = light_dir;
-// 				if (re == 1)
-// 				{
-// 					// printf("hit i = %i\n", hit->i);
-// 					// hit->color = multi_vec(add_vec(light, diffuse), data->set.sp[befor].color);
-// 					hit->color = data->set.pl[hit->i].color;
-// 					break ;
-// 				}
-// 			}
-// 			else
-// 			{
-// 				multi *= 0.5f;
-// 				r.x = rando(data);
-// 				r.y = rando(data);
-// 				r.z = rando(data);
-// 				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-// 				// ray.direction = reflect_vec3(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.sp[hit->i].material)));
-// 				ray.direction = reflect_vec3(ray.direction, add_vec(hit->normal, multi_vec_wnbr(r, data->set.pl[hit->i].material)));
-// 			}
-// 			// hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.sp[hit->i].color), multi));
-// 			hit->color = add_vec(hit->color, multi_vec_wnbr(multi_vec(add_vec(light, diffuse), data->set.pl[hit->i].color), multi));
-// 		}
-// 		else
-// 		{
-// 			if (!ft_strncmp(data->name, "./miniRT", ft_strlen(data->name)))
-// 			{
-// 				if (re == 2)
-// 					break ;
-// 			}
-// 			hit->color = add_vec(hit->color, multi_vec_wnbr(data->bg, multi));
-// 			break ;
-// 		}
-// 	}
-// }
 
 void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
 {
@@ -170,8 +102,6 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 		{
 			nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
 			nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
-			// printf("hit normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
-			// printf("light dir x = %f y = %f z = %f\n", nlight.light_dir.x, nlight.light_dir.y, nlight.light_dir.z);
 			nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
 			nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
 			nlight.diffuse = multi_vec_wnbr(nlight.light, nlight.diffuse_strength);
@@ -183,7 +113,6 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 			}
 			if (re == 2)
 			{
-				printf("hit point x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
 				if (leangth_vec(sub_vec(data->set.light[0].coords, hit->p)) > leangth_vec(sub_vec(data->set.obj[hit->i].form.cy.coords ,hit->p)))
 				{
 					if (data->set.obj[befor].type == SPHERE)
@@ -210,16 +139,3 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 		}
 	}
 }
-
-// float	rando(t_data *data)
-// {
-// 	float	nbr;
-// 	int		random;
-
-// 	pthread_mutex_lock(&data->random);
-// 	random = rand();
-// 	pthread_mutex_unlock(&data->random);
-// 	nbr = (float)random / (float)RAND_MAX;
-// 	nbr = (nbr * 1.0f) - 0.5f;
-// 	return (nbr);
-// }

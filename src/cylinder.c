@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/12 14:23:36 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/14 11:36:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	t_vec4	test;
 
 	init_tmp(cy, ray, &tmp);
-	// test = tmp.rrori;
-	// test.y -= cy.height / 2.0;
-	// t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
-	// top_bottom(cy, hit, tmp, i, t);
-	// test.y += cy.height;
-	// t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
-	// top_bottom(cy, hit, tmp, i, t);
+	test = tmp.rrori;
+	test.y -= cy.height / 2.0;
+	t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
+	top_bottom(cy, hit, tmp, i, t);
+	test.y += cy.height;
+	t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
+	top_bottom(cy, hit, tmp, i, t);
 	a = pow(tmp.rrdir.x, 2) + pow(tmp.rrdir.z, 2);
 	b = 2 * (tmp.rrori.x * tmp.rrdir.x + tmp.rrori.z * tmp.rrdir.z);
 	c = pow(tmp.rrori.x, 2) + pow(tmp.rrori.z, 2) - 1.0;
