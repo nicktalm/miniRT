@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/11 17:43:02 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/12 14:23:36 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	t_vec4	test;
 
 	init_tmp(cy, ray, &tmp);
-	test = tmp.rrori;
-	test.y -= cy.height / 2.0;
-	t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
-	top_bottom(cy, hit, tmp, i, t);
-	test.y += cy.height;
-	t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
-	top_bottom(cy, hit, tmp, i, t);
+	// test = tmp.rrori;
+	// test.y -= cy.height / 2.0;
+	// t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
+	// top_bottom(cy, hit, tmp, i, t);
+	// test.y += cy.height;
+	// t = -dot4(tmp.zdir, test) / dot4(tmp.zdir, tmp.rrdir);
+	// top_bottom(cy, hit, tmp, i, t);
 	a = pow(tmp.rrdir.x, 2) + pow(tmp.rrdir.z, 2);
 	b = 2 * (tmp.rrori.x * tmp.rrdir.x + tmp.rrori.z * tmp.rrdir.z);
 	c = pow(tmp.rrori.x, 2) + pow(tmp.rrori.z, 2) - 1.0;
@@ -93,7 +93,6 @@ void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp)
 	tmp1.y = cy.coords.y;
 	tmp1.z = cy.coords.z;
 	tmp1.w = 0.0;
-	// tmp->coords = r_vec(cy.mt, tmp1);
 	tmp1.x = ray.direction.x;
 	tmp1.y = ray.direction.y;
 	tmp1.z = ray.direction.z;
@@ -113,17 +112,15 @@ void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp)
 	t_vec4	normal;
 
 	diff_z = tmp.hitp.y - tmp.coords.y;
-	// coordsn = ray_vec4(tmp.coords, diff_z, tmp.zdir);
 	coordsn.x = 0.0;
 	coordsn.y = diff_z;
 	coordsn.z = 0.0;
-	coordsn.z = 0.0;
+	coordsn.w = 0.0;
 	normal = norm_vec4(sub_vec4(tmp.hitp, coordsn));
 	normal = r_vec(cy.mti, normal);
 	hit->normal.x = normal.x;
 	hit->normal.y = normal.y;
 	hit->normal.z = normal.z;
-	// printf("normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 }
 
 void	print_m(float m[4][4])

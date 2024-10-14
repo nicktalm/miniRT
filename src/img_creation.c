@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/11 17:50:58 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/12 14:18:33 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,8 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 		{
 			nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
 			nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
+			// printf("hit normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
+			// printf("light dir x = %f y = %f z = %f\n", nlight.light_dir.x, nlight.light_dir.y, nlight.light_dir.z);
 			nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
 			nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
 			nlight.diffuse = multi_vec_wnbr(nlight.light, nlight.diffuse_strength);
@@ -181,7 +183,8 @@ void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
 			}
 			if (re == 2)
 			{
-				if (dot(ray.direction, nlight.light_dir) > 0.0)
+				printf("hit point x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
+				if (leangth_vec(sub_vec(data->set.light[0].coords, hit->p)) > leangth_vec(sub_vec(data->set.obj[hit->i].form.cy.coords ,hit->p)))
 				{
 					if (data->set.obj[befor].type == SPHERE)
 						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.sp.color);

@@ -6,11 +6,16 @@
 /*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/09 21:13:25 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/12 12:43:47 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+float	leangth_vec(t_vec3 s1)
+{
+	return (sqrt((s1.x * s1.x) + (s1.y * s1.y) * (s1.z * s1.z)));
+}
 
 t_vec3	norm_vec(t_vec3 s1)
 {
@@ -190,17 +195,6 @@ int	cmp_vec(t_vec3 s1, t_vec3 s2)
 		}
 	}
 	return (1);
-}
-
-t_vec4	multi_quat(t_vec4 s1, t_vec4 s2)
-{
-	t_vec4	result;
-
-	result.w = s1.w * s2.w - s1.x * s2.x - s1.y * s2.y - s1.z * s2.z;
-	result.x = s1.w * s2.x + s1.x * s2.w + s1.y * s2.z - s1.z * s2.y;
-	result.y = s1.w * s2.y - s1.x * s2.z + s1.y * s2.w + s1.z * s2.x;
-	result.z = s1.w * s2.z + s1.x * s2.y - s1.y * s2.x + s1.z * s2.w;
-	return (result);
 }
 
 t_vec3	copy_vec(t_vec3 s1)

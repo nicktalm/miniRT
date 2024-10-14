@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/11 15:28:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/12 12:44:07 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,6 +264,7 @@ void	key(mlx_key_data_t keydata, void *param);
 
 // vec_calc
 
+float	leangth_vec(t_vec3 s1);
 t_vec3	norm_vec(t_vec3 s1);
 t_vec4	norm_vec4(t_vec4 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
