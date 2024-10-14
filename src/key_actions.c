@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/18 15:41:56 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/14 16:06:08 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	hook(void *param)
 	data->img = mlx_new_image(data->window, data->width, data->height);
 	if (data->name)
 		create_img(data);
-	else
-		creat_img_multi(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
 	// printf("time = %f ms\n", (mlx_get_time() - time) * 1000);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/12 12:44:07 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/14 16:08:04 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,6 @@ typedef struct s_cylinder
 	float				height;
 	t_vec3				color;
 	float				material;
-	t_vec4				q;
-	t_vec4				qi;
-	float				m[4][4];
-	float				mi[4][4];
 	float				mt[4][4];
 	float				mti[4][4];
 }				t_cylinder;
@@ -180,7 +176,6 @@ typedef struct s_data
 	mlx_image_t	*img;
 	t_viewport	vp;
 	t_vec3		bg;
-	struct s_range	*range;
 	float		aspect_ratio;
 	int			width;
 	int			height;
@@ -189,18 +184,6 @@ typedef struct s_data
 	int			y_max;
 	bool		moved;
 }				t_data;
-
-typedef struct s_range
-{
-	pthread_t	p;
-	t_hitpoint	*hit;
-	int			th_nbr;
-	int			x_max;
-	int			x_min;
-	int			y_max;
-	int			y_min;
-	t_data		data;
-}				t_range;
 
 // main
 
@@ -260,7 +243,7 @@ int		check_param_nbr(t_data *data, char **line);
 
 void	hook(void *param);
 void	resize(int width, int height, void *param);
-void	key(mlx_key_data_t keydata, void *param);
+// void	key(mlx_key_data_t keydata, void *param);
 
 // vec_calc
 
@@ -283,7 +266,6 @@ t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
 t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
 int		cmp_vec(t_vec3 s1, t_vec3 s2);
-t_vec4	multi_quat(t_vec4 s1, t_vec4 s2);
 t_vec3	copy_vec(t_vec3 s1);
 
 // init_data
@@ -291,7 +273,7 @@ t_vec3	copy_vec(t_vec3 s1);
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
 void	init_viewport(t_data *data);
-void	init_data_b(t_data *data);
+// void	init_data_b(t_data *data);
 
 // img_creation
 
@@ -299,22 +281,22 @@ void	create_img(t_data *data);
 int		create_color(float x, float y, float z, float w);
 void	in_out_object(t_ray ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
-void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
-void	lighting(t_data *data, t_ray ray, t_hitpoint *hit);
-void	lighting_b(t_data *data, t_ray ray, t_hitpoint *hit);
-float	rando(t_data *data);
+// void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
+// void	lighting(t_data *data, t_ray ray, t_hitpoint *hit);
+// void	lighting_b(t_data *data, t_ray ray, t_hitpoint *hit);
+// float	rando(t_data *data);
 
 // multi_threading
 
-void	calc_pixels(t_data *data);
-void	creat_img_multi(t_data *data);
-void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
-void	*loop_thread(void *param);
+// void	calc_pixels(t_data *data);
+// void	creat_img_multi(t_data *data);
+// void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
+// void	*loop_thread(void *param);
 
 // check_hit
 
 void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
-void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
+// void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
@@ -323,7 +305,6 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
 void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i, float t);
-void	calc_quation(t_cylinder *cy);
 void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp);
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp);
 void	print_m(float m[4][4]);
