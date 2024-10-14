@@ -6,11 +6,13 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/14 14:48:59 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/14 15:03:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit);
 
 void	create_img(t_data *data)
 {
@@ -76,66 +78,22 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
-		// printf("x = %f y = %f z = %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
-		get_obj_color(data, ray, hit);
+		tmp_color(data, ray, hit);
 	}
 }
 
-void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit)
+void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 {
-	if (data->name)
-		lighting(data, ray, hit);
-}
-
-void	lighting(t_data *data, t_ray ray, t_hitpoint *hit)
-{
-	t_lighting	nlight;
-	int			re;
-	int			befor;
-
-	re = 0;
-	befor = 0;
-	while (re++ < 2)
+	check_hit(ray, hit, data);
+	if (hit->t != __FLT_MAX__)
 	{
-		check_hit(ray, hit, data);
-		if (hit->t != __FLT_MAX__)
-		{
-			nlight.light = multi_vec_wnbr(data->set.light[0].color, data->set.light[0].brightness);
-			nlight.light_dir = norm_vec(sub_vec(data->set.light[0].coords, hit->p));
-			nlight.diffuse_strength = dot(hit->normal, nlight.light_dir);
-			nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0 : nlight.diffuse_strength;
-			nlight.diffuse = multi_vec_wnbr(nlight.light, nlight.diffuse_strength);
-			if (re == 1)
-			{
-				befor = hit->i;
-				ray.origin = ray_vec(hit->p, 0.0001f, hit->normal);
-				ray.direction = nlight.light_dir;
-			}
-			if (re == 2)
-			{
-				if (leangth_vec(sub_vec(data->set.light[0].coords, hit->p)) > leangth_vec(sub_vec(data->set.obj[hit->i].form.cy.coords ,hit->p)))
-				{
-					if (data->set.obj[befor].type == SPHERE)
-						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.sp.color);
-					else if (data->set.obj[befor].type == CYLINDER)
-						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.cy.color);
-					else
-						hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.pl.color);
-				}
-				break ;
-			}
-			if (data->set.obj[hit->i].type == PLANE)
-				hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.pl.color);
-			else if (data->set.obj[hit->i].type == SPHERE)
-				hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[befor].form.sp.color);
-			else
-				hit->color = multi_vec(add_vec(add_vec(nlight.light, nlight.diffuse), data->set.ambient.color), data->set.obj[hit->i].form.cy.color);
-		}
+		if (data->set.obj[hit->i].type == PLANE)
+			hit->color = data->set.obj[hit->i].form.pl.color;
+		else if (data->set.obj[hit->i].type == SPHERE)
+			hit->color = data->set.obj[hit->i].form.sp.color;
 		else
-		{
-			if (re == 2)
-				break ;
-			hit->color = data->bg;
-		}
+			hit->color = data->set.obj[hit->i].form.cy.color;
 	}
+	else
+		hit->color = data->bg;
 }
