@@ -6,35 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/14 14:22:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/15 12:30:46 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	create_matrix(t_cylinder *cy)
-{
-	float	angle_x;
-	float	angle_z;
-	float	mx[4][4];
-	float	my[4][4];
-	float	mz[4][4];
-	float	t[4][4];
-	float	s[4][4];
-	float	tmp[4][4];
-	float	full_r[4][4];
-
-	angle_x = 0.0;
-	angle_z = 0.0;
-	calc_angle(cy, &angle_x, &angle_z);
-	rotate_z(mz, angle_z);
-	rotate_x(mx, angle_x);
-	multi_m(full_r, mx, mz);
-	translation(t, cy->coords);
-	multi_m(cy->mt, full_r, t);
-	copy_m(tmp, cy->mt);
-	create_m_inverse(tmp, cy->mti);
-}
 
 void	calc_angle(t_cylinder *cy, float *x, float *z)
 {
@@ -52,6 +28,42 @@ void	calc_angle(t_cylinder *cy, float *x, float *z)
 			*z = acos(cy->norm.y / ratio);
 		*x = atan2(cy->norm.z, ratio);
 	}
+}
+
+void	get_full_r(float result[4][4], float x, float y, float z)
+{
+	float	mx[4][4];
+	float	my[4][4];
+	float	mz[4][4];
+	float	tmp[4][4];
+
+	rotate_x(mx, x);
+	rotate_y(my, y);
+	rotate_z(mz, z);
+	multi_m(tmp, mx, my);
+	multi_m(result, tmp, mz);
+}
+
+t_ray	transform_ray(t_ray ray, t_objects obj)
+{
+	t_ray	new;
+
+	if (obj.type == SPHERE)
+	{
+		new.origin = r_vec(obj.form.sp.mt, ray.origin);
+		new.direction = r_vec(obj.form.sp.mt, ray.direction);
+	}
+	else if (obj.type == PLANE)
+	{
+		new.origin = r_vec(obj.form.pl.mt, ray.origin);
+		new.direction = r_vec(obj.form.pl.mt, ray.direction);
+	}
+	else
+	{
+		new.origin = r_vec(obj.form.cy.mt, ray.origin);
+		new.direction = r_vec(obj.form.cy.mt, ray.direction);
+	}
+	return (new);
 }
 
 void	rotate_x(float m[4][4], float angle)
@@ -152,15 +164,4 @@ void	scaling(float m[4][4], float x, float y, float z)
 	m[3][1] = 0;
 	m[3][2] = 0;
 	m[3][3] = 1;
-}
-
-t_vec4	r_vec(float m[4][4], t_vec4 v)
-{
-	t_vec4	result;
-
-	result.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w;
-	result.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w;
-	result.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w;
-	result.w = m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w;
-	return (result);
 }

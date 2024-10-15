@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vec_calc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/12 12:43:47 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/15 12:09:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,35 @@ t_vec3	copy_vec(t_vec3 s1)
 	result.x = s1.x;
 	result.y = s1.y;
 	result.z = s1.z;
+	return (result);
+}
+
+t_vec4	r_vec(float m[4][4], t_vec4 v)
+{
+	t_vec4	result;
+
+	result.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * v.w;
+	result.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * v.w;
+	result.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w;
+	result.w = m[3][0] * v.x + m[3][1] * v.y + m[3][2] * v.z + m[3][3] * v.w;
+	return (result);
+}
+
+t_vec3	convert_to_vec3(t_vec4 s1)
+{
+	t_vec3	result;
+
+	if (s1.w == 0 || s1.w == 1)
+	{
+		result.x = s1.x;
+		result.y = s1.y;
+		result.z = s1.z;
+	}
+	else
+	{
+		result.x = s1.x / s1.w;
+		result.y = s1.y / s1.w;
+		result.z = s1.z / s1.w;
+	}
 	return (result);
 }

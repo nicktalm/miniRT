@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/19 13:14:02 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/10/15 12:15:00 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	parse_sphere(t_data *data, char **line, int *i)
 		data->set.obj[*i].form.sp.material = ft_atof(params[4]);
 	else
 		data->set.obj[*i].form.sp.material = 1.0;
+	create_m_sp(&data->set.obj[*i].form.sp);
 	(*i)++;
 	free_double_p(params);
 }
@@ -82,6 +83,7 @@ void	parse_cylinder(t_data *data, char **line, int *i)
 		data->set.obj[*i].form.cy.material = ft_atof(params[6]);
 	else
 		data->set.obj[*i].form.cy.material = 1.0;
+	create_m_cy(&data->set.obj[*i].form.cy);
 	(*i)++;
 	free_double_p(params);
 }

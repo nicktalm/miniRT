@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/14 16:08:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/15 12:14:24 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ typedef struct s_plane
 	float			material;
 	float			length;
 	float			width;
+	float			mt[4][4];
+	float			mti[4][4];
 }				t_plane;
 
 typedef struct s_sphere
@@ -72,6 +74,8 @@ typedef struct s_sphere
 	float			radius;
 	t_vec3			color;
 	float			material;
+	float			mt[4][4];
+	float			mti[4][4];
 }				t_sphere;
 
 typedef union u_obj
@@ -146,8 +150,8 @@ typedef struct s_viewport
 
 typedef struct s_ray
 {
-	t_vec3	origin;
-	t_vec3	direction;
+	t_vec4	origin;
+	t_vec4	direction;
 }				t_ray;
 
 typedef struct s_hitpoint
@@ -267,6 +271,8 @@ t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
 int		cmp_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	copy_vec(t_vec3 s1);
+t_vec4	r_vec(float m[4][4], t_vec4 v);
+t_vec3	convert_to_vec3(t_vec4 s1);
 
 // init_data
 
@@ -297,28 +303,33 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
 // void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
-void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
 // cylinder
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_tmp tmp, int i, float t);
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, float t);
 void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp);
-void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_tmp tmp);
+void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec4 hitp);
 void	print_m(float m[4][4]);
+void	create_m_cy(t_cylinder *cy);
+
+// sphere
+
+void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
+void	create_m_sp(t_sphere *sp);
 
 // transformation
 
-void	create_matrix(t_cylinder *cy);
 void	calc_angle(t_cylinder *cy, float *x, float *z);
+void	get_full_r(float result[4][4], float x, float y, float z);
+t_ray	transform_ray(t_ray ray, t_objects obj);
 void	rotate_x(float m[4][4], float angle);
 void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);
 void	translation(float m[4][4], t_vec3 t);
 void	scaling(float m[4][4], float x, float y, float z);
-t_vec4	r_vec(float m[4][4], t_vec4 v);
 
 // matrix
 
