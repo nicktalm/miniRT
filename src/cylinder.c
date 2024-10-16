@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/15 12:39:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/15 21:08:17 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		}
 		if (hit->t > t)
 		{
-			hitp = ray_vec4(ray.origin, t, ray.direction));
+			hitp = ray_vec4(ray.origin, t, ray.direction);
 			if (fabsf(hitp.y) < cy.height / 2.0)
 			{
 				cy_norm_calc(cy, hit, hitp);

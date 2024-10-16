@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/15 12:25:53 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/15 21:10:43 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 	float	t;
 
 	t = 0.0;
+	printf("origin x = %f y = %f z = %f w = %f\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.origin.w);
+	printf("direction x = %f y = %f z = %f w = %f\n", ray.direction.x, ray.direction.y, ray.direction.z, ray.direction.w);
 	// oc = sub_vec(sp.coords, ray.origin);
 	a = dot4(ray.direction, ray.direction);
 	b = dot4(ray.direction, ray.origin);
