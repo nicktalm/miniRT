@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/15 21:10:43 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:56:53 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,22 @@
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 {
-	// t_vec3	oc;
 	float	a;
 	float	b;
 	float	c;
 	float	dis;
 	float	t;
+	t_vec3	tori;
+	t_vec3	tdir;
 
+	// printf("sphere origin x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z);
+	// printf("sphere direction x = %f y = %f z = %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
+	tori = convert_to_vec3(ray.origin);
+	tdir = convert_to_vec3(ray.direction);
 	t = 0.0;
-	printf("origin x = %f y = %f z = %f w = %f\n", ray.origin.x, ray.origin.y, ray.origin.z, ray.origin.w);
-	printf("direction x = %f y = %f z = %f w = %f\n", ray.direction.x, ray.direction.y, ray.direction.z, ray.direction.w);
-	// oc = sub_vec(sp.coords, ray.origin);
-	a = dot4(ray.direction, ray.direction);
-	b = dot4(ray.direction, ray.origin);
-	c = dot4(ray.origin, ray.origin) - sp.radius * sp.radius;
+	a = dot(tdir, tdir);
+	b = dot(tdir, tori);
+	c = dot(tori, tori) - sp.radius * sp.radius;
 	dis = (b * b) - (a * c);
 	if (dis > 0.0)
 	{

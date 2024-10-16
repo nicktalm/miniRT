@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/15 12:14:24 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/16 14:44:56 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -309,7 +309,7 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 // cylinder
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, float t);
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i);
 void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp);
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec4 hitp);
 void	print_m(float m[4][4]);

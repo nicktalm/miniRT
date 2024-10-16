@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/15 21:11:28 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:56:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	init_data(t_data *data, int argc, char **argv)
 	{
 		if (!ft_strncmp(argv[0], "./miniRT", ft_strlen(argv[0])))
 			data->name = true;
-		data->width = 16;
-		data->height = 9;
+		data->width = 1600;
+		data->height = 900;
 		data->bg.x = 0.4;
 		data->bg.y = 0.5;
 		data->bg.z = 0.6;
@@ -44,14 +44,10 @@ void	init_viewport(t_data *data)
 {
 	t_vec3	right;
 	t_vec3	up;
-	t_vec3	focal_len;
 
 	up.x = 0.0;
 	up.y = 1.0;
 	up.z = 0.0;
-	focal_len.x = 0.0;
-	focal_len.y = 0.0;
-	focal_len.z = 1.0;
 	if (data->moved)
 	{
 		right = cross_vec(data->set.cam.direction, up);
@@ -63,7 +59,9 @@ void	init_viewport(t_data *data)
 		data->vp.v = multi_vec_wnbr(up, data->vp.size.y);
 		data->vp.du = dev_vec_wnbr(data->vp.u, (float)data->width);
 		data->vp.dv = dev_vec_wnbr(data->vp.v, (float)data->height);
-		data->vp.upper_left = sub_vec(sub_vec(sub_vec(data->set.cam.coords, focal_len), dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
+		data->vp.upper_left = sub_vec(sub_vec(sub_vec(\
+			data->set.cam.coords, data->set.cam.direction), \
+			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
 		data->vp.p00 = add_vec(data->vp.upper_left,
 				multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
 	}

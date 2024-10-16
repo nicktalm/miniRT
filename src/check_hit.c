@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/15 12:16:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/16 12:41:47 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 	{
 		if (data->set.obj[i].type == SPHERE)
 			calc_sp(data->set.obj[i].form.sp, transform_ray(ray, data->set.obj[i]), hit, i);
-		// else if (data->set.obj[i].type == PLANE)
-		// 	calc_pl(data->set.obj[i].form.pl, ray, hit, i);
+		else if (data->set.obj[i].type == PLANE)
+			calc_pl(data->set.obj[i].form.pl, ray, hit, i);
 		else
 			calc_cy(data->set.obj[i].form.cy, transform_ray(ray, data->set.obj[i]), hit, i);
 		i++;
@@ -40,16 +40,16 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 	// in_out_object(ray, hit);
 }
 
-// void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
-// {
-// 	float	t;
+void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
+{
+	// float	t;
 
-// 	t = 0.0;
-// 	t = -dot(pl.norm, sub_vec(ray.origin, pl.coords)) / dot(pl.norm, ray.direction);
-// 	if (t > 0.0 && hit->t > t)
-// 	{
-// 		hit->i = i;
-// 		hit->t = t;
-// 		hit->normal = pl.norm;
-// 	}
-// }
+	// t = 0.0;
+	// t = -dot(pl.norm, sub_vec(ray.origin, pl.coords)) / dot(pl.norm, ray.direction);
+	// if (t > 0.0 && hit->t > t)
+	// {
+	// 	hit->i = i;
+	// 	hit->t = t;
+	// 	hit->normal = pl.norm;
+	// }
+}

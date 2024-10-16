@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/15 11:29:54 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/16 11:34:37 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	create_img(t_data *data)
 				create_color(hit.color.x,
 					hit.color.y,
 					hit.color.z, 255));
+			// if (coords.x == 800 && coords.y == 450)
+			// 	exit (0);
 			coords.x++;
 		}
 		coords.y++;
