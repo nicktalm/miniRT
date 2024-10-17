@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/16 11:34:37 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/17 16:42:51 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	create_img(t_data *data)
 				create_color(hit.color.x,
 					hit.color.y,
 					hit.color.z, 255));
-			// if (coords.x == 800 && coords.y == 450)
-			// 	exit (0);
 			coords.x++;
 		}
 		coords.y++;
@@ -62,32 +60,24 @@ int	create_color(float x, float y, float z, float w)
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-// void	in_out_object(t_ray ray, t_hitpoint *hit)
-// {
-// 	if (dot(ray.direction, hit->normal) > 0.0)
-// 		hit->normal
-// 			= multi_vec_wnbr(hit->normal, -1.0);
-// }
+void	in_out_object(t_ray ray, t_hitpoint *hit)
+{
+	if (dot(ray.direction, hit->normal) > 0.0)
+		hit->normal
+			= multi_vec_wnbr(hit->normal, -1.0);
+}
 
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 {
 	t_vec3		pixle_center;
-	t_vec3		tmp;
 	t_ray		ray;
 
 	if (x >= 0 && x < data->width && y >= 0 && y < data->height)
 	{
-		ray.origin.x = data->set.cam.coords.x;
-		ray.origin.y = data->set.cam.coords.y;
-		ray.origin.z = data->set.cam.coords.z;
-		ray.origin.w = 1.0;
+		ray.origin = data->set.cam.coords;
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
-		tmp = sub_vec(pixle_center, data->set.cam.coords);
-		ray.direction.x = tmp.x;
-		ray.direction.y = tmp.y;
-		ray.direction.z = tmp.z;
-		ray.direction.w = 0.0;
+		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
 		tmp_color(data, ray, hit);
 	}
 }
@@ -98,11 +88,11 @@ void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 	if (hit->t != __FLT_MAX__)
 	{
 		if (data->set.obj[hit->i].type == PLANE)
-			hit->color = data->set.obj[hit->i].form.pl.color;
+			shading(data, hit, data->set.obj[hit->i].form.pl.color, 0);
 		else if (data->set.obj[hit->i].type == SPHERE)
-			hit->color = data->set.obj[hit->i].form.sp.color;
+			shading(data, hit, data->set.obj[hit->i].form.sp.color, 2);
 		else
-			hit->color = data->set.obj[hit->i].form.cy.color;
+			shading(data, hit, data->set.obj[hit->i].form.cy.color, 1);
 	}
 	else
 		hit->color = data->bg;

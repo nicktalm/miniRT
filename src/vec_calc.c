@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/15 12:09:35 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/17 11:34:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,17 @@ t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr)
 	result.x = s1.x * nbr;
 	result.y = s1.y * nbr;
 	result.z = s1.z * nbr;
+	return (result);
+}
+
+t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr)
+{
+	t_vec4	result;
+
+	result.x = s1.x * nbr;
+	result.y = s1.y * nbr;
+	result.z = s1.z * nbr;
+	result.w = s1.w * nbr;
 	return (result);
 }
 
@@ -234,5 +245,16 @@ t_vec3	convert_to_vec3(t_vec4 s1)
 		result.y = s1.y / s1.w;
 		result.z = s1.z / s1.w;
 	}
+	return (result);
+}
+
+t_vec4	convert_to_vec4(t_vec3 s1, float w)
+{
+	t_vec4	result;
+
+	result.x = s1.x;
+	result.y = s1.y;
+	result.z = s1.z;
+	result.w = w;
 	return (result);
 }

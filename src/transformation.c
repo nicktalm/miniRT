@@ -6,29 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/16 17:47:12 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/17 17:17:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	calc_angle(t_cylinder *cy, float *x, float *z)
-{
-	double	ratio;
-
-	*z = 0.0;
-	ratio = sqrt((cy->norm.x * cy->norm.x) + (cy->norm.y * cy->norm.y));
-	if (cy->norm.x == 0.0 && cy->norm.y == 0.0 && fabsf(cy->norm.z) == 1.0)
-		*x = atan2(cy->norm.z, ratio);
-	else
-	{
-		if (ratio == 0.0)
-			*z = M_PI_2;
-		else
-			*z = acos(cy->norm.y / ratio);
-		*x = atan2(cy->norm.z, ratio);
-	}
-}
 
 void	get_full_r(float result[4][4], float x, float y, float z)
 {
@@ -47,21 +29,33 @@ void	get_full_r(float result[4][4], float x, float y, float z)
 t_ray	transform_ray(t_ray ray, t_objects obj)
 {
 	t_ray	new;
+	t_vec4	ori;
+	t_vec4	dir;
 
-	if (obj.type == SPHERE)
+	if (obj.type != PLANE)
 	{
-		new.origin = r_vec(obj.form.sp.mt, ray.origin);
-		new.direction = r_vec(obj.form.sp.mt, ray.direction);
-	}
-	else if (obj.type == PLANE)
-	{
-		new.origin = r_vec(obj.form.pl.mt, ray.origin);
-		new.direction = r_vec(obj.form.pl.mt, ray.direction);
+		if (obj.type == SPHERE)
+		{
+			ori = r_vec(obj.form.sp.mt, convert_to_vec4(ray.origin, 1));
+			dir = r_vec(obj.form.sp.mt, convert_to_vec4(ray.direction, 0));
+		}
+		else
+		{
+			ori = r_vec(obj.form.cy.mt, convert_to_vec4(ray.origin, 1));
+			dir = multi_vec4_wnbr(\
+				r_vec(obj.form.cy.mt, convert_to_vec4(ray.direction, 0)), -1.0);
+		}
+		new.origin = convert_to_vec3(ori);
+		new.direction = convert_to_vec3(dir);
+		printf("origin x = %f y = %f z = %f\n", new.origin.x, new.origin.y, new.origin.z);
+		printf("direction x = %f y = %f z = %f\n", new.direction.x, new.direction.y, new.direction.z);
 	}
 	else
 	{
-		new.origin = r_vec(obj.form.cy.mt, ray.origin);
-		new.direction = r_vec(obj.form.cy.mt, ray.direction);
+		new.origin = ray.origin;
+		// new.origin.z *= -1.0;
+		new.direction = ray.direction;
+		new.direction.z *= -1.0;
 	}
 	return (new);
 }
