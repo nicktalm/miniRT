@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/17 19:55:05 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/18 10:53:31 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	init_viewport(t_data *data)
 	if (data->moved)
 	{
 		right = cross_vec(data->set.cam.direction, up);
-		up = cross_vec(data->set.cam.direction, right);
+		up = cross_vec(right, data->set.cam.direction);
 		data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
 		data->vp.size.y = data->vp.size.x / data->aspect_ratio;
 		data->vp.size.z = 0;
@@ -64,6 +64,5 @@ void	init_viewport(t_data *data)
 			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
 		data->vp.p00 = add_vec(data->vp.upper_left,
 				multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
-		printf("p00 x = %f y = %f z = %f\n", data->vp.p00.x, data->vp.p00.y, data->vp.p00.z);
 	}
 }

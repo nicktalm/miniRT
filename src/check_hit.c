@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/17 16:00:57 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/18 17:24:49 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 			calc_cy(data->set.obj[i].form.cy, transform_ray(ray, data->set.obj[i]), hit, i);
 		i++;
 	}
-	in_out_object(ray, hit);
+	if (data->set.obj[hit->i].type != PLANE)
+		in_out_object(ray, hit);
 }
