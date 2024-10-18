@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/17 16:42:51 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/17 20:08:50 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		ray.origin = data->set.cam.coords;
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
-		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
+		ray.direction = sub_vec(pixle_center, sub_vec(data->set.cam.coords, data->set.cam.direction));
 		tmp_color(data, ray, hit);
 	}
 }

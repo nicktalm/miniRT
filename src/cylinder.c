@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/17 17:10:16 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/17 19:45:56 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			{
 				cy_norm_calc(cy, hit, hit->p);
 				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 0)));
-				// printf("hit p x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
 				hit->t = t;
 				hit->i = i;
 			}

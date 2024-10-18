@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/16 17:56:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/17 19:55:05 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,6 @@ void	init_viewport(t_data *data)
 			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
 		data->vp.p00 = add_vec(data->vp.upper_left,
 				multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
+		printf("p00 x = %f y = %f z = %f\n", data->vp.p00.x, data->vp.p00.y, data->vp.p00.z);
 	}
 }
