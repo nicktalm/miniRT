@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/17 16:40:19 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/21 15:03:23 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,6 +343,7 @@ void	create_m_inverse(float m[4][4], float inverse[4][4]);
 void	identity_m(float m[4][4]);
 void	copy_m(float result[4][4], float m[4][4]);
 void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
+void	print_m(float m[4][4]);
 
 // shading
 

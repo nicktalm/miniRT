@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:42:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/10 12:16:49 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/21 15:03:11 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,16 @@ void	multi_m(float result[4][4], float m1[4][4], float m2[4][4])
 			j++;
 		}
 		i++;
+	}
+}
+
+void	print_m(float m[4][4])
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 4; j++)
+		{
+			printf("m[%i][%i] = %f\n", i, j, m[i][j]);
+		}
 	}
 }

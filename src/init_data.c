@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/18 10:53:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/21 16:10:36 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ void	init_viewport(t_data *data)
 		right = cross_vec(data->set.cam.direction, up);
 		up = cross_vec(right, data->set.cam.direction);
 		data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
-		data->vp.size.y = data->vp.size.x / data->aspect_ratio;
+		data->vp.size.y = (data->vp.size.x / data->aspect_ratio);
 		data->vp.size.z = 0;
 		data->vp.u = multi_vec_wnbr(right, data->vp.size.x);
-		data->vp.v = multi_vec_wnbr(up, data->vp.size.y);
+		data->vp.v = multi_vec_wnbr(multi_vec_wnbr(up, data->vp.size.y), -1.0);
 		data->vp.du = dev_vec_wnbr(data->vp.u, (float)data->width);
 		data->vp.dv = dev_vec_wnbr(data->vp.v, (float)data->height);
-		data->vp.upper_left = sub_vec(sub_vec(sub_vec(\
+		data->vp.upper_left = sub_vec(sub_vec(add_vec(\
 			data->set.cam.coords, data->set.cam.direction), \
 			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
 		data->vp.p00 = add_vec(data->vp.upper_left,

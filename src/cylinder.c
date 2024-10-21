@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/17 19:45:56 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/21 16:19:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,14 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		}
 		if (hit->t > t)
 		{
+			// printf("\033[0;31mcylinder origin x = %f y = %f z = %f\n\033[0m", ray.origin.x, ray.origin.y, ray.origin.z);
+			// printf("\033[0;31mcylinder direction x = %f y = %f z = %f\n\033[0m", ray.direction.x, ray.direction.y, ray.direction.z);
 			hit->p = ray_vec(ray.origin, t, ray.direction);
 			if (fabsf(hit->p.y) < cy.height / 2.0)
 			{
 				cy_norm_calc(cy, hit, hit->p);
 				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 0)));
+				// printf("\033[0;31mcylinder hit p x = %f y = %f z = %f\n\033[0m", hit->p.x, hit->p.y, hit->p.z);
 				hit->t = t;
 				hit->i = i;
 			}

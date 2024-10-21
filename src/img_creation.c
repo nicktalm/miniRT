@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/18 11:34:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/21 16:21:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	create_img(t_data *data)
 					hit.color.z, 255));
 			coords.x++;
 		}
+		// printf("\n");
 		coords.y++;
 	}
 	data->moved = false;
@@ -78,7 +79,7 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		ray.origin = data->set.cam.coords;
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
-		ray.direction = sub_vec(data->set.cam.coords, pixle_center);
+		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
 		tmp_color(data, ray, hit);
 	}
 }
@@ -90,13 +91,19 @@ void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 	{
 		if (data->set.obj[hit->i].type == PLANE)
 		{
-			hit->p.x *= -1.0;
+			// hit->color = data->set.obj[hit->i].form.pl.color;
 			shading(data, hit, data->set.obj[hit->i].form.pl.color, 0);
 		}
 		else if (data->set.obj[hit->i].type == SPHERE)
+		{
+			// hit->color = data->set.obj[hit->i].form.sp.color;
 			shading(data, hit, data->set.obj[hit->i].form.sp.color, 2);
+		}
 		else
+		{
+			// hit->color = data->set.obj[hit->i].form.cy.color;
 			shading(data, hit, data->set.obj[hit->i].form.cy.color, 1);
+		}
 	}
 	else
 		hit->color = data->bg;
