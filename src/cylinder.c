@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/21 16:19:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/21 16:33:38 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec3 hitp)
 	coordsn.z = 0.0;
 	normal = norm_vec(sub_vec(hitp, coordsn));
 	hit->normal = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(normal, 0)));
+	// printf("hit normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 }
 
 void	create_m_cy(t_data *data, t_cylinder *cy)
@@ -125,12 +126,13 @@ void	create_m_cy(t_data *data, t_cylinder *cy)
 	float	t[4][4];
 	float	tmp[4][4];
 	float	full_r[4][4];
+	t_vec3	test = {0,0,0};
 
 	angle_x = 0.0;
 	angle_z = 0.0;
 	calc_angle_cy(cy, &angle_x, &angle_z);
 	get_full_r(full_r, angle_x, 0.0, angle_z);
-	translation(t, cy->coords);
+	translation(t, sub_vec(test, cy->coords));
 	multi_m(cy->mt, full_r, t);
 	copy_m(tmp, cy->mt);
 	create_m_inverse(tmp, cy->mti);
