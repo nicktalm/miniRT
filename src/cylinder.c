@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/21 16:33:38 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/21 17:32:37 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			if (fabsf(hit->p.y) < cy.height / 2.0)
 			{
 				cy_norm_calc(cy, hit, hit->p);
-				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 0)));
+				hit->p = convert_to_vec3(r_vec(cy.mt, convert_to_vec4(hit->p, 0)));
 				// printf("\033[0;31mcylinder hit p x = %f y = %f z = %f\n\033[0m", hit->p.x, hit->p.y, hit->p.z);
 				hit->t = t;
 				hit->i = i;
@@ -126,13 +126,12 @@ void	create_m_cy(t_data *data, t_cylinder *cy)
 	float	t[4][4];
 	float	tmp[4][4];
 	float	full_r[4][4];
-	t_vec3	test = {0,0,0};
 
 	angle_x = 0.0;
 	angle_z = 0.0;
 	calc_angle_cy(cy, &angle_x, &angle_z);
 	get_full_r(full_r, angle_x, 0.0, angle_z);
-	translation(t, sub_vec(test, cy->coords));
+	translation(t, cy->coords);
 	multi_m(cy->mt, full_r, t);
 	copy_m(tmp, cy->mt);
 	create_m_inverse(tmp, cy->mti);
