@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/21 17:30:45 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/22 11:43:20 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ t_ray	transform_ray(t_ray ray, t_objects obj)
 		// }
 		// else
 		// {
-		ori = r_vec(obj.form.cy.mti, convert_to_vec4(ray.origin, 1));
-		dir = r_vec(obj.form.cy.mti, convert_to_vec4(ray.direction, 0));
+		ori = r_vec(obj.form.cy.mt, convert_to_vec4(ray.origin, 1));
+		dir = r_vec(obj.form.cy.mt, convert_to_vec4(ray.direction, 0));
 		// }
 		new.origin = convert_to_vec3(ori);
 		new.direction = convert_to_vec3(dir);

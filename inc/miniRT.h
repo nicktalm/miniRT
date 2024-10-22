@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/21 15:03:23 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/22 12:34:18 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,6 +347,6 @@ void	print_m(float m[4][4]);
 
 // shading
 
-void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, int i);
+t_ray	shading(t_data *data, t_hitpoint *hit, t_vec3 color, int i);
 
 #endif

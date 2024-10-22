@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/21 16:48:57 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/22 12:44:32 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,25 +86,31 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 
 void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 {
-	check_hit(ray, hit, data);
-	if (hit->t != __FLT_MAX__)
+	int		befor;
+	int		i;
+
+	i = 0;
+	while (i++ < 2)
 	{
-		if (data->set.obj[hit->i].type == PLANE)
+		check_hit(ray, hit, data);
+		if (hit->t != __FLT_MAX__)
 		{
-			// hit->color = data->set.obj[hit->i].form.pl.color;
-			shading(data, hit, data->set.obj[hit->i].form.pl.color, 0);
-		}
-		else if (data->set.obj[hit->i].type == SPHERE)
-		{
-			// hit->color = data->set.obj[hit->i].form.sp.color;
-			shading(data, hit, data->set.obj[hit->i].form.sp.color, 2);
+			if (i == 1)
+				befor = hit->i;
+			else
+				hit->i = befor;
+			if (data->set.obj[hit->i].type == PLANE)
+				ray = shading(data, hit, data->set.obj[hit->i].form.pl.color, i);
+			else if (data->set.obj[hit->i].type == SPHERE)
+				ray = shading(data, hit, data->set.obj[hit->i].form.sp.color, i);
+			else
+				ray = shading(data, hit, data->set.obj[hit->i].form.cy.color, i);
 		}
 		else
 		{
-			// hit->color = data->set.obj[hit->i].form.cy.color;
-			shading(data, hit, data->set.obj[hit->i].form.cy.color, 1);
+			if (i == 1)
+				hit->color = data->bg;
+			return ;
 		}
 	}
-	else
-		hit->color = data->bg;
 }
