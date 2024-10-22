@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/09/25 11:02:19 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/18 17:24:49 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,167 +24,13 @@ void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data)
 	while (i < data->set.obj_count)
 	{
 		if (data->set.obj[i].type == SPHERE)
-			calc_sp(data->set.obj[i].form.sp, ray, hit, i);
+			calc_sp(data->set.obj[i].form.sp, transform_ray(ray, data->set.obj[i]), hit, i);
 		else if (data->set.obj[i].type == PLANE)
-			calc_pl(data->set.obj[i].form.pl, ray, hit, i);
-		else if (data->set.obj[i].type == CYLINDER)
-			calc_cy(data->set.obj[i].form.cy, ray, hit, i);
+			calc_pl(data->set.obj[i].form.pl, transform_ray(ray, data->set.obj[i]), hit, i);
+		else
+			calc_cy(data->set.obj[i].form.cy, transform_ray(ray, data->set.obj[i]), hit, i);
 		i++;
 	}
-	if (hit->t != __FLT_MAX__)
-	{
-		hit->p = ray_vec(ray.origin, hit->t, ray.direction);
-		if (data->set.obj[hit->i].type == SPHERE)
-			hit->normal = dev_vec_wnbr(sub_vec(hit->p, data->set.obj[hit->i].form.sp.coords), data->set.obj[hit->i].form.sp.radius);
-		else if (data->set.obj[hit->i].type == CYLINDER)
-		{
-			if (cmp_vec(hit->normal, data->set.obj[hit->i].form.cy.norm))
-				hit->normal = norm_vec(sub_vec(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), multi_vec_wnbr(data->set.obj[hit->i].form.cy.norm, dot(sub_vec(hit->p, data->set.obj[hit->i].form.cy.coords), data->set.obj[hit->i].form.cy.norm))));
-		}
-		else
-			hit->normal = data->set.obj[hit->i].form.pl.norm;
+	if (data->set.obj[hit->i].type != PLANE)
 		in_out_object(ray, hit);
-	}
 }
-
-void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
-{
-	t_vec3	oc;
-	float	a;
-	float	b;
-	float	c;
-	float	dis;
-	float	t;
-
-	t = 0.0;
-	oc = sub_vec(sp.coords, ray.origin);
-	a = dot(ray.direction, ray.direction);
-	b = dot(ray.direction, oc);
-	c = dot(oc, oc) - sp.radius * sp.radius;
-	dis = (b * b) - (a * c);
-	if (dis > 0.0)
-	{
-		t = (b - sqrt(dis)) / a;
-		if (t <= 0.0 || t >= INFINITY)
-		{
-			t = (b + sqrt(dis) / a);
-			if (t <= 0.0 || t >= INFINITY)
-				t = __FLT_MAX__;
-		}
-		if (hit->t > t)
-		{
-			hit->t = t;
-			hit->i = i;
-		}
-	}
-}
-
-void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
-{
-	float	t;
-
-	t = 0.0;
-	t = -dot(pl.norm, sub_vec(ray.origin, pl.coords)) / dot(pl.norm, ray.direction);
-	if (t > 0.0 && hit->t > t)
-	{
-		hit->i = i;
-		hit->t = t;
-	}
-}
-
-void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
-{
-	float	a;
-	float	b;
-	float	c;
-	float	dis;
-	float	t;
-	float	z;
-	t_vec3	oc;
-
-	t = 0.0;
-	oc = sub_vec(ray.origin, cy.coords);
-	a = dot(ray.direction, ray.direction) - pow(dot(ray.direction, cy.norm), 2);
-	b = 2.0f * (dot(ray.direction, oc) - dot(ray.direction, cy.norm) * dot(oc, cy.norm));
-	c = dot(oc, oc) - pow(dot(oc, cy.norm), 2) - pow(cy.radius, 2);
-	dis = (b * b) - (4.0f * a * c);
-	if (dis > 0.0)
-	{
-		t = (-b - sqrt(dis)) / (2.0f * a);
-		if (t <= 0.0 || t >= INFINITY)
-		{
-			t = (-b + sqrt(dis)) / (2.0f * a);
-			if (t <= 0.0 || t >= INFINITY)
-				t = __FLT_MAX__;
-		}
-		if (t != __FLT_MAX__)
-		{
-			z = dot(sub_vec(ray_vec(ray.origin, t, ray.direction), cy.coords), cy.norm);
-			if (z < (cy.height / 2.0f) * -1 || z > (cy.height / 2.0f))
-				t = __FLT_MAX__;
-		}
-		if (hit->t > t)
-		{
-			hit->t = t;
-			hit->i = i;
-		}
-	}
-	if (dot(ray.direction, cy.norm) < 0.0)
-	{
-		t = -dot(cy.norm, sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, cy.norm))) / dot(cy.norm, ray.direction);
-		if (t > 0.0 && hit->t > t)
-		{
-			t_vec3	testh = ray_vec(ray.origin, t, ray.direction);
-			t_vec3	top = ray_vec(cy.coords, cy.height / 2.0f, cy.norm);
-			float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
-			if (d <= cy.radius)
-			{
-				hit->i = i;
-				hit->t = t;
-				hit->normal = cy.norm;
-			}
-			else
-				hit->t = __FLT_MAX__;
-		}
-	}
-	else
-	{
-		t = -dot(multi_vec_wnbr(cy.norm, -1.0), sub_vec(ray.origin, ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.norm, -1.0)))) / dot(multi_vec_wnbr(cy.norm, -1.0), ray.direction);
-		if (t > 0.0 && hit->t > t)
-		{
-			t_vec3	testh = ray_vec(ray.origin, t, ray.direction);
-			t_vec3	top = ray_vec(cy.coords, cy.height / 2.0f, multi_vec_wnbr(cy.norm, -1.0));
-			float	d = sqrt(pow(testh.x - top.x, 2.0) + pow(testh.y - top.y, 2.0) + pow(testh.z - top.z, 2.0));
-			if (d <= cy.radius)
-			{
-				hit->i = i;
-				hit->t = t;
-				hit->normal = multi_vec_wnbr(cy.norm, -1.0);
-			}
-			else
-				hit->t = __FLT_MAX__;
-		}
-	}
-}
-
-// void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
-// {
-// 	float	angle;
-// 	t_vec3	y_axis;
-// 	t_vec3	v;
-// 	t_vec4	q;
-
-// 	y_axis.x = 0;
-// 	y_axis.y = 1;
-// 	y_axis.z = 0;
-// 	v = cross_vec(cy.norm, y_axis);
-// 	printf("cross vec x = %f y = %f z = %f\n", v.x, v.y, v.z);
-// 	angle = acos(dot(cy.norm, y_axis) / sqrt(dot(cy.norm, cy.norm)));
-// 	printf("angle = %f\n", angle);
-// 	q.w = cos(angle / 2.0);
-// 	q.x = v.x * sin(angle / 2.0);
-// 	q.y = v.y * sin(angle / 2.0);
-// 	q.z = v.z * sin(angle / 2.0);
-// 	printf("q w = %f x = %f y = %f z = %f\n", q.w, q.x, q.y, q.z);
-// 	exit (0);
-// }

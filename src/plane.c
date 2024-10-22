@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/22 12:47:42 by lbohm            ###   ########.fr       */
+/*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
+/*   Updated: 2024/10/21 15:35:06 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-int	main(int argc, char **argv)
+void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
-	t_data	data;
+	float	t;
 
-	init_data(&data, argc, argv);
-	init_mlx(&data);
-	create_img(&data);
-	mlx_image_to_window(data.window, data.img, 0, 0);
-	// mlx_loop_hook(data.window, hook, &data);
-	mlx_loop(data.window);
-	mlx_delete_image(data.window, data.img);
-	mlx_terminate(data.window);
-	free_all(&data);
-	return (0);
+	t = 0.0;
+	t = -dot(pl.norm, sub_vec(ray.origin, pl.coords)) / dot(pl.norm, ray.direction);
+	if (t > 0.0 && hit->t > t)
+	{
+		hit->i = i;
+		hit->t = t;
+		hit->normal = pl.norm;
+		hit->p = ray_vec(ray.origin, t, ray.direction);
+		// printf("\033[0;31mhit p x = %f y = %f z = %f\n\033[0m", hit->p.x, hit->p.y, hit->p.z);
+	}
 }
+
