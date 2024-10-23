@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/14 16:06:08 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/23 16:03:22 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 void	hook(void *param)
 {
 	t_data	*data;
-	// double	time;
+	double	time;
 
 	data = param;
-	// time = mlx_get_time();
+	time = mlx_get_time();
 	mlx_delete_image(data->window, data->img);
 	mlx_resize_hook(data->window, resize, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
 	if (data->name)
 		create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
-	// printf("time = %f ms\n", (mlx_get_time() - time) * 1000);
+	printf("time = %f ms\n", (mlx_get_time() - time) * 1000);
 }
 
 void	resize(int width, int height, void *param)

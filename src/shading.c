@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/22 12:33:53 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/23 14:47:54 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ t_ray	shading(t_data *data, t_hitpoint *hit, t_vec3 color, int i)
 	nlight.diffuse_strength < 0.0 ? nlight.diffuse_strength = 0.0 : nlight.diffuse_strength;
 	nlight.diffuse = multi_vec_wnbr(data->set.light[0].color, nlight.diffuse_strength);
 	hit->color = multi_vec(add_vec(nlight.light, nlight.diffuse), color);
-	new.origin = ray_vec(hit->p, 0.0001, hit->normal);
+	new.origin = ray_vec(hit->p, 0.01, hit->normal);
 	new.direction = nlight.light_dir;
+	// if (i == 2)
+	// {
+	// 	printf("origin x = %f y = %f z = %f\n", new.origin.x, new.origin.y, new.origin.z);
+	// 	printf("direction x = %f y = %f z = %f\n", new.direction.x, new.direction.y, new.direction.z);
+	// }
 	return (new);
 }
