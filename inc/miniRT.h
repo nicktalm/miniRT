@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/22 12:34:18 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/25 13:47:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,7 +251,7 @@ void	resize(int width, int height, void *param);
 
 // vec_calc
 
-float	leangth_vec(t_vec3 s1);
+float	leangth_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	norm_vec(t_vec3 s1);
 t_vec4	norm_vec4(t_vec4 s1);
 float	dot(t_vec3 s1, t_vec3 s2);

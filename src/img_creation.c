@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/24 17:16:39 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/25 15:44:37 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 	int		befori;
 	float	beforz;
 	int		i;
+	int		end;
 	float	distanz;
 
 	i = 0;
@@ -110,9 +111,9 @@ void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 				hit->i = befori;
 			}
 			if (data->set.obj[hit->i].type == PLANE)
-				ray = shading(data, hit, data->set.obj[hit->i].form.pl.color, i);
+				ray = shading(data, hit, data->set.obj[hit->i].form.pl.color, 1);
 			else if (data->set.obj[hit->i].type == SPHERE)
-				ray = shading(data, hit, data->set.obj[hit->i].form.sp.color, i);
+				ray = shading(data, hit, data->set.obj[hit->i].form.sp.color, 2);
 			else
 				ray = shading(data, hit, data->set.obj[hit->i].form.cy.color, 2);
 		}
