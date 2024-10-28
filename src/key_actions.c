@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_actions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 13:14:02 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 21:43:23 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	hook(void *param)
 	if (data->name)
 		create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
-	printf("time = %f ms\n", (mlx_get_time() - time) * 1000);
+	printf("fps = %f \n", 1 / (mlx_get_time() - time));
 }
 
 void	resize(int width, int height, void *param)
@@ -37,7 +37,11 @@ void	resize(int width, int height, void *param)
 	data->height = height;
 	data->width = width;
 	data->aspect_ratio = (float)width / (float)height;
-	data->i = 1;
+	if (data->cache)
+		free(data->cache);
+	data->cache = (t_vec3 *)malloc (data->width * data->height * sizeof(t_vec3));
+	if (!data->cache)
+		error("malloc", data);
 	data->moved = true;
 }
 

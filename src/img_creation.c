@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 15:01:44 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 21:39:47 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,18 @@ void	create_img(t_data *data)
 		coords.x = 0.0;
 		while (coords.x < data->width)
 		{
-			hit.color.x = 0.0;
-			hit.color.y = 0.0;
-			hit.color.z = 0.0;
-			trace_ray(coords.x, coords.y, &hit, data);
+			if (data->moved)
+			{
+				hit.color.x = 0.0;
+				hit.color.y = 0.0;
+				hit.color.z = 0.0;
+				trace_ray(coords.x, coords.y, &hit, data);
+				data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
+			}
 			mlx_put_pixel(data->img, coords.x, coords.y,
-				create_color(hit.color.x,
-					hit.color.y,
-					hit.color.z, 255));
+				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
+					data->cache[(int)coords.x + (int)coords.y * data->width].y,
+					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
 			coords.x++;
 		}
 		coords.y++;

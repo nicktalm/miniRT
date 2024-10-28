@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/28 15:00:56 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 21:22:39 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,12 +180,10 @@ typedef struct s_data
 	mlx_image_t	*img;
 	t_viewport	vp;
 	t_vec3		bg;
+	t_vec3		*cache;
 	float		aspect_ratio;
 	int			width;
 	int			height;
-	int			i;
-	int			x_max;
-	int			y_max;
 	bool		moved;
 }				t_data;
 
