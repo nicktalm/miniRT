@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/28 13:12:12 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 15:00:56 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ void	init_viewport(t_data *data);
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, float w);
-void	in_out_object(t_ray ray, t_hitpoint *hit);
+void	in_out_object(t_ray *ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 // void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
 // void	lighting(t_data *data, t_ray ray, t_hitpoint *hit);
@@ -303,7 +303,7 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 // check_hit
 
-void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
+void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data);
 // void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
@@ -330,7 +330,7 @@ void	calc_angle_pl(t_plane *pl, float *x, float *z);
 // transformation
 
 void	get_full_r(float result[4][4], float x, float y, float z);
-t_ray	transform_ray(t_ray ray, t_objects obj);
+t_ray	transform_ray(t_ray *ray, t_objects obj);
 void	rotate_x(float m[4][4], float angle);
 void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);
@@ -347,7 +347,7 @@ void	print_m(float m[4][4]);
 
 // shading
 
-t_ray	shading(t_data *data, t_hitpoint *hit, t_vec3 color);
+void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray);
 t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
 
 #endif

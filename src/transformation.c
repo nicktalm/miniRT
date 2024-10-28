@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/22 11:43:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 14:56:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,33 +26,23 @@ void	get_full_r(float result[4][4], float x, float y, float z)
 	multi_m(result, tmp, mz);
 }
 
-t_ray	transform_ray(t_ray ray, t_objects obj)
+t_ray	transform_ray(t_ray *ray, t_objects obj)
 {
 	t_ray	new;
 	t_vec4	ori;
 	t_vec4	dir;
 
-	// printf("origin x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z);
-	// printf("direction x = %f y = %f z = %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
 	if (obj.type == CYLINDER)
 	{
-		// if (obj.type == SPHERE)
-		// {
-		// 	ori = r_vec(obj.form.sp.mt, convert_to_vec4(ray.origin, 1));
-		// 	dir = r_vec(obj.form.sp.mt, convert_to_vec4(ray.direction, 0));
-		// }
-		// else
-		// {
-		ori = r_vec(obj.form.cy.mt, convert_to_vec4(ray.origin, 1));
-		dir = r_vec(obj.form.cy.mt, convert_to_vec4(ray.direction, 0));
-		// }
+		ori = r_vec(obj.form.cy.mt, convert_to_vec4(ray->origin, 1));
+		dir = r_vec(obj.form.cy.mt, convert_to_vec4(ray->direction, 0));
 		new.origin = convert_to_vec3(ori);
 		new.direction = convert_to_vec3(dir);
 	}
 	else
 	{
-		new.origin = ray.origin;
-		new.direction = ray.direction;
+		new.origin = ray->origin;
+		new.direction = ray->direction;
 	}
 	return (new);
 }

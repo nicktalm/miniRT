@@ -32,7 +32,7 @@ $(NAME): $(OBJ)
 	@cd $(GET_NEXT) && $(MAKE) all
 	@printf "\n"
 	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
-	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ) -fsanitize=address
+	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(NAME) $(OBJ)
 	@if [ -f $(NAME) ]; then\
 		echo "$(GREEN)\nCompilation successful! Executable $(NAME) created.$(NC)";\
 	else\
@@ -44,7 +44,7 @@ bonus: $(OBJ)
 	@cd $(GET_NEXT) && $(MAKE) all
 	@printf "\n"
 	cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
-	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(BONUS_NAME) $(OBJ) -fsanitize=address
+	@$(CXX) $(CXXFLAGS) $(INMLX) $(INGET_NEXT) $(INLIBFT) -o $(BONUS_NAME) $(OBJ)
 	@if [ -f $(BONUS_NAME) ]; then\
 		echo "$(GREEN)\nCompilation successful! Executable $(BONUS_NAME) created.$(NC)";\
 	else\
@@ -88,3 +88,64 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re bonus
+
+
+# NAME = miniRT
+# CC = cc
+# VPATH = ./src
+# SRCS = main.c \
+# 	shading.c \
+# 	plane.c \
+# 	sphere.c \
+# 	matrix.c \
+# 	transformation.c \
+# 	cylinder.c \
+# 	check_hit.c \
+# 	multi_threading.c \
+# 	img_creation.c \
+# 	init_data.c \
+# 	key_actions.c \
+# 	vec_calc.c \
+# 	check_file.c \
+# 	error.c \
+# 	parsing.c \
+# 	helper.c \
+# 	parsing_obj.c \
+# 	parsing_helper.c \
+# 	helper_2.c
+
+# OBJS = $(addprefix src/, $(SRCS:.c=.o))
+# CFLAGS = -Iinclude
+# LIBFT = lib/libft/
+# GET_NEXT = lib/get_next_line/
+# MLX = lib/mlx
+# INLIBFT = -L $(LIBFT) -lft
+# INGETNEXT = -L $(GET_NEXT) -l_get_next_line
+# INMLX = -L $(MLX)/build -lmlx42 -ldl -lglfw -pthread -lm
+
+# all: $(NAME)
+
+# $(NAME): $(OBJS)
+# 	@cd $(LIBFT) && $(MAKE) all
+# 	@cd $(LIBFT) && $(MAKE) bonus
+# 	@cd $(GET_NEXT) && $(MAKE) all
+# 	@cmake $(MLX) -B $(MLX)/build && make -C $(MLX)/build -j4
+# 	@$(CC) $(OBJS) $(INLIBFT) $(INGETNEXT) $(INMLX) -o $(NAME) -fsanitize=address
+
+# src/%.o: %.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
+
+# clean:
+# 	@rm -f src/*.o
+# 	@cd $(LIBFT) && $(MAKE) clean
+# 	@cd $(GET_NEXT) && $(MAKE) clean
+# 	@rm -rf $(MLX)/build
+
+# fclean: clean
+# 	@rm -f $(NAME)
+# 	@cd $(LIBFT) && $(MAKE) fclean
+# 	@cd $(GET_NEXT) && $(MAKE) fclean
+
+# re: fclean all
+
+# .PHONY: all clean fclean re

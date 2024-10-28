@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 12:30:10 by lbohm             #+#    #+#             */
-/*   Updated: 2024/07/31 15:26:15 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 15:08:12 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *word, int letter)
+char	*ft_strchr_g(const char *word, int letter)
 {
 	int	i;
 
@@ -40,7 +40,7 @@ size_t	ft_len(const char *str)
 	return (i);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+size_t	ft_strlcpy_g(char *dst, const char *src, size_t size)
 {
 	size_t	i;
 	int		len;

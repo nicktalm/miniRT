@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 12:02:11 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 15:11:24 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	init_data(t_data *data, int argc, char **argv)
 void	init_mlx(t_data *data)
 {
 	data->window = mlx_init(data->width, data->height, "miniRT", true);
+	if (!data->window)
+		printf("here\n");
 	data->img = mlx_new_image(data->window, data->width, data->height);
 }
 
