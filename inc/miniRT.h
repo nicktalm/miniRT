@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/25 13:47:44 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 13:12:12 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ int		check_param_nbr(t_data *data, char **line);
 
 void	hook(void *param);
 void	resize(int width, int height, void *param);
-// void	key(mlx_key_data_t keydata, void *param);
+void	key(mlx_key_data_t keydata, void *param);
 
 // vec_calc
 
@@ -347,6 +347,7 @@ void	print_m(float m[4][4]);
 
 // shading
 
-t_ray	shading(t_data *data, t_hitpoint *hit, t_vec3 color, int i);
+t_ray	shading(t_data *data, t_hitpoint *hit, t_vec3 color);
+t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
 
 #endif

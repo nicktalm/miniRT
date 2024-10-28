@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/25 15:44:37 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 12:21:28 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,35 +87,40 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
 {
 	int		befori;
-	float	beforz;
+	t_vec3	beforv;
 	int		i;
 	int		end;
 	float	distanz;
 
 	i = 0;
-	while (i++ < 2)
+	if (data->set.light[0].brightness > 0.0)
+		end = 2;
+	else
+		end = 1;
+	while (i++ < end)
 	{
 		check_hit(ray, hit, data);
 		if (hit->t != __FLT_MAX__)
 		{
 			if (i == 1)
 			{
-				distanz = fabsf(hit->p.z - data->set.light->coords.z);
-				beforz = hit->p.z;
+				// distanz = fabsf(hit->p.z - data->set.light->coords.z);
+				distanz = fabsf(leangth_vec(hit->p, data->set.light[0].coords));
+				beforv = hit->p;
 				befori = hit->i;
 			}
 			else
 			{
-				if (distanz < fabsf(beforz - hit->p.z))
+				if (distanz < fabsf(leangth_vec(beforv, hit->p)))
 					return ;
 				hit->i = befori;
 			}
 			if (data->set.obj[hit->i].type == PLANE)
-				ray = shading(data, hit, data->set.obj[hit->i].form.pl.color, 1);
+				ray = shading(data, hit, data->set.obj[hit->i].form.pl.color);
 			else if (data->set.obj[hit->i].type == SPHERE)
-				ray = shading(data, hit, data->set.obj[hit->i].form.sp.color, 2);
+				ray = shading(data, hit, data->set.obj[hit->i].form.sp.color);
 			else
-				ray = shading(data, hit, data->set.obj[hit->i].form.cy.color, 2);
+				ray = shading(data, hit, data->set.obj[hit->i].form.cy.color);
 		}
 		else
 		{
