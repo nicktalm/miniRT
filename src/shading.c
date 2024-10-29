@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/29 12:23:07 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/29 19:15:37 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 		end = 2;
 	else
 		end = 1;
-	while (i++ < 1)
+	while (i++ < 2)
 	{
 		check_hit(ray, hit, data);
 		if (hit->t != __FLT_MAX__)

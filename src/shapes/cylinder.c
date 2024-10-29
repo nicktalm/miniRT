@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/29 16:30:34 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/29 21:52:24 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,12 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	float	b;
 	float	c;
 	float	dis;
-	t_vec3	oc;
 
-	oc = ray_vec(cy.coords, cy.height / -2.0, cy.norm);
-	// ray.origin.y -= cy.height / 2.0;
-	top_bottom(cy, hit, ray, i, oc);
-	// ray.origin.y += cy.height;
-	// top_bottom(cy, hit, ray, i);
-	// ray.origin.y -= cy.height / 2.0;
+	ray.origin.y -= cy.height / 2.0;
+	top_bottom(cy, hit, ray, i);
+	ray.origin.y += cy.height;
+	top_bottom(cy, hit, ray, i);
+	ray.origin.y -= cy.height / 2.0;
 	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
 	b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - cy.radius * cy.radius;
@@ -55,7 +53,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	}
 }
 
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, t_vec3 oc)
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i)
 {
 	float	dis;
 	float	t;
@@ -66,7 +64,7 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, t_vec3 oc)
 	test.y = 1.0;
 	test.z = 0.0;
 
-	t = -dot(test, sub_vec(ray.origin, oc)) / dot(test, ray.direction);
+	t = -dot(test, ray.origin) / dot(test, ray.direction);
 	if (t > 0.0 && hit->t > t)
 	{
 		hit->p = ray_vec(ray.origin, t, ray.direction);
@@ -79,30 +77,6 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, t_vec3 oc)
 			hit->i = i;
 		}
 	}
-}
-
-void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp)
-{
-	t_vec4	tmp1;
-
-	tmp->zdir.x = 0.0;
-	tmp->zdir.y = 1.0;
-	tmp->zdir.z = 0.0;
-	tmp->zdir.w = 0.0;
-	tmp1.x = cy.coords.x;
-	tmp1.y = cy.coords.y;
-	tmp1.z = cy.coords.z;
-	tmp1.w = 0.0;
-	tmp1.x = ray.direction.x;
-	tmp1.y = ray.direction.y;
-	tmp1.z = ray.direction.z;
-	tmp1.w = 0.0;
-	tmp->rrdir = r_vec(cy.mt, tmp1);
-	tmp1.x = ray.origin.x;
-	tmp1.y = ray.origin.y;
-	tmp1.z = ray.origin.z;
-	tmp1.w = 1.0;
-	tmp->rrori = r_vec(cy.mt, tmp1);
 }
 
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec3 hitp)
