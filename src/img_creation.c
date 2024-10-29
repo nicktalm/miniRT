@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 21:39:47 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/29 11:31:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	tmp_color(t_data *data, t_ray *ray, t_hitpoint *hit);
 
 void	create_img(t_data *data)
 {
@@ -83,52 +81,6 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
-		tmp_color(data, &ray, hit);
-	}
-}
-
-void	tmp_color(t_data *data, t_ray *ray, t_hitpoint *hit)
-{
-	int		befori;
-	t_vec3	beforv;
-	int		i;
-	int		end;
-	float	distanz;
-
-	i = 0;
-	if (data->set.light[0].brightness > 0.0)
-		end = 2;
-	else
-		end = 1;
-	while (i++ < end)
-	{
-		check_hit(ray, hit, data);
-		if (hit->t != __FLT_MAX__)
-		{
-			if (i == 1)
-			{
-				distanz = fabsf(leangth_vec(hit->p, data->set.light[0].coords));
-				beforv = hit->p;
-				befori = hit->i;
-			}
-			else
-			{
-				if (distanz < fabsf(leangth_vec(beforv, hit->p)))
-					return ;
-				hit->i = befori;
-			}
-			if (data->set.obj[hit->i].type == PLANE)
-				shading(data, hit, data->set.obj[hit->i].form.pl.color, ray);
-			else if (data->set.obj[hit->i].type == SPHERE)
-				shading(data, hit, data->set.obj[hit->i].form.sp.color, ray);
-			else
-				shading(data, hit, data->set.obj[hit->i].form.cy.color, ray);
-		}
-		else
-		{
-			if (i == 1)
-				hit->color = data->bg;
-			return ;
-		}
+		get_color(data, &ray, hit);
 	}
 }

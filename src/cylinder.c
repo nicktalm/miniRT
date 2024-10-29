@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/22 12:17:30 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/29 16:30:34 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	float	b;
 	float	c;
 	float	dis;
+	t_vec3	oc;
 
-	ray.origin.y -= cy.height / 2.0;
-	top_bottom(cy, hit, ray, i);
-	ray.origin.y += cy.height;
-	top_bottom(cy, hit, ray, i);
-	ray.origin.y -= cy.height / 2.0;
+	oc = ray_vec(cy.coords, cy.height / -2.0, cy.norm);
+	// ray.origin.y -= cy.height / 2.0;
+	top_bottom(cy, hit, ray, i, oc);
+	// ray.origin.y += cy.height;
+	// top_bottom(cy, hit, ray, i);
+	// ray.origin.y -= cy.height / 2.0;
 	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
 	b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - cy.radius * cy.radius;
@@ -40,15 +42,12 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		}
 		if (hit->t > t)
 		{
-			// printf("\033[0;31mcylinder origin x = %f y = %f z = %f\n\033[0m", ray.origin.x, ray.origin.y, ray.origin.z);
-			// printf("\033[0;31mcylinder direction x = %f y = %f z = %f\n\033[0m", ray.direction.x, ray.direction.y, ray.direction.z);
 			hit->p = ray_vec(ray.origin, t, ray.direction);
-			// printf("\033[0;31mcylinder hit p befor x = %f y = %f z = %f\n\033[0m", hit->p.x , hit->p.y, hit->p.z);
 			if (fabsf(hit->p.y) < cy.height / 2.0)
 			{
 				cy_norm_calc(cy, hit, hit->p);
 				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 1)));
-				// printf("\033[0;31mcylinder hit p x = %f y = %f z = %f\n\033[0m", hit->p.x, hit->p.y, hit->p.z);
+				// printf("hit p side x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
 				hit->t = t;
 				hit->i = i;
 			}
@@ -56,7 +55,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	}
 }
 
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i)
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, t_vec3 oc)
 {
 	float	dis;
 	float	t;
@@ -66,7 +65,8 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i)
 	test.x = 0.0;
 	test.y = 1.0;
 	test.z = 0.0;
-	t = -dot(test, ray.origin) / dot(test, ray.direction);
+
+	t = -dot(test, sub_vec(ray.origin, oc)) / dot(test, ray.direction);
 	if (t > 0.0 && hit->t > t)
 	{
 		hit->p = ray_vec(ray.origin, t, ray.direction);

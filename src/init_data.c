@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 21:42:34 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/29 10:59:51 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->bg.z = 0.6;
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
-		data->cache = (t_vec3 *)malloc (data->width * data->height * sizeof(t_vec3));
+		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
 		if (!data->cache)
 			error("malloc", data);
 		open_file(argv[1], data);
@@ -41,8 +41,6 @@ void	init_data(t_data *data, int argc, char **argv)
 void	init_mlx(t_data *data)
 {
 	data->window = mlx_init(data->width, data->height, "miniRT", true);
-	if (!data->window)
-		printf("here\n");
 	data->img = mlx_new_image(data->window, data->width, data->height);
 }
 

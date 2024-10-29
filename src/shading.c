@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 14:59:24 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/29 12:23:07 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray)
 {
 	t_lighting	nlight;
-	t_vec3		intensity;
+	t_vec3		intensity;	
+	t_vec3		ambient;
+	t_vec3		totall_light;
 
 	intensity = calc_light_intensity(data->set.light[0], hit, &nlight);
-	hit->color = multi_vec(add_vec(multi_vec_wnbr(intensity, 0.18 / M_PI), multi_vec_wnbr(data->set.ambient.color, data->set.ambient.ratio)), color);
+	ambient = multi_vec_wnbr(data->set.ambient.color, data->set.ambient.ratio);
+	totall_light = add_vec(multi_vec_wnbr(intensity, 0.18 / M_PI), ambient);
+	hit->color = multi_vec(totall_light, color);
 	ray->origin = ray_vec(hit->p, 0.01, hit->normal);
 	ray->direction = nlight.light_dir;
 }
@@ -29,8 +33,7 @@ t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight)
 	t_vec3		intensity;
 
 	nlight->light_dir = sub_vec(light.coords, hit->p);
-	len = leangth_vec(light.coords, hit->p);
-	nlight->light_dir = norm_vec(nlight->light_dir);
+	len = fabsf(leangth_vec(light.coords, hit->p));
 	nlight->light_dir = norm_vec(nlight->light_dir);
 	nlight->diffuse_strength = dot(hit->normal, nlight->light_dir);
 	nlight->light = multi_vec_wnbr(light.color, nlight->diffuse_strength);
@@ -40,4 +43,48 @@ t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight)
 				10000 * light.brightness),
 			4.0 * M_PI * pow(len, 2.0));
 	return (intensity);
+}
+
+void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
+{
+	t_hitpoint	hitb;
+	int			i;
+	int			end;
+	float		distanz;
+
+	i = 0;
+	if (data->set.light[0].brightness > 0.0)
+		end = 2;
+	else
+		end = 1;
+	while (i++ < 1)
+	{
+		check_hit(ray, hit, data);
+		if (hit->t != __FLT_MAX__)
+		{
+			if (i == 1)
+			{
+				distanz = fabsf(leangth_vec(hit->p, data->set.light[0].coords));
+				hitb = *hit;
+			}
+			else
+			{
+				if (distanz < fabsf(leangth_vec(hitb.p, hit->p)))
+					return ;
+				hit->i = hitb.i;
+			}
+			if (data->set.obj[hit->i].type == PLANE)
+				shading(data, hit, data->set.obj[hit->i].form.pl.color, ray);
+			else if (data->set.obj[hit->i].type == SPHERE)
+				shading(data, hit, data->set.obj[hit->i].form.sp.color, ray);
+			else
+				shading(data, hit, data->set.obj[hit->i].form.cy.color, ray);
+		}
+		else
+		{
+			if (i == 1)
+				hit->color = data->bg;
+			return ;
+		}
+	}
 }

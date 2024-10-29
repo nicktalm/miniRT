@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/28 14:55:09 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/29 11:52:38 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data)
 		else if (data->set.obj[i].type == PLANE)
 			calc_pl(data->set.obj[i].form.pl, transform_ray(ray, data->set.obj[i]), hit, i);
 		else
-			calc_cy(data->set.obj[i].form.cy, transform_ray(ray, data->set.obj[i]), hit, i);
+			calc_cy(data->set.obj[i].form.cy,
+				transform_ray(ray, data->set.obj[i]), hit, i);
 		i++;
 	}
 	if (data->set.obj[hit->i].type != PLANE && data->set.obj_count != 0)
