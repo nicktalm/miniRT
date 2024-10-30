@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/29 15:56:35 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 23:17:03 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 			if (t <= 0.0 || t >= INFINITY)
 				t = __FLT_MAX__;
 		}
-		if (hit->t > t)
+		if (hit->t > t && hit->ib != i)
 		{
 			hit->p = ray_vec(ray.origin, t, ray.direction);
 			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));

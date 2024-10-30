@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 17:43:45 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 23:24:02 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - cy.radius * cy.radius;
 	dis = (b * b) - (4.0f * a * c);
-	if (dis > 0.0)
+	if (dis > 0.0 && hit->ib != i)
 	{
 		t = (-b - sqrt(dis)) / (2.0f * a);
 		if (t <= 0.0 || t >= INFINITY)
@@ -72,7 +72,7 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol)
 	test.z = 0.0;
 
 	t = -dot(test, ray.origin) / dot(test, ray.direction);
-	if (t > 0.0 && hit->t > t)
+	if (t > 0.0 && hit->t > t && hit->ib != i)
 	{
 		hit->p = ray_vec(ray.origin, t, ray.direction);
 		dis = pow(hit->p.x, 2.0) + pow(hit->p.z, 2.0);

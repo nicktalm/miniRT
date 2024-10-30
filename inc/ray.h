@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ray.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 16:49:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 16:50:10 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 23:15:05 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ typedef struct s_hitpoint
 	t_vec3		color;
 	float		t;
 	int			i;
+	int			ib;
 }				t_hitpoint;
 
 #endif

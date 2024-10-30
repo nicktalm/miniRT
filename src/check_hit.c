@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_hit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 16:58:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 23:16:50 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data)
 {
 	int		i;
-	float	t;
 
 	i = 0;
-	t = 0.0;
 	hit->i = 0;
 	hit->t = __FLT_MAX__;
 	while (i < data->set.obj_count)
@@ -32,6 +30,6 @@ void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data)
 				transform_ray(ray, data->set.obj[i]), hit, i);
 		i++;
 	}
-	if (data->set.obj[hit->i].type != PLANE && data->set.obj_count != 0)
-		in_out_object(ray, hit);
+	// if (data->set.obj[hit->i].type != PLANE && data->set.obj_count != 0)
+	// 	in_out_object(ray, hit);
 }

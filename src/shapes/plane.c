@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/29 15:53:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 23:20:08 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 
 	t = 0.0;
 	t = -dot(pl.norm, sub_vec(ray.origin, pl.coords)) / dot(pl.norm, ray.direction);
-	if (t > 0.0 && hit->t > t)
+	if (t > 0.0 && hit->t > t && hit->ib != i)
 	{
 		hit->i = i;
 		hit->t = t;
