@@ -6,7 +6,7 @@
 /*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/29 22:00:00 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/30 09:15:29 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,10 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
-
-typedef struct s_light
-{
-	t_vec3	coords;
-	float	brightness;
-	t_vec3	color;
-	t_vec3	norm;
-}				t_light;
-
-typedef struct s_lighting
-{
-	t_vec3	light;
-	t_vec3	light_dir;
-	t_vec3	diffuse;
-	float	diffuse_strength;
-}				t_lighting;
-
-typedef struct s_camera
-{
-	t_vec3	coords;
-	t_vec3	direction;
-	float	fov;
-}				t_camera;
-
-typedef struct s_ambient
-{
-	float	ratio;
-	t_vec3	color;
-}				t_ambient;
+# include "shapes.h"
+# include "transformation.h"
+# include "camera.h"
+# include "lighting.h"
 
 typedef struct s_settings
 {
@@ -60,17 +35,6 @@ typedef struct s_settings
 	int			light_count;
 	t_objects	*obj;
 }				t_settings;
-
-typedef struct s_viewport
-{
-	t_vec3	size;
-	t_vec3	u;
-	t_vec3	v;
-	t_vec3	du;
-	t_vec3	dv;
-	t_vec3	upper_left;
-	t_vec3	p00;
-}				t_viewport;
 
 typedef struct s_ray
 {

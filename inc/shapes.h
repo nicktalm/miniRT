@@ -6,13 +6,14 @@
 /*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:29:16 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/29 22:06:20 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/30 08:00:42 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHAPES_H
 # define SHAPES_H
 
+# include "miniRT.h"
 # include "transformation.h"
 
 typedef struct s_cylinder
