@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/29 19:15:37 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:44:08 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,10 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 			else if (data->set.obj[hit->i].type == SPHERE)
 				shading(data, hit, data->set.obj[hit->i].form.sp.color, ray);
 			else
+			{
+				// hit->color = data->set.obj[hit->i].form.cy.color;
 				shading(data, hit, data->set.obj[hit->i].form.cy.color, ray);
+			}
 		}
 		else
 		{

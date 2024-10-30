@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ray.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/30 17:51:18 by lbohm            ###   ########.fr       */
+/*   Created: 2024/10/30 16:49:14 by lbohm             #+#    #+#             */
+/*   Updated: 2024/10/30 16:50:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/miniRT.h"
+#ifndef RAY_H
+# define RAY_H
 
-int	main(int argc, char **argv)
+# include "transformation.h"
+
+typedef struct s_ray
 {
-	t_data	data;
+	t_vec3	origin;
+	t_vec3	direction;
+}				t_ray;
 
-	init_data(&data, argc, argv);
-	init_mlx(&data);
-	create_img(&data);
-	mlx_image_to_window(data.window, data.img, 0, 0);
-	mlx_loop_hook(data.window, hook, &data);
-	mlx_loop(data.window);
-	mlx_delete_image(data.window, data.img);
-	mlx_terminate(data.window);
-	free_all(&data);
-	return (0);
-}
+typedef struct s_hitpoint
+{
+	t_vec3		p;
+	t_vec3		normal;
+	t_vec3		color;
+	float		t;
+	int			i;
+}				t_hitpoint;
+
+#endif

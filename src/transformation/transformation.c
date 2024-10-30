@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/29 11:52:07 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 17:38:57 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,13 @@ void	translation(float m[4][4], t_vec3 t)
 	m[3][1] = 0;
 	m[3][2] = 0;
 	m[3][3] = 1;
+}
+
+void	add_translation(float m[4][4], t_vec3 t)
+{
+	m[0][3] = m[0][3] + t.x;
+	m[1][3] = m[1][3] + t.y;
+	m[2][3] = m[2][3] + t.z;
 }
 
 void	scaling(float m[4][4], float x, float y, float z)

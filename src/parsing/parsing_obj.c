@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/28 14:37:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/30 15:59:17 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	parse_cylinder(t_data *data, char **line, int *i)
 		data->set.obj[*i].form.cy.material = ft_atof(params[6]);
 	else
 		data->set.obj[*i].form.cy.material = 1.0;
-	create_m_cy(data, &data->set.obj[*i].form.cy);
+	create_m_cy(&data->set.obj[*i].form.cy);
 	(*i)++;
 	free_double_p(params);
 }

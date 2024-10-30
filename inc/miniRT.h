@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/30 09:15:29 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:41:58 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
-# include "shapes.h"
 # include "transformation.h"
 # include "camera.h"
 # include "lighting.h"
+# include "shapes.h"
+# include "ray.h"
 
 typedef struct s_settings
 {
@@ -35,21 +36,6 @@ typedef struct s_settings
 	int			light_count;
 	t_objects	*obj;
 }				t_settings;
-
-typedef struct s_ray
-{
-	t_vec3	origin;
-	t_vec3	direction;
-}				t_ray;
-
-typedef struct s_hitpoint
-{
-	t_vec3		p;
-	t_vec3		normal;
-	t_vec3		color;
-	float		t;
-	int			i;
-}				t_hitpoint;
 
 typedef struct s_data
 {
@@ -162,5 +148,70 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray);
 t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
+
+// cylinder
+
+void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol);
+void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec3 hitp);
+void	create_m_cy(t_cylinder *cy);
+void	calc_angle_cy(t_cylinder *cy, float *x, float *z);
+
+// plane
+
+void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	create_m_pl(t_plane *pl);
+void	calc_angle_pl(t_plane *pl, float *x, float *z);
+
+// sphere
+
+void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
+void	create_m_sp(t_sphere *sp);
+
+// matrix
+
+void	create_m_inverse(float m[4][4], float inverse[4][4]);
+void	identity_m(float m[4][4]);
+void	copy_m(float result[4][4], float m[4][4]);
+void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
+void	print_m(float m[4][4]);
+
+// transformation
+
+void	get_full_r(float result[4][4], float x, float y, float z);
+t_ray	transform_ray(t_ray *ray, t_objects obj);
+void	rotate_x(float m[4][4], float angle);
+void	rotate_y(float m[4][4], float angle);
+void	rotate_z(float m[4][4], float angle);
+void	translation(float m[4][4], t_vec3 t);
+void	add_translation(float m[4][4], t_vec3 t);
+void	scaling(float m[4][4], float x, float y, float z);
+
+// vec_calc
+
+float	leangth_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	norm_vec(t_vec3 s1);
+t_vec4	norm_vec4(t_vec4 s1);
+float	dot(t_vec3 s1, t_vec3 s2);
+float	dot4(t_vec4 s1, t_vec4 s2);
+t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
+t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
+t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
+t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
+t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
+t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);
+t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
+t_vec4	add_vec4(t_vec4 s1, t_vec4 s2);
+t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
+t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
+t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
+int		cmp_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	copy_vec(t_vec3 s1);
+t_vec4	r_vec(float m[4][4], t_vec4 v);
+t_vec3	convert_to_vec3(t_vec4 s1);
+t_vec4	convert_to_vec4(t_vec3 s1, float w);
 
 #endif
