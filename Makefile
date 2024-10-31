@@ -22,9 +22,10 @@ MLX = $(MLX_DIR)/build/libmlx42.a
 LDFLAGS =  -L $(LIBFT_DIR) -lft \
 			-L $(GET_NEXT_LINE_DIR) -l_get_next_line \
 			-L $(MLX_DIR)/build -lmlx42 \
-			-L /opt/homebrew/Cellar/glfw/3.3.8/lib/ -lglfw \
+			-L /usr/local/lib/ -lglfw \
 			-framework Cocoa -framework OpenGL -framework IOKit
 
+# /opt/homebrew/Cellar/glfw/3.3.8/lib/
 all:				$(NAME)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lighting.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 09:12:15 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/30 09:14:37 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:01:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIGHTING_H
 # define LIGHTING_H
 
-# include "transformation.h"
+# include "minimath.h"
 
 typedef struct s_light
 {

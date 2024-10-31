@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 18:15:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/31 13:22:45 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,25 @@ void	key(mlx_key_data_t keydata, void *param)
 		data->set.cam.coords.y += 0.5;
 	if (keydata.key == MLX_KEY_E && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.y -= 0.5;
-	if (keydata.key == MLX_KEY_Z && (keydata.action == 1 || keydata.action == 2))
+	if (keydata.key == MLX_KEY_LEFT && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.x - 0.1 >= -1.0)
 			data->set.cam.direction.x -= 0.1;
 	}
-	if (keydata.key == MLX_KEY_C && (keydata.action == 1 || keydata.action == 2))
+	if (keydata.key == MLX_KEY_RIGHT && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.x + 0.1 <= 1.0)
 			data->set.cam.direction.x += 0.1;
+	}
+	if (keydata.key == MLX_KEY_UP && (keydata.action == 1 || keydata.action == 2))
+	{
+		if (data->set.cam.direction.y + 0.1 <= 1.0)
+			data->set.cam.direction.y += 0.1;
+	}
+	if (keydata.key == MLX_KEY_DOWN && (keydata.action == 1 || keydata.action == 2))
+	{
+		if (data->set.cam.direction.y - 0.1 >= -1.0)
+			data->set.cam.direction.y -= 0.1;
 	}
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == 1)
 	{

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:29:16 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/30 22:16:53 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:01:46 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SHAPES_H
 # define SHAPES_H
 
-# include "transformation.h"
+# include "minimath.h"
 
 typedef struct s_cylinder
 {
@@ -43,9 +43,9 @@ typedef struct s_plane
 typedef struct s_sphere
 {
 	t_vec3			coords;
+	t_vec3			color;
 	float			diameter;
 	float			radius;
-	t_vec3			color;
 	float			material;
 	float			mt[4][4];
 	float			mti[4][4];

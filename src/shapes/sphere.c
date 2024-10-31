@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 23:17:03 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/31 15:29:32 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,29 @@
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 {
-	float	a;
-	float	b;
-	float	c;
-	float	dis;
-	float	t;
+	t_abc	formal;
 	t_vec3	oc;
 
-	t = 0.0;
+	formal.t = 0.0;
 	oc = sub_vec(sp.coords, ray.origin);
-	a = dot(ray.direction, ray.direction);
-	b = dot(ray.direction, oc);
-	c = dot(oc, oc) - sp.radius * sp.radius;
-	dis = (b * b) - (a * c);
-	if (dis > 0.0)
+	formal.a = dot(ray.direction, ray.direction);
+	formal.b = dot(ray.direction, oc);
+	formal.c = dot(oc, oc) - sp.radius * sp.radius;
+	formal.dis = (formal.b * formal.b) - (formal.a * formal.c);
+	if (formal.dis > 0.0)
 	{
-		t = (b - sqrt(dis)) / a;
-		if (t <= 0.0 || t >= INFINITY)
+		formal.t = (formal.b - sqrt(formal.dis)) / formal.a;
+		if (formal.t <= 0.0 || formal.t >= INFINITY)
 		{
-			t = (b + sqrt(dis) / a);
-			if (t <= 0.0 || t >= INFINITY)
-				t = __FLT_MAX__;
+			formal.t = (formal.b + sqrt(formal.dis) / formal.a);
+			if (formal.t <= 0.0 || formal.t >= INFINITY)
+				formal.t = __FLT_MAX__;
 		}
-		if (hit->t > t && hit->ib != i)
+		if (hit->t > formal.t)
 		{
-			hit->p = ray_vec(ray.origin, t, ray.direction);
+			hit->p = ray_vec(ray.origin, formal.t, ray.direction);
 			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
-			hit->t = t;
+			hit->t = formal.t;
 			hit->i = i;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/30 17:41:58 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/31 13:01:29 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
-# include "transformation.h"
+# include "minimath.h"
 # include "camera.h"
 # include "lighting.h"
 # include "shapes.h"
@@ -153,7 +153,7 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
 void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol);
-void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec3 hitp);
+void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit);
 void	create_m_cy(t_cylinder *cy);
 void	calc_angle_cy(t_cylinder *cy, float *x, float *z);
 

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   camera.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 09:11:35 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/30 09:14:53 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/31 13:01:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CAMERA_H
 # define CAMERA_H
 
-# include "transformation.h"
+# include "minimath.h"
 
 typedef struct s_camera
 {

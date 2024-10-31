@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 23:24:02 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/10/31 15:29:18 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,35 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	float	c;
 	float	dis;
 	t_vec3	test;
+	t_vec3	tmp;
 	t_vec3	dir = {0,1,0};
 
 	test = ray.origin;
 	ray.origin = ray_vec(test, cy.height / 2.0, dir);
-	// ray.origin.y -= cy.height / 2.0;
 	top_bottom(cy, hit, ray, i, 0);
-	// ray.origin.y += cy.height;
 	ray.origin = ray_vec(test, cy.height / -2.0, dir);
 	top_bottom(cy, hit, ray, i, 1);
 	ray.origin = test;
 	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
-	b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
+	b = (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - cy.radius * cy.radius;
-	dis = (b * b) - (4.0f * a * c);
-	if (dis > 0.0 && hit->ib != i)
+	dis = (b * b) - (a * c);
+	if (dis > 0.0)
 	{
-		t = (-b - sqrt(dis)) / (2.0f * a);
+		t = (-b - sqrt(dis)) / (a);
 		if (t <= 0.0 || t >= INFINITY)
 		{
-			t = (-b + sqrt(dis)) / (2.0f * a);
+			t = (-b + sqrt(dis)) / (a);
 			if (t <= 0.0 || t >= INFINITY)
 				t = __FLT_MAX__;
 		}
 		if (hit->t > t)
 		{
-			hit->p = ray_vec(ray.origin, t, ray.direction);
-			if (fabsf(hit->p.y) < cy.height / 2.0)
+			tmp = ray_vec(ray.origin, t, ray.direction);
+			if (fabsf(tmp.y) < cy.height / 2.0)
 			{
-				cy_norm_calc(cy, hit, hit->p);
+				hit->p = tmp;
+				cy_norm_calc(cy, hit);
 				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 1)));
 				hit->t = t;
 				hit->i = i;
@@ -61,30 +61,25 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol)
 {
 	float	dis;
 	float	t;
+	t_vec3	tmp;
 	t_vec3	test;
-	t_vec3	test2;
 
-	test2.x = 0.0;
-	test2.y = 0.0;
-	test2.z = 0.0;
 	test.x = 0.0;
 	test.y = 1.0;
 	test.z = 0.0;
-
 	t = -dot(test, ray.origin) / dot(test, ray.direction);
 	if (t > 0.0 && hit->t > t && hit->ib != i)
 	{
-		hit->p = ray_vec(ray.origin, t, ray.direction);
-		dis = pow(hit->p.x, 2.0) + pow(hit->p.z, 2.0);
+		tmp = ray_vec(ray.origin, t, ray.direction);
+		dis = pow(tmp.x, 2.0) + pow(tmp.z, 2.0);
 		if (dis <= cy.radius * cy.radius)
 		{
 			if (lol == 0)
 				test = ray_vec(cy.coords, cy.height / 2.0, cy.norm);
 			else
 				test = ray_vec(cy.coords, cy.height / -2.0, cy.norm);
-			add_translation(cy.mti, sub_vec(test2, test));
-			hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 1)));
-			// printf("hit p x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
+			add_translation(cy.mti, multi_vec_wnbr(test, -1.0));
+			hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(tmp, 1)));
 			hit->normal = cy.norm;
 			hit->t = t;
 			hit->i = i;
@@ -92,17 +87,19 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol)
 	}
 }
 
-void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec3 hitp)
+void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit)
 {
 	float	diff_z;
-	t_vec3	coordsn;
+	t_vec3	dir;
 	t_vec3	normal;
+	t_vec3	center;
 
 	diff_z = hit->p.y - cy.coords.y;
-	coordsn.x = 0.0;
-	coordsn.y = diff_z;
-	coordsn.z = 0.0;
-	normal = norm_vec(sub_vec(hitp, coordsn));
+	dir.x = 0.0;
+	dir.y = 1.0;
+	dir.z = 0.0;
+	center = ray_vec(cy.coords, diff_z, dir);
+	normal = norm_vec(sub_vec(hit->p, center));
 	hit->normal = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(normal, 0)));
 }
 
@@ -123,7 +120,6 @@ void	create_m_cy(t_cylinder *cy)
 	multi_m(cy->mt, full_r, t);
 	copy_m(tmp, cy->mt);
 	create_m_inverse(tmp, cy->mti);
-	// print_m(cy->mti);
 }
 
 void	calc_angle_cy(t_cylinder *cy, float *x, float *z)

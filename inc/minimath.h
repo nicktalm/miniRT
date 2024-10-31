@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TRANSFORMATION_H
-# define TRANSFORMATION_H
+#ifndef MINIMATH_H
+# define MINIMATH_H
 
 typedef struct s_vec3
 {
@@ -32,5 +32,16 @@ typedef struct s_matrix
 {
 	float	m[4][4];
 }				t_matrix;
+
+
+
+typedef struct s_abc
+{
+	float	a;
+	float	b;
+	float	c;
+	float	t;
+	float	dis;
+}				t_abc;
 
 #endif
