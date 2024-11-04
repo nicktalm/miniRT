@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 09:12:15 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/31 13:01:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 13:18:20 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@
 typedef struct s_light
 {
 	t_vec3	coords;
-	float	brightness;
 	t_vec3	color;
 	t_vec3	norm;
+	float	brightness;
+	int		end;
 }				t_light;
 
 typedef struct s_lighting
@@ -33,8 +34,8 @@ typedef struct s_lighting
 
 typedef struct s_ambient
 {
-	float	ratio;
 	t_vec3	color;
+	float	ratio;
 }				t_ambient;
 
 #endif

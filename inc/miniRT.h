@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/31 13:01:29 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 15:19:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,13 @@ typedef struct s_settings
 	t_ambient	ambient;
 	t_camera	cam;
 	t_light		*light;
+	t_objects	*obj;
 	int			obj_count;
 	int			light_count;
-	t_objects	*obj;
 }				t_settings;
 
 typedef struct s_data
 {
-	bool		name;
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
@@ -50,6 +49,7 @@ typedef struct s_data
 	int			width;
 	int			height;
 	bool		moved;
+	bool		name;
 }				t_data;
 
 // main
@@ -123,6 +123,7 @@ void	init_viewport(t_data *data);
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, float w);
+void	check_interval(int *nbr);
 void	in_out_object(t_ray *ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 // void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
@@ -148,6 +149,7 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray);
 t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
+bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
 
 // cylinder
 
@@ -189,16 +191,16 @@ void	scaling(float m[4][4], float x, float y, float z);
 
 // vec_calc
 
-float	leangth_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	norm_vec(t_vec3 s1);
+float	leangth_vec(t_vec3 s1);
 t_vec4	norm_vec4(t_vec4 s1);
+t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
+t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
+t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
 float	dot4(t_vec4 s1, t_vec4 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
-t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
-t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
 t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
 t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);

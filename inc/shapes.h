@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:29:16 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/10/31 13:01:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 15:44:14 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,27 @@
 
 # include "minimath.h"
 
+typedef struct s_cone
+{
+	t_vec3				coords;
+	t_vec3				norm;
+	t_vec3				color;
+	float				diameter;
+	float				radius;
+	float				height;
+	float				material;
+	float				mt[4][4];
+	float				mti[4][4];
+}				t_cone;
+
 typedef struct s_cylinder
 {
 	t_vec3				coords;
 	t_vec3				norm;
+	t_vec3				color;
 	float				diameter;
 	float				radius;
 	float				height;
-	t_vec3				color;
 	float				material;
 	float				mt[4][4];
 	float				mti[4][4];
@@ -56,6 +69,7 @@ typedef union u_obj
 	t_sphere	sp;
 	t_plane		pl;
 	t_cylinder	cy;
+	t_cone		cn;
 }				t_obj;
 
 typedef enum e_type
@@ -63,6 +77,7 @@ typedef enum e_type
 	SPHERE,
 	PLANE,
 	CYLINDER,
+	CONE,
 }			t_type;
 
 typedef struct s_objects

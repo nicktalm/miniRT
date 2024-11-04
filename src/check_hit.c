@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/31 11:06:45 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 15:15:15 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data)
 	while (i < data->set.obj_count)
 	{
 		if (data->set.obj[i].type == SPHERE)
-			calc_sp(data->set.obj[i].form.sp, transform_ray(ray, data->set.obj[i]), hit, i);
+			calc_sp(data->set.obj[i].form.sp,
+				transform_ray(ray, data->set.obj[i]), hit, i);
 		else if (data->set.obj[i].type == PLANE)
-			calc_pl(data->set.obj[i].form.pl, transform_ray(ray, data->set.obj[i]), hit, i);
+			calc_pl(data->set.obj[i].form.pl,
+				transform_ray(ray, data->set.obj[i]), hit, i);
 		else
 			calc_cy(data->set.obj[i].form.cy,
 				transform_ray(ray, data->set.obj[i]), hit, i);

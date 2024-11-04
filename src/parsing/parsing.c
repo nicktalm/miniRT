@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/09/19 13:13:55 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/04 15:22:56 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,13 @@ void	parse_light(t_data *data, char **line, int *l)
 	check_param_nbr_2(params, 4, data);
 	parse_coords(&data->set.light[*l].coords, params[1], data);
 	data->set.light[*l].brightness = ft_atof(params[2]);
-	if (data->set.light[*l].brightness < 0 || data->set.light[*l].brightness > 1)
+	if (data->set.light[*l].brightness < 0
+		|| data->set.light[*l].brightness > 1)
 		error("Brightness must be between 0 and 1", data);
+	if (data->set.light[*l].brightness == 0.0)
+		data->set.light[*l].end = 1;
+	else
+		data->set.light[*l].end = 2;
 	parse_color(&data->set.light[*l].color, params[3], data);
 	(*l)++;
 	free_double_p(params);

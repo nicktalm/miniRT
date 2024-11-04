@@ -33,8 +33,6 @@ typedef struct s_matrix
 	float	m[4][4];
 }				t_matrix;
 
-
-
 typedef struct s_abc
 {
 	float	a;

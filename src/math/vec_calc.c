@@ -6,15 +6,15 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/25 14:01:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 09:53:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-float	leangth_vec(t_vec3 s1, t_vec3 s2)
+float	leangth_vec(t_vec3 s1)
 {
-	return (sqrt(pow(s1.x - s2.x, 2.0) + pow(s1.y - s2.y, 2.0) + pow(s1.z - s2.z, 2.0)));
+	return (sqrt(pow(s1.x, 2.0) + pow(s1.y, 2.0) + pow(s1.z, 2.0)));
 }
 
 t_vec3	norm_vec(t_vec3 s1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/28 21:40:39 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/04 15:21:46 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	free_all(t_data *data)
 		free(data->set.obj);
 	if (data->cache)
 		free(data->cache);
-	// if (!data->name)
-	// 	pthread_mutex_destroy(&data->random);
 }
 
 void	error_2(char *message, char *param, t_data *data)

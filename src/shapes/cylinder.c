@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/31 15:29:18 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 13:12:22 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,8 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			tmp = ray_vec(ray.origin, t, ray.direction);
 			if (fabsf(tmp.y) < cy.height / 2.0)
 			{
-				hit->p = tmp;
+				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(tmp, 1)));
 				cy_norm_calc(cy, hit);
-				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(hit->p, 1)));
 				hit->t = t;
 				hit->i = i;
 			}
@@ -68,7 +67,7 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol)
 	test.y = 1.0;
 	test.z = 0.0;
 	t = -dot(test, ray.origin) / dot(test, ray.direction);
-	if (t > 0.0 && hit->t > t && hit->ib != i)
+	if (t > 0.0 && hit->t > t)
 	{
 		tmp = ray_vec(ray.origin, t, ray.direction);
 		dis = pow(tmp.x, 2.0) + pow(tmp.z, 2.0);
@@ -89,18 +88,13 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol)
 
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit)
 {
-	float	diff_z;
-	t_vec3	dir;
-	t_vec3	normal;
 	t_vec3	center;
+	t_vec3	oc;
 
-	diff_z = hit->p.y - cy.coords.y;
-	dir.x = 0.0;
-	dir.y = 1.0;
-	dir.z = 0.0;
-	center = ray_vec(cy.coords, diff_z, dir);
-	normal = norm_vec(sub_vec(hit->p, center));
-	hit->normal = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(normal, 0)));
+	oc = sub_vec(hit->p, cy.coords);
+	center = add_vec(cy.coords, multi_vec_wnbr(cy.norm,
+				dot(oc, cy.norm) / dot(cy.norm, cy.norm)));
+	hit->normal = norm_vec(sub_vec(hit->p, center));
 }
 
 void	create_m_cy(t_cylinder *cy)

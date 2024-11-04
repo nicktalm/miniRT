@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/31 13:13:35 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 15:19:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	create_img(t_data *data)
 		{
 			if (data->moved)
 			{
-				hit.ib = -1;
 				hit.color.x = 0.0;
 				hit.color.y = 0.0;
 				hit.color.z = 0.0;
@@ -56,11 +55,19 @@ int	create_color(float x, float y, float z, float w)
 	g = 255.0 * y;
 	b = 255.0 * z;
 	a = 255.0 * w;
-	r < 0 ? r = 0 : r > 255 ? r = 255 : r;
-	g < 0 ? g = 0 : g > 255 ? g = 255 : g;
-	b < 0 ? b = 0 : b > 255 ? b = 255 : b;
-	a < 0 ? a = 0 : a > 255 ? a = 255 : a;
+	check_interval(&r);
+	check_interval(&g);
+	check_interval(&b);
+	check_interval(&a);
 	return (r << 24 | g << 16 | b << 8 | a);
+}
+
+void	check_interval(int *nbr)
+{
+	if (*nbr > 255)
+		*nbr = 255;
+	else if (*nbr < 0)
+		*nbr = 0;
 }
 
 void	in_out_object(t_ray *ray, t_hitpoint *hit)
