@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/04 15:19:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 21:21:01 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,13 @@ void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray);
 t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
 bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
+
+// cone
+
+void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+void	cn_norm_calc(t_cone cn, t_hitpoint *hit);
+void	create_m_cn(t_cone *cn);
+void	calc_angle_cn(t_cone *cn, float *x, float *z);
 
 // cylinder
 

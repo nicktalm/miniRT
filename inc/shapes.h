@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:29:16 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/04 15:44:14 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 19:47:31 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@
 
 typedef struct s_cone
 {
-	t_vec3				coords;
-	t_vec3				norm;
-	t_vec3				color;
-	float				diameter;
-	float				radius;
-	float				height;
-	float				material;
-	float				mt[4][4];
-	float				mti[4][4];
+	t_vec3	coords;
+	t_vec3	norm;
+	t_vec3	color;
+	float	diameter;
+	float	radius;
+	float	height;
+	float	angle;
+	float	material;
+	float	mt[4][4];
+	float	mti[4][4];
 }				t_cone;
 
 typedef struct s_cylinder

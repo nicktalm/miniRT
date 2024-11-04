@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/30 17:38:57 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 21:09:35 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,16 @@ void	get_full_r(float result[4][4], float x, float y, float z)
 t_ray	transform_ray(t_ray *ray, t_objects obj)
 {
 	t_ray	new;
-	t_vec4	ori;
-	t_vec4	dir;
 
 	if (obj.type == CYLINDER)
 	{
-		ori = r_vec(obj.form.cy.mt, convert_to_vec4(ray->origin, 1));
-		dir = r_vec(obj.form.cy.mt, convert_to_vec4(ray->direction, 0));
-		new.origin = convert_to_vec3(ori);
-		new.direction = convert_to_vec3(dir);
+		new.origin = convert_to_vec3(r_vec(obj.form.cy.mt, convert_to_vec4(ray->origin, 1)));
+		new.direction = convert_to_vec3(r_vec(obj.form.cy.mt, convert_to_vec4(ray->direction, 0)));
+	}
+	else if (obj.type == CONE)
+	{
+		new.origin = convert_to_vec3(r_vec(obj.form.cn.mt, convert_to_vec4(ray->origin, 1)));
+		new.direction = convert_to_vec3(r_vec(obj.form.cn.mt, convert_to_vec4(ray->direction, 0)));
 	}
 	else
 	{

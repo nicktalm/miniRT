@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/04 15:22:23 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 22:19:51 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,26 @@ int	main(int argc, char **argv)
 
 	init_data(&data, argc, argv);
 	init_mlx(&data);
+	free(data.set.obj);
+	data.set.obj = (t_objects *)malloc (sizeof(t_objects));
+	if (!data.set.obj)
+		error("malloc", &data);
+	data.set.obj_count = 1;
+	data.set.obj[0].type = CONE;
+	data.set.obj[0].form.cn.diameter = 2;
+	data.set.obj[0].form.cn.radius = 1;
+	data.set.obj[0].form.cn.height = 5.0;
+	data.set.obj[0].form.cn.coords.x = 0.0;
+	data.set.obj[0].form.cn.coords.y = 0.0;
+	data.set.obj[0].form.cn.coords.z = 0.0;
+	data.set.obj[0].form.cn.color.x = 0.8;
+	data.set.obj[0].form.cn.color.y = 0.2;
+	data.set.obj[0].form.cn.color.z = 0.2;
+	data.set.obj[0].form.cn.norm.x = 0.0;
+	data.set.obj[0].form.cn.norm.y = -1.0;
+	data.set.obj[0].form.cn.norm.z = 0.0;
+	data.set.obj[0].form.cn.angle = tanf(atanf(1 / 5.0)) * tanf(atanf(1 / 5.0));;
+	create_m_cn(&data.set.obj[0].form.cn);
 	create_img(&data);
 	mlx_image_to_window(data.window, data.img, 0, 0);
 	mlx_loop_hook(data.window, hook, &data);

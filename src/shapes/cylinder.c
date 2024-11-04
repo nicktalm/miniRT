@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/04 13:12:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 19:30:13 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	top_bottom(cy, hit, ray, i, 1);
 	ray.origin = test;
 	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
-	b = (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z);
+	b = ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z;
 	c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - cy.radius * cy.radius;
 	dis = (b * b) - (a * c);
 	if (dis > 0.0)
 	{
-		t = (-b - sqrt(dis)) / (a);
+		t = (-b - sqrt(dis)) / a;
 		if (t <= 0.0 || t >= INFINITY)
 		{
-			t = (-b + sqrt(dis)) / (a);
+			t = (-b + sqrt(dis)) / a;
 			if (t <= 0.0 || t >= INFINITY)
 				t = __FLT_MAX__;
 		}
