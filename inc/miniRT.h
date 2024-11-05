@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/04 21:21:01 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/05 11:28:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
 
 void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
 void	cn_norm_calc(t_cone cn, t_hitpoint *hit);
+void	cn_bottom(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_cn(t_cone *cn);
 void	calc_angle_cn(t_cone *cn, float *x, float *z);
 

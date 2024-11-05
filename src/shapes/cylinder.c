@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/04 19:30:13 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/05 16:31:18 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 	t_vec3	dir = {0,1,0};
 
 	test = ray.origin;
-	ray.origin = ray_vec(test, cy.height / 2.0, dir);
-	top_bottom(cy, hit, ray, i, 0);
+	// ray.origin = ray_vec(test, cy.height / 2.0, dir);
+	// top_bottom(cy, hit, ray, i, 0);
 	ray.origin = ray_vec(test, cy.height / -2.0, dir);
 	top_bottom(cy, hit, ray, i, 1);
 	ray.origin = test;
@@ -45,10 +45,12 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 		if (hit->t > t)
 		{
 			tmp = ray_vec(ray.origin, t, ray.direction);
-			if (fabsf(tmp.y) < cy.height / 2.0)
+			if (fabsf(tmp.y) <= cy.height / 2.0)
 			{
 				hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(tmp, 1)));
 				cy_norm_calc(cy, hit);
+				// printf("hit p x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
+				// printf("hit normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 				hit->t = t;
 				hit->i = i;
 			}
@@ -77,9 +79,12 @@ void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol)
 				test = ray_vec(cy.coords, cy.height / 2.0, cy.norm);
 			else
 				test = ray_vec(cy.coords, cy.height / -2.0, cy.norm);
-			add_translation(cy.mti, multi_vec_wnbr(test, -1.0));
+			printf("test x = %f y = %f z = %f\n", test.x, test.y, test.z);
+			add_translation(cy.mti, test);
 			hit->p = convert_to_vec3(r_vec(cy.mti, convert_to_vec4(tmp, 1)));
 			hit->normal = cy.norm;
+			printf("hit p x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
+			printf("hit normal x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 			hit->t = t;
 			hit->i = i;
 		}

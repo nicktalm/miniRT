@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/04 22:14:50 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/05 12:05:58 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@ void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_abc	formal;
 	t_vec3	tmp;
+	t_vec3	test;
+	t_vec3	dir = {0,1,0};
 
+	test = ray.origin;
+	ray.origin = ray_vec(test, cn.height, dir);
+	cn_bottom(cn, ray, hit, i);
+	ray.origin = test;
 	formal.a = pow(ray.direction.x, 2.0) + pow(ray.direction.z, 2.0) - pow(ray.direction.y, 2.0) * cn.angle;
 	formal.b = ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z - ray.origin.y * ray.direction.y * cn.angle;
 	formal.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - pow(ray.origin.y, 2.0) * cn.angle;
@@ -33,7 +39,7 @@ void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 		if (hit->t > formal.t)
 		{
 			tmp = ray_vec(ray.origin, formal.t, ray.direction);
-			if (fabsf(tmp.y) < cn.height / 2.0)
+			if (tmp.y >= -cn.height && tmp.y <= 0.0)
 			{
 				hit->p = convert_to_vec3(r_vec(cn.mti, convert_to_vec4(tmp, 1)));
 				cn_norm_calc(cn, hit);
@@ -48,19 +54,43 @@ void	cn_norm_calc(t_cone cn, t_hitpoint *hit)
 {
 	t_vec3	center;
 	t_vec3	oc;
-	float	len;
+	t_vec3	scale;
 
 	oc = sub_vec(hit->p, cn.coords);
-	len = dot(oc, cn.coords);
-	center = add_vec(cn.coords, multi_vec_wnbr(cn.norm, len));
-	center = sub_vec(hit->p, center);
-	hit->normal = norm_vec(sub_vec(center, multi_vec_wnbr(cn.norm, len * cn.angle)));
+	center = add_vec(cn.coords, multi_vec_wnbr(cn.norm,
+				dot(oc, cn.norm) / dot(cn.norm, cn.norm)));
+	hit->normal = sub_vec(hit->p, center);
+	scale = multi_vec_wnbr(cn.norm, cos(cn.tangle) / sin(cn.tangle));
+	hit->normal = norm_vec(sub_vec(hit->normal, scale));
+	printf("hit normale x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 }
 
-// void	cn_bottom()
-// {
-	
-// }
+void	cn_bottom(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
+{
+	float	dis;
+	float	t;
+	t_vec3	tmp;
+	t_vec3	test;
+
+	test.x = 0.0;
+	test.y = 1.0;
+	test.z = 0.0;
+	t = -dot(test, ray.origin) / dot(test, ray.direction);
+	if (t > 0.0 && hit->t > t)
+	{
+		tmp = ray_vec(ray.origin, t, ray.direction);
+		dis = pow(tmp.x, 2.0) + pow(tmp.z, 2.0);
+		if (dis <= cn.radius * cn.radius)
+		{
+			test = ray_vec(cn.coords, cn.height, cn.norm);
+			add_translation(cn.mti, multi_vec_wnbr(test, -1.0));
+			hit->p = convert_to_vec3(r_vec(cn.mti, convert_to_vec4(tmp, 1)));
+			hit->normal = multi_vec_wnbr(cn.norm, -1.0);
+			hit->t = t;
+			hit->i = i;
+		}
+	}
+}
 
 void	create_m_cn(t_cone *cn)
 {
@@ -69,13 +99,12 @@ void	create_m_cn(t_cone *cn)
 	float	t[4][4];
 	float	tmp[4][4];
 	float	full_r[4][4];
-	t_vec3	test = {0,0,0};
 
 	angle_x = 0.0;
 	angle_z = 0.0;
 	calc_angle_cn(cn, &angle_x, &angle_z);
 	get_full_r(full_r, angle_x, 0.0, angle_z);
-	translation(t, sub_vec(test, cn->coords));
+	translation(t, multi_vec_wnbr(cn->coords, -1.0));
 	multi_m(cn->mt, full_r, t);
 	copy_m(tmp, cn->mt);
 	create_m_inverse(tmp, cn->mti);
