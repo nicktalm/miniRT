@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:29:16 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/05 10:38:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/06 17:11:47 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ typedef struct s_cylinder
 	float				material;
 	float				mt[4][4];
 	float				mti[4][4];
+	float				mtt[4][4];
+	float				mtit[4][4];
+	float				mtb[4][4];
+	float				mtib[4][4];
 }				t_cylinder;
 
 typedef struct s_plane

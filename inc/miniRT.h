@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/05 11:28:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/06 22:02:31 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,7 +180,7 @@ void	create_m_sp(t_sphere *sp);
 
 // matrix
 
-void	create_m_inverse(float m[4][4], float inverse[4][4]);
+bool	create_m_inverse(float m[4][4], float inverse[4][4]);
 void	identity_m(float m[4][4]);
 void	copy_m(float result[4][4], float m[4][4]);
 void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
