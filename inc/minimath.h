@@ -31,6 +31,7 @@ typedef struct s_vec4
 typedef struct s_matrix
 {
 	float	m[4][4];
+	float	mi[4][4];
 }				t_matrix;
 
 typedef struct s_abc

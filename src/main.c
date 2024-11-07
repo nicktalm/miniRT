@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/06 17:17:16 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:27:25 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int argc, char **argv)
 	// create_m_cn(&data.set.obj[0].form.cn);
 	create_img(&data);
 	mlx_image_to_window(data.window, data.img, 0, 0);
-	// mlx_loop_hook(data.window, hook, &data);
+	mlx_loop_hook(data.window, hook, &data);
 	mlx_loop(data.window);
 	mlx_delete_image(data.window, data.img);
 	mlx_terminate(data.window);

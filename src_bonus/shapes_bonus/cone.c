@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/05 12:05:58 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/07 17:31:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	cn_norm_calc(t_cone cn, t_hitpoint *hit)
 	hit->normal = sub_vec(hit->p, center);
 	scale = multi_vec_wnbr(cn.norm, cos(cn.tangle) / sin(cn.tangle));
 	hit->normal = norm_vec(sub_vec(hit->normal, scale));
-	printf("hit normale x = %f y = %f z = %f\n", hit->normal.x, hit->normal.y, hit->normal.z);
 }
 
 void	cn_bottom(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
@@ -104,10 +103,10 @@ void	create_m_cn(t_cone *cn)
 	angle_z = 0.0;
 	calc_angle_cn(cn, &angle_x, &angle_z);
 	get_full_r(full_r, angle_x, 0.0, angle_z);
+	cn->norm = norm_vec(cn->norm);
 	translation(t, multi_vec_wnbr(cn->coords, -1.0));
 	multi_m(cn->mt, full_r, t);
-	copy_m(tmp, cn->mt);
-	create_m_inverse(tmp, cn->mti);
+	invert_matrix(cn->mt, cn->mti);
 }
 
 void	calc_angle_cn(t_cone *cn, float *x, float *z)

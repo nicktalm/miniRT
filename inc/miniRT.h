@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/06 22:02:31 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/07 17:26:32 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	calc_angle_cn(t_cone *cn, float *x, float *z);
 // cylinder
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, int lol);
+void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, float m[4][4]);
 void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit);
 void	create_m_cy(t_cylinder *cy);
 void	calc_angle_cy(t_cylinder *cy, float *x, float *z);
@@ -180,7 +180,8 @@ void	create_m_sp(t_sphere *sp);
 
 // matrix
 
-bool	create_m_inverse(float m[4][4], float inverse[4][4]);
+void	invert_matrix(float m[4][4], float inv[4][4]);
+void	create_m_inverse(float m[4][4], float inverse[4][4]);
 void	identity_m(float m[4][4]);
 void	copy_m(float result[4][4], float m[4][4]);
 void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
