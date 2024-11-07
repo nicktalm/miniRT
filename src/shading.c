@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/05 12:31:59 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/07 21:54:03 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 				shading(data, hit, data->set.obj[hit->i].form.sp.color, ray);
 			else if (data->set.obj[hit->i].type == CYLINDER)
 				shading(data, hit, data->set.obj[hit->i].form.cy.color, ray);
-			// else
-			// 	shading(data, hit, data->set.obj[hit->i].form.cn.color, ray);
+			else
+				shading(data, hit, data->set.obj[hit->i].form.cn.color, ray);
 		}
 		else
 		{

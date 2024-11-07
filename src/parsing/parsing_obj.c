@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/30 15:59:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/07 22:35:30 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	parse_plane(t_data *data, char **line, int *i)
 		data->set.obj[*i].form.pl.length = 0.0;
 		data->set.obj[*i].form.pl.width = 0.0;
 	}
+	create_m_pl(&data->set.obj[*i].form.pl);
 	(*i)++;
 	free_double_p(params);
 }

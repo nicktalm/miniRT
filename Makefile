@@ -1,5 +1,4 @@
 NAME = miniRT
-NAMEB = miniRT_bonus
 CC = cc
 CFLAGS = \
 			-I inc \
@@ -8,11 +7,8 @@ CFLAGS = \
 			-I lib/mlx/include
 
 SRCS = $(shell find src -name '*.c')
-SRCSB = $(shell find src_bonus -name '*.c')
 OBJS_DIR = objs
-OBJS_DIRB = objs
 OBJS = $(patsubst src/%.c, $(OBJS_DIR)/%.o, $(SRCS))
-OBJSB = $(patsubst src_bonus/%.c, $(OBJS_DIRB)/%.o, $(SRCSB))
 
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -26,26 +22,17 @@ MLX = $(MLX_DIR)/build/libmlx42.a
 LDFLAGS =  -L $(LIBFT_DIR) -lft \
 			-L $(GET_NEXT_LINE_DIR) -l_get_next_line \
 			-L $(MLX_DIR)/build -lmlx42 \
-			-L /usr/local/lib/ -lglfw \
+			-L /opt/homebrew/Cellar/glfw/3.3.8/lib/ -lglfw \
 			-framework Cocoa -framework OpenGL -framework IOKit
+# /usr/local/lib/
 
-# /opt/homebrew/Cellar/glfw/3.3.8/lib/
 
 all:				$(NAME)
-
-bonus:				$(NAMEB)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS)
 
-$(NAMEB):			$(OBJS) $(OBJSB) $(LIBFT) $(GET_NEXT_LINE) $(MLX)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) $(OBJSB)
-
 $(OBJS_DIR)/%.o:	src/%.c
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJS_DIRB)/%.o:	src_bonus/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 

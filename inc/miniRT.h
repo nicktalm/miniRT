@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/07 17:26:32 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/07 22:34:31 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,24 +154,23 @@ bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
 // cone
 
 void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
-void	cn_norm_calc(t_cone cn, t_hitpoint *hit);
-void	cn_bottom(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit);
+bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray);
+void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
 void	create_m_cn(t_cone *cn);
-void	calc_angle_cn(t_cone *cn, float *x, float *z);
 
 // cylinder
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i, float m[4][4]);
-void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit);
+bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit);
+bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
+void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
 void	create_m_cy(t_cylinder *cy);
-void	calc_angle_cy(t_cylinder *cy, float *x, float *z);
 
 // plane
 
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_pl(t_plane *pl);
-void	calc_angle_pl(t_plane *pl, float *x, float *z);
 
 // sphere
 
@@ -181,10 +180,9 @@ void	create_m_sp(t_sphere *sp);
 // matrix
 
 void	invert_matrix(float m[4][4], float inv[4][4]);
-void	create_m_inverse(float m[4][4], float inverse[4][4]);
-void	identity_m(float m[4][4]);
-void	copy_m(float result[4][4], float m[4][4]);
 void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
+void	calc_angle(t_vec3 normal, float *x, float *z);
+void	calc_t(t_abc *formal);
 void	print_m(float m[4][4]);
 
 // transformation

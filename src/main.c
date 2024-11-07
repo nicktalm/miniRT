@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/07 17:27:25 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/07 22:44:09 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 	// data.set.obj[0].form.cn.diameter = 2;
 	// data.set.obj[0].form.cn.radius = 1;
 	// data.set.obj[0].form.cn.height = 3.0;
-	// data.set.obj[0].form.cn.coords.x = 0.0;
+	// data.set.obj[0].form.cn.coords.x = -3.0;
 	// data.set.obj[0].form.cn.coords.y = 1.5;
 	// data.set.obj[0].form.cn.coords.z = 0.0;
 	// data.set.obj[0].form.cn.color.x = 0.8;

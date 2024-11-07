@@ -6,7 +6,7 @@
 /*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/06 18:48:56 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:23:56 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,6 @@ void	get_full_r(float result[4][4], float x, float y, float z)
 	rotate_z(mz, z);
 	multi_m(tmp, mx, my);
 	multi_m(result, tmp, mz);
-}
-
-t_ray	transform_ray(t_ray *ray, t_objects obj)
-{
-	t_ray	new;
-
-	// if (obj.type == CYLINDER)
-	// {
-	// 	new.origin = convert_to_vec3(r_vec(obj.form.cy.mt, convert_to_vec4(ray->origin, 1)));
-	// 	new.direction = convert_to_vec3(r_vec(obj.form.cy.mt, convert_to_vec4(ray->direction, 0)));
-	// }
-	if (obj.type == CONE)
-	{
-		new.origin = convert_to_vec3(r_vec(obj.form.cn.mt, convert_to_vec4(ray->origin, 1)));
-		new.direction = convert_to_vec3(r_vec(obj.form.cn.mt, convert_to_vec4(ray->direction, 0)));
-	}
-	else
-	{
-		new.origin = ray->origin;
-		new.direction = ray->direction;
-	}
-	return (new);
 }
 
 void	rotate_x(float m[4][4], float angle)
@@ -114,13 +92,6 @@ void	translation(float m[4][4], t_vec3 t)
 	m[3][1] = 0;
 	m[3][2] = 0;
 	m[3][3] = 1;
-}
-
-void	add_translation(float m[4][4], t_vec3 t)
-{
-	m[0][3] = m[0][3] + t.x;
-	m[1][3] = m[1][3] + t.y;
-	m[2][3] = m[2][3] + t.z;
 }
 
 void	scaling(float m[4][4], float x, float y, float z)
