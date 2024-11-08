@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/07 21:23:00 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/08 09:35:52 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,22 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_ray	test;
 
-	test.origin = convert_to_vec3(r_vec(cy.top.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(r_vec(cy.top.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = convert_to_vec3(
+			r_vec(cy.top.m, convert_to_vec4(ray.origin, 1)));
+	test.direction = convert_to_vec3(
+			r_vec(cy.top.m, convert_to_vec4(ray.direction, 0)));
 	if (test_top_bottom_cy(cy, hit, test, cy.top.mi))
 		hit->i = i;
-	test.origin = convert_to_vec3(r_vec(cy.bottom.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(r_vec(cy.bottom.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = convert_to_vec3(
+			r_vec(cy.bottom.m, convert_to_vec4(ray.origin, 1)));
+	test.direction = convert_to_vec3(
+			r_vec(cy.bottom.m, convert_to_vec4(ray.direction, 0)));
 	if (test_top_bottom_cy(cy, hit, test, cy.bottom.mi))
 		hit->i = i;
-	test.origin = convert_to_vec3(r_vec(cy.side.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(r_vec(cy.side.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = convert_to_vec3(
+			r_vec(cy.side.m, convert_to_vec4(ray.origin, 1)));
+	test.direction = convert_to_vec3(
+			r_vec(cy.side.m, convert_to_vec4(ray.direction, 0)));
 	if (test_side_cy(cy, test, hit))
 		hit->i = i;
 }

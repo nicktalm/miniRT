@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/07 21:55:42 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/08 10:49:23 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@ void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_ray	test;
 
-	test.origin = convert_to_vec3(r_vec(cn.bottom.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(r_vec(cn.bottom.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = convert_to_vec3(
+			r_vec(cn.bottom.m, convert_to_vec4(ray.origin, 1)));
+	test.direction = convert_to_vec3(
+			r_vec(cn.bottom.m, convert_to_vec4(ray.direction, 0)));
 	if (test_bottom_cn(cn, hit, test))
 		hit->i = i;
-	test.origin = convert_to_vec3(r_vec(cn.side.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(r_vec(cn.side.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = convert_to_vec3(
+			r_vec(cn.side.m, convert_to_vec4(ray.origin, 1)));
+	test.direction = convert_to_vec3(
+			r_vec(cn.side.m, convert_to_vec4(ray.direction, 0)));
 	if (test_side_cn(cn, test, hit))
 		hit->i = i;
 }
@@ -44,7 +48,6 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
 			if (tmp.y >= -cn.height && tmp.y <= 0.0)
 			{
 				hit->p = convert_to_vec3(r_vec(cn.side.mi, convert_to_vec4(tmp, 1)));
-				printf("hit p x = %f y = %f z = %f\n", hit->p.x, hit->p.y, hit->p.z);
 				norm_calc_cn(cn, hit);
 				hit->t = formal.t;
 				return (true);
@@ -71,7 +74,8 @@ bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray)
 		dis = pow(tmp.x, 2.0) + pow(tmp.z, 2.0);
 		if (dis <= cn.radius * cn.radius)
 		{
-			hit->p = convert_to_vec3(r_vec(cn.bottom.mi, convert_to_vec4(tmp, 1)));
+			hit->p = convert_to_vec3(
+					r_vec(cn.bottom.mi, convert_to_vec4(tmp, 1)));
 			hit->normal = multi_vec_wnbr(cn.norm, -1.0);
 			hit->t = t;
 			return (true);
@@ -84,14 +88,15 @@ void	norm_calc_cn(t_cone cn, t_hitpoint *hit)
 {
 	t_vec3	center;
 	t_vec3	oc;
-	t_vec3	scale;
+	t_vec3	ch;
+	t_vec3	tangent;
 
 	oc = sub_vec(hit->p, cn.coords);
 	center = add_vec(cn.coords, multi_vec_wnbr(cn.norm,
 				dot(oc, cn.norm) / dot(cn.norm, cn.norm)));
-	hit->normal = sub_vec(hit->p, center);
-	scale = multi_vec_wnbr(cn.norm, cos(cn.tangle) / sin(cn.tangle));
-	hit->normal = norm_vec(sub_vec(hit->normal, scale));
+	ch = sub_vec(hit->p, center);
+	tangent = cross_vec(oc, ch);
+	hit->normal = norm_vec(cross_vec(tangent, oc));
 }
 
 
@@ -114,18 +119,4 @@ void	create_m_cn(t_cone *cn)
 			ray_vec(cn->coords, -cn->height, cn->norm), -1.0));
 	multi_m(cn->bottom.m, full_r, t);
 	invert_matrix(cn->bottom.m, cn->bottom.mi);
-
-	t_vec3	input = {5, 5, 5};
-	t_vec3	output;
-
-	printf("input x = %f y = %f z = %f\n", input.x, input.y, input.z);
-	output = convert_to_vec3(r_vec(cn->side.m, convert_to_vec4(input, 1)));
-	printf("output x = %f y = %f z = %f\n", output.x, output.y, output.z);
-	output = convert_to_vec3(r_vec(cn->side.mi, convert_to_vec4(output, 1)));
-	printf("\e[0;31moutput x = %f y = %f z = %f\n\e[0m", output.x, output.y, output.z);
-	printf("input x = %f y = %f z = %f\n", input.x, input.y, input.z);
-	output = convert_to_vec3(r_vec(cn->bottom.m, convert_to_vec4(input, 1)));
-	printf("output x = %f y = %f z = %f\n", output.x, output.y, output.z);
-	output = convert_to_vec3(r_vec(cn->bottom.mi, convert_to_vec4(output, 1)));
-	printf("\e[0;31moutput x = %f y = %f z = %f\n\e[0m", output.x, output.y, output.z);
 }
