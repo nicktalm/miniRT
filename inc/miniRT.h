@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/07 22:34:31 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:39:53 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,8 +146,11 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
 // shading
 
-void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray);
-t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
+void	shading(t_data *data, t_hitpoint *hit, t_ray *ray);
+void	diffuse_light(t_lighting *intensity, t_light light, t_hitpoint *hit);
+void	specular_light(t_lighting *in,
+			t_light light, t_camera cam, t_hitpoint *hit);
+t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal);
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
 bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
 

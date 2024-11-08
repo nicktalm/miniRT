@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 09:37:18 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 15:34:06 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 		tmp = ray_vec(ray.origin, t, ray.direction);
 		hit->p = convert_to_vec3(r_vec(pl.side.mi, convert_to_vec4(tmp, 1)));
 		hit->normal = pl.norm;
-		hit->i = i;
 		hit->t = t;
+		hit->obj_color = pl.color;
+		hit->i = i;
 	}
 }
 

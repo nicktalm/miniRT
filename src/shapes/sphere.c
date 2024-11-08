@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/07 22:30:04 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/08 15:33:39 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 			hit->p = convert_to_vec3(r_vec(sp.side.mi, convert_to_vec4(tmp, 1)));
 			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 			hit->t = formal.t;
+			hit->obj_color = sp.color;
 			hit->i = i;
 		}
 	}

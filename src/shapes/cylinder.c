@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 09:35:52 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 15:35:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit)
 				hit->p = convert_to_vec3(r_vec(cy.side.mi, convert_to_vec4(tmp, 1)));
 				norm_calc_cy(cy, hit);
 				hit->t = formal.t;
+				hit->obj_color = cy.color;
 				return (true);
 			}
 		}
@@ -82,6 +83,7 @@ bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]
 		{
 			hit->p = convert_to_vec3(r_vec(m, convert_to_vec4(tmp, 1)));
 			hit->normal = cy.norm;
+			hit->obj_color = cy.color;
 			hit->t = t;
 			return (true);
 		}

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 09:12:15 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/04 13:18:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 14:56:32 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ typedef struct s_light
 
 typedef struct s_lighting
 {
-	t_vec3	light;
 	t_vec3	light_dir;
+	t_vec3	ambient;
 	t_vec3	diffuse;
-	float	diffuse_strength;
+	t_vec3	specular;
 }				t_lighting;
 
 typedef struct s_ambient
