@@ -6,13 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/22 12:47:23 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 11:37:04 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit);
 
 void	create_img(t_data *data)
 {
@@ -27,17 +25,20 @@ void	create_img(t_data *data)
 		coords.x = 0.0;
 		while (coords.x < data->width)
 		{
-			hit.color.x = 0.0;
-			hit.color.y = 0.0;
-			hit.color.z = 0.0;
-			trace_ray((float)coords.x, (float)coords.y, &hit, data);
+			if (data->moved)
+			{
+				hit.color.x = 0.0;
+				hit.color.y = 0.0;
+				hit.color.z = 0.0;
+				trace_ray(coords.x, coords.y, &hit, data);
+				data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
+			}
 			mlx_put_pixel(data->img, coords.x, coords.y,
-				create_color(hit.color.x,
-					hit.color.y,
-					hit.color.z, 255));
+				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
+					data->cache[(int)coords.x + (int)coords.y * data->width].y,
+					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
 			coords.x++;
 		}
-		// printf("\n");
 		coords.y++;
 	}
 	data->moved = false;
@@ -54,16 +55,24 @@ int	create_color(float x, float y, float z, float w)
 	g = 255.0 * y;
 	b = 255.0 * z;
 	a = 255.0 * w;
-	r < 0 ? r = 0 : r > 255 ? r = 255 : r;
-	g < 0 ? g = 0 : g > 255 ? g = 255 : g;
-	b < 0 ? b = 0 : b > 255 ? b = 255 : b;
-	a < 0 ? a = 0 : a > 255 ? a = 255 : a;
+	check_interval(&r);
+	check_interval(&g);
+	check_interval(&b);
+	check_interval(&a);
 	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void	in_out_object(t_ray ray, t_hitpoint *hit)
+void	check_interval(int *nbr)
 {
-	if (dot(ray.direction, hit->normal) > 0.0)
+	if (*nbr > 255)
+		*nbr = 255;
+	else if (*nbr < 0)
+		*nbr = 0;
+}
+
+void	in_out_object(t_ray *ray, t_hitpoint *hit)
+{
+	if (dot(ray->direction, hit->normal) > 0.0)
 	{
 		hit->normal = multi_vec_wnbr(hit->normal, -1.0);
 	}
@@ -80,37 +89,6 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 		pixle_center = add_vec(add_vec(data->vp.p00, \
 		multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 		ray.direction = sub_vec(pixle_center, data->set.cam.coords);
-		tmp_color(data, ray, hit);
-	}
-}
-
-void	tmp_color(t_data *data, t_ray ray, t_hitpoint *hit)
-{
-	int		befor;
-	int		i;
-
-	i = 0;
-	while (i++ < 2)
-	{
-		check_hit(ray, hit, data);
-		if (hit->t != __FLT_MAX__)
-		{
-			if (i == 1)
-				befor = hit->i;
-			else
-				hit->i = befor;
-			if (data->set.obj[hit->i].type == PLANE)
-				ray = shading(data, hit, data->set.obj[hit->i].form.pl.color, i);
-			else if (data->set.obj[hit->i].type == SPHERE)
-				ray = shading(data, hit, data->set.obj[hit->i].form.sp.color, i);
-			else
-				ray = shading(data, hit, data->set.obj[hit->i].form.cy.color, i);
-		}
-		else
-		{
-			if (i == 1)
-				hit->color = data->bg;
-			return ;
-		}
+		get_color(data, &ray, hit);
 	}
 }

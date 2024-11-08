@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/22 12:17:44 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/04 21:33:49 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	init_data(t_data *data, int argc, char **argv)
 {
 	data->set.obj = NULL;
 	data->set.light = NULL;
+	data->cache = NULL;
 	data->name = false;
 	if (argc == 2)
 	{
@@ -28,6 +29,9 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->bg.z = 0.6;
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
+		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
+		if (!data->cache)
+			error("malloc", data);
 		open_file(argv[1], data);
 	}
 	else

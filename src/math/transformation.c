@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   transformation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 16:48:14 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/22 11:43:20 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/07 20:23:56 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,55 +26,12 @@ void	get_full_r(float result[4][4], float x, float y, float z)
 	multi_m(result, tmp, mz);
 }
 
-t_ray	transform_ray(t_ray ray, t_objects obj)
-{
-	t_ray	new;
-	t_vec4	ori;
-	t_vec4	dir;
-
-	// printf("origin x = %f y = %f z = %f\n", ray.origin.x, ray.origin.y, ray.origin.z);
-	// printf("direction x = %f y = %f z = %f\n", ray.direction.x, ray.direction.y, ray.direction.z);
-	if (obj.type == CYLINDER)
-	{
-		// if (obj.type == SPHERE)
-		// {
-		// 	ori = r_vec(obj.form.sp.mt, convert_to_vec4(ray.origin, 1));
-		// 	dir = r_vec(obj.form.sp.mt, convert_to_vec4(ray.direction, 0));
-		// }
-		// else
-		// {
-		ori = r_vec(obj.form.cy.mt, convert_to_vec4(ray.origin, 1));
-		dir = r_vec(obj.form.cy.mt, convert_to_vec4(ray.direction, 0));
-		// }
-		new.origin = convert_to_vec3(ori);
-		new.direction = convert_to_vec3(dir);
-	}
-	else
-	{
-		new.origin = ray.origin;
-		new.direction = ray.direction;
-	}
-	return (new);
-}
-
 void	rotate_x(float m[4][4], float angle)
 {
-	m[0][0] = 1;
-	m[0][1] = 0;
-	m[0][2] = 0;
-	m[0][3] = 0;
-	m[1][0] = 0;
-	m[1][1] = cos(angle);
-	m[1][2] = -sin(angle);
-	m[1][3] = 0;
-	m[2][0] = 0;
-	m[2][1] = sin(angle);
-	m[2][2] = cos(angle);
-	m[2][3] = 0;
-	m[3][0] = 0;
-	m[3][1] = 0;
-	m[3][2] = 0;
-	m[3][3] = 1;
+	m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
+	m[1][0] = 0; m[1][1] = cos(angle); m[1][2] = -sin(angle); m[1][3] = 0;
+	m[2][0] = 0; m[2][1] = sin(angle); m[2][2] = cos(angle); m[2][3] = 0;
+	m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
 }
 
 void	rotate_y(float m[4][4], float angle)

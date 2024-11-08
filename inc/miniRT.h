@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/22 12:46:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 11:36:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,172 +21,35 @@
 # include "../lib/get_next_line/get_next_line.h"
 # include "../lib/libft/libft.h"
 # include "../lib/mlx/include/MLX42/MLX42.h"
-
-typedef struct s_vec3
-{
-	float	x;
-	float	y;
-	float	z;
-}				t_vec3;
-
-typedef struct s_vec4
-{
-	float	x;
-	float	y;
-	float	z;
-	float	w;
-}				t_vec4;
-
-typedef struct s_matrix
-{
-	float	m[4][4];
-}				t_matrix;
-
-typedef struct s_cylinder
-{
-	t_vec3				coords;
-	t_vec3				norm;
-	float				diameter;
-	float				radius;
-	float				height;
-	t_vec3				color;
-	float				material;
-	float				mt[4][4];
-	float				mti[4][4];
-}				t_cylinder;
-
-typedef struct s_plane
-{
-	t_vec3			coords;
-	t_vec3			norm;
-	t_vec3			color;
-	float			material;
-	float			length;
-	float			width;
-	float			mt[4][4];
-	float			mti[4][4];
-}				t_plane;
-
-typedef struct s_sphere
-{
-	t_vec3			coords;
-	float			diameter;
-	float			radius;
-	t_vec3			color;
-	float			material;
-	float			mt[4][4];
-	float			mti[4][4];
-}				t_sphere;
-
-typedef union u_obj
-{
-	t_sphere	sp;
-	t_plane		pl;
-	t_cylinder	cy;
-}				t_obj;
-
-typedef enum e_type
-{
-	SPHERE,
-	PLANE,
-	CYLINDER,
-}			t_type;
-
-typedef struct s_objects
-{
-	t_obj	form;
-	t_type	type;
-}				t_objects;
-
-typedef struct s_light
-{
-	t_vec3	coords;
-	float	brightness;
-	t_vec3	color;
-	t_vec3	norm;
-}				t_light;
-
-typedef struct s_lighting
-{
-	t_vec3	light;
-	t_vec3	light_dir;
-	t_vec3	diffuse;
-	float	diffuse_strength;
-}				t_lighting;
-
-typedef struct s_camera
-{
-	t_vec3	coords;
-	t_vec3	direction;
-	float	fov;
-}				t_camera;
-
-typedef struct s_ambient
-{
-	float	ratio;
-	t_vec3	color;
-}				t_ambient;
+# include "minimath.h"
+# include "camera.h"
+# include "lighting.h"
+# include "shapes.h"
+# include "ray.h"
 
 typedef struct s_settings
 {
 	t_ambient	ambient;
 	t_camera	cam;
 	t_light		*light;
+	t_objects	*obj;
 	int			obj_count;
 	int			light_count;
-	t_objects	*obj;
 }				t_settings;
-
-typedef struct s_viewport
-{
-	t_vec3	size;
-	t_vec3	u;
-	t_vec3	v;
-	t_vec3	du;
-	t_vec3	dv;
-	t_vec3	upper_left;
-	t_vec3	p00;
-}				t_viewport;
-
-typedef struct s_ray
-{
-	t_vec3	origin;
-	t_vec3	direction;
-}				t_ray;
-
-typedef struct s_hitpoint
-{
-	t_vec3		p;
-	t_vec3		normal;
-	t_vec3		color;
-	float		t;
-	int			i;
-}				t_hitpoint;
-
-typedef struct s_tmp
-{
-	t_vec4	rrdir;
-	t_vec4	rrori;
-	t_vec4	hitp;
-	t_vec4	zdir;
-	t_vec4	coords;
-}				t_tmp;
 
 typedef struct s_data
 {
-	bool		name;
 	t_settings	set;
 	mlx_t		*window;
 	mlx_image_t	*img;
 	t_viewport	vp;
 	t_vec3		bg;
+	t_vec3		*cache;
 	float		aspect_ratio;
 	int			width;
 	int			height;
-	int			i;
-	int			x_max;
-	int			y_max;
 	bool		moved;
+	bool		name;
 }				t_data;
 
 // main
@@ -248,34 +111,7 @@ int		check_param_nbr(t_data *data, char **line);
 
 void	hook(void *param);
 void	resize(int width, int height, void *param);
-// void	key(mlx_key_data_t keydata, void *param);
-
-// vec_calc
-
-float	leangth_vec(t_vec3 s1);
-t_vec3	norm_vec(t_vec3 s1);
-t_vec4	norm_vec4(t_vec4 s1);
-float	dot(t_vec3 s1, t_vec3 s2);
-float	dot4(t_vec4 s1, t_vec4 s2);
-t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
-t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
-t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
-t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
-t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
-t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);
-t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
-t_vec4	add_vec4(t_vec4 s1, t_vec4 s2);
-t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
-t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
-t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
-int		cmp_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	copy_vec(t_vec3 s1);
-t_vec4	r_vec(float m[4][4], t_vec4 v);
-t_vec3	convert_to_vec3(t_vec4 s1);
-t_vec4	convert_to_vec4(t_vec3 s1, float w);
+void	key(mlx_key_data_t keydata, void *param);
 
 // init_data
 
@@ -288,7 +124,8 @@ void	init_viewport(t_data *data);
 
 void	create_img(t_data *data);
 int		create_color(float x, float y, float z, float w);
-void	in_out_object(t_ray ray, t_hitpoint *hit);
+void	check_interval(int *nbr);
+void	in_out_object(t_ray *ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 // void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
 // void	lighting(t_data *data, t_ray ray, t_hitpoint *hit);
@@ -304,50 +141,87 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 // check_hit
 
-void	check_hit(t_ray ray, t_hitpoint *hit, t_data *data);
+void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data);
 // void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
+
+// shading
+
+void	shading(t_data *data, t_hitpoint *hit, t_vec3 color, t_ray *ray);
+t_vec3	calc_light_intensity(t_light light, t_hitpoint *hit, t_lighting *nlight);
+void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
+bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
+
+// cone
+
+void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit);
+bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray);
+void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
+void	create_m_cn(t_cone *cn);
 
 // cylinder
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-void	top_bottom(t_cylinder cy, t_hitpoint *hit, t_ray ray, int i);
-void	init_tmp(t_cylinder cy, t_ray ray, t_tmp *tmp);
-void	cy_norm_calc(t_cylinder cy, t_hitpoint *hit, t_vec3 hitp);
-void	create_m_cy(t_data *data, t_cylinder *cy);
-void	calc_angle_cy(t_cylinder *cy, float *x, float *z);
+bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit);
+bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
+void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
+void	create_m_cy(t_cylinder *cy);
+
+// plane
+
+void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	create_m_pl(t_plane *pl);
 
 // sphere
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_sp(t_sphere *sp);
 
-// plane
+// matrix
 
-void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	create_m_pl(t_plane *pl);
-void	calc_angle_pl(t_plane *pl, float *x, float *z);
+void	invert_matrix(float m[4][4], float inv[4][4]);
+void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
+void	calc_angle(t_vec3 normal, float *x, float *z);
+void	calc_t(t_abc *formal);
+void	print_m(float m[4][4]);
 
 // transformation
 
 void	get_full_r(float result[4][4], float x, float y, float z);
-t_ray	transform_ray(t_ray ray, t_objects obj);
+t_ray	transform_ray(t_ray *ray, t_objects obj);
 void	rotate_x(float m[4][4], float angle);
 void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);
 void	translation(float m[4][4], t_vec3 t);
+void	add_translation(float m[4][4], t_vec3 t);
 void	scaling(float m[4][4], float x, float y, float z);
 
-// matrix
+// vec_calc
 
-void	create_m_inverse(float m[4][4], float inverse[4][4]);
-void	identity_m(float m[4][4]);
-void	copy_m(float result[4][4], float m[4][4]);
-void	multi_m(float result[4][4], float m1[4][4], float m2[4][4]);
-void	print_m(float m[4][4]);
-
-// shading
-
-t_ray	shading(t_data *data, t_hitpoint *hit, t_vec3 color, int i);
+float	leangth_vec(t_vec3 s1);
+t_vec4	norm_vec4(t_vec4 s1);
+t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
+t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
+t_vec3	norm_vec(t_vec3 s1);
+float	dot(t_vec3 s1, t_vec3 s2);
+float	dot4(t_vec4 s1, t_vec4 s2);
+t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
+t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
+t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);
+t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
+t_vec4	add_vec4(t_vec4 s1, t_vec4 s2);
+t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
+t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
+t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
+int		cmp_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	copy_vec(t_vec3 s1);
+t_vec4	r_vec(float m[4][4], t_vec4 v);
+t_vec3	convert_to_vec3(t_vec4 s1);
+t_vec4	convert_to_vec4(t_vec3 s1, float w);
 
 #endif

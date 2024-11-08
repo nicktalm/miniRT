@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:35:26 by lbohm             #+#    #+#             */
-/*   Updated: 2024/07/31 15:26:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/10/28 15:07:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*read_file(int fd, char *buffer, int *byt_size)
 		}
 		newline[*byt_size] = '\0';
 		buffer = strjoin(buffer, newline);
-		if (ft_strchr(newline, '\n'))
+		if (ft_strchr_g(newline, '\n'))
 		{
 			free(newline);
 			break ;

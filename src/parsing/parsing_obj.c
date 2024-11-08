@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/22 12:47:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 11:37:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,6 @@ void	parse_sphere(t_data *data, char **line, int *i)
 		check_param_nbr_2(params, 5, data);
 	data->set.obj[*i].type = SPHERE;
 	parse_coords(&data->set.obj[*i].form.sp.coords, params[1], data);
-	if (!is_valid_float(params[2]))
-		error("Invalid sphere diameter", data);
-	if (ft_atof(params[2]) <= 0)
-		error("Sphere diameter must be positive", data);
 	data->set.obj[*i].form.sp.diameter = ft_atof(params[2]);
 	data->set.obj[*i].form.sp.radius = data->set.obj[*i].form.sp.diameter / 2.0;
 	parse_color(&data->set.obj[*i].form.sp.color, params[3], data);
@@ -63,6 +59,7 @@ void	parse_plane(t_data *data, char **line, int *i)
 		data->set.obj[*i].form.pl.length = 0.0;
 		data->set.obj[*i].form.pl.width = 0.0;
 	}
+	create_m_pl(&data->set.obj[*i].form.pl);
 	(*i)++;
 	free_double_p(params);
 }
@@ -79,10 +76,6 @@ void	parse_cylinder(t_data *data, char **line, int *i)
 	data->set.obj[*i].type = CYLINDER;
 	parse_coords(&data->set.obj[*i].form.cy.coords, params[1], data);
 	parse_normalized_vector(&data->set.obj[*i].form.cy.norm, params[2], data);
-	if (!is_valid_float(params[3]) || !is_valid_float(params[4]))
-		error("Invalid cylinder height or diameter", data);
-	if (ft_atof(params[3]) <= 0 | ft_atof(params[4]) <= 0)
-		error("Cylinder height and diameter must be positive", data);
 	data->set.obj[*i].form.cy.diameter = ft_atof(params[3]);
 	data->set.obj[*i].form.cy.radius = data->set.obj[*i].form.cy.diameter / 2.0;
 	data->set.obj[*i].form.cy.height = ft_atof(params[4]);
@@ -91,7 +84,7 @@ void	parse_cylinder(t_data *data, char **line, int *i)
 		data->set.obj[*i].form.cy.material = ft_atof(params[6]);
 	else
 		data->set.obj[*i].form.cy.material = 1.0;
-	create_m_cy(data, &data->set.obj[*i].form.cy);
+	create_m_cy(&data->set.obj[*i].form.cy);
 	(*i)++;
 	free_double_p(params);
 }
