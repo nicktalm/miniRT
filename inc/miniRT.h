@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/08 17:25:20 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:04:50 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,14 @@ t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
 // shading
 
-void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray);
-void	shading(t_data *data, t_hitpoint *hit);
+void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray, t_light light);
+void	shading(t_data *data, t_hitpoint *hit, t_light light);
 void	diffuse_light(t_lighting *intensity, t_light light, t_hitpoint *hit);
 void	specular_light(t_lighting *in,
 			t_light light, t_camera cam, t_hitpoint *hit);
 t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal);
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
-bool	get_distanz(t_data *data, t_hitpoint *hit, int i);
+bool	get_distanz(t_hitpoint *hit, t_light light, int i);
 
 // cone
 
