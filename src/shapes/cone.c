@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 10:49:23 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/08 15:35:44 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
 				hit->p = convert_to_vec3(r_vec(cn.side.mi, convert_to_vec4(tmp, 1)));
 				norm_calc_cn(cn, hit);
 				hit->t = formal.t;
+				hit->obj_color = cn.color;
 				return (true);
 			}
 		}
@@ -78,6 +79,7 @@ bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray)
 					r_vec(cn.bottom.mi, convert_to_vec4(tmp, 1)));
 			hit->normal = multi_vec_wnbr(cn.norm, -1.0);
 			hit->t = t;
+			hit->obj_color = cn.color;
 			return (true);
 		}
 	}

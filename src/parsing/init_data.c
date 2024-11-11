@@ -6,7 +6,7 @@
 /*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/04 21:33:49 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/10 17:49:24 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	init_data(t_data *data, int argc, char **argv)
 			data->name = true;
 		data->width = 1600;
 		data->height = 900;
-		data->bg.x = 0.4;
-		data->bg.y = 0.5;
-		data->bg.z = 0.6;
+		data->bg.x = 0.0;
+		data->bg.y = 0.0;
+		data->bg.z = 0.0;
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
 		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
@@ -41,7 +41,11 @@ void	init_data(t_data *data, int argc, char **argv)
 void	init_mlx(t_data *data)
 {
 	data->window = mlx_init(data->width, data->height, "miniRT", true);
+	if (!data->window)
+		error("mlx_init", data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
+	if (!data->img)
+		error("img", data);
 }
 
 void	init_viewport(t_data *data)
