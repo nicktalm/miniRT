@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 16:37:00 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/11 19:30:45 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	init_viewport(t_data *data)
 		data->vp.upper_left = sub_vec(sub_vec(add_vec(\
 			data->set.cam.coords, data->set.cam.direction), \
 			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
+		printf("upper left x = %f y = %f z = %f\n", data->vp.upper_left.x, data->vp.upper_left.y, data->vp.upper_left.z);
 		data->vp.p00 = add_vec(data->vp.upper_left,
 				multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
 	}

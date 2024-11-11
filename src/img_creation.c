@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 16:27:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 19:18:41 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,19 +103,19 @@ t_vec3	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 	int		j;
 
 	i = 0;
-	while (i < 2)
+	while (i < 4)
 	{
 		j = 0;
-		while (j < 2)
+		while (j < 4)
 		{
-			trace_ray((float)x + ((float)i / 2.0) - 0.25,
-				(float)y + ((float)j / 2.0) - 0.25, hit, data);
+			trace_ray((float)x + ((float)i / 4.0) - 0.375,
+				(float)y + ((float)j / 4.0) - 0.375, hit, data);
 			full_color = add_vec(full_color, hit->color);
 			j++;
 		}
 		i++;
 	}
-	return (dev_vec_wnbr(full_color, 4.0));
+	return (dev_vec_wnbr(full_color, 16.0));
 }
 
 void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
