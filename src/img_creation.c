@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 11:51:27 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 16:27:46 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	create_img(t_data *data)
 				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
 					data->cache[(int)coords.x + (int)coords.y * data->width].y,
 					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
+			// printf("x = %f y = %f\n", coords.x, coords.y);
 			coords.x++;
 		}
 		coords.y++;
@@ -102,19 +103,19 @@ t_vec3	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 	int		j;
 
 	i = 0;
-	while (i < 4)
+	while (i < 2)
 	{
 		j = 0;
-		while (j < 4)
+		while (j < 2)
 		{
-			trace_ray((float)x + ((float)i / 4.0) - 0.375,
-				(float)y + ((float)j / 4.0) - 0.375, hit, data);
+			trace_ray((float)x + ((float)i / 2.0) - 0.25,
+				(float)y + ((float)j / 2.0) - 0.25, hit, data);
 			full_color = add_vec(full_color, hit->color);
 			j++;
 		}
 		i++;
 	}
-	return (dev_vec_wnbr(full_color, 16.0));
+	return (dev_vec_wnbr(full_color, 4.0));
 }
 
 void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)

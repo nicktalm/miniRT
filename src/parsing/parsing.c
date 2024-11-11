@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/11 11:51:51 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 15:57:20 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	parse_light(t_data *data, char **line, int *l)
 		|| data->set.light[*l].brightness > 1)
 		error("Brightness must be between 0 and 1", data);
 	if (data->set.light[*l].brightness == 0.0)
-		data->set.light[*l].end = 1;
+		data->set.light[*l].end = 0;
 	else
 		data->set.light[*l].end = 2;
 	parse_color(&data->set.light[*l].color, params[3], data);
