@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_actions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/10/31 13:22:45 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 13:00:50 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ void	hook(void *param)
 	mlx_resize_hook(data->window, resize, data);
 	mlx_key_hook(data->window, key, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
-	if (data->name)
-		create_img(data);
+	create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
 	printf("fps = %f \n", 1 / (mlx_get_time() - time));
 }

@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 16:56:30 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/10/08 15:15:44 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/11 13:03:11 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ void	obj_count(t_data *data, char **line)
 		else if (ft_strncmp(line[i], "pl ", 3) == 0)
 			count++;
 		else if (ft_strncmp(line[i], "cy ", 3) == 0)
+			count++;
+		else if (ft_strncmp(line[i], "cn ", 3) == 0)
 			count++;
 		i++;
 	}

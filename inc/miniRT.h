@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/11 11:51:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 12:48:20 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_data
 	int			width;
 	int			height;
 	bool		moved;
-	bool		name;
 }				t_data;
 
 // main
@@ -76,6 +75,7 @@ int		parse_line(t_data *data, char **line);
 void	parse_sphere(t_data *data, char **line, int *i);
 void	parse_plane(t_data *data, char **line, int *i);
 void	parse_cylinder(t_data *data, char **line, int *i);
+void	parse_cone(t_data *data, char **line, int *i);
 
 //parsing_helper
 

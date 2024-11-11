@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/11 11:51:51 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 13:04:16 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	check_wrong_line(char *line, t_data *data)
 	if (ft_strncmp(line, "A ", 2) != 0 && ft_strncmp(line, "C ", 2) != 0
 		&& ft_strncmp(line, "L ", 2) != 0 && ft_strncmp(line, "sp ", 3) != 0
 		&& ft_strncmp(line, "pl ", 3) != 0 && ft_strncmp(line, "cy ", 3) != 0
-		&& ft_strncmp(line, "\n", 1) != 0 && line[0] != '\0')
+		&& ft_strncmp(line, "cn ", 3) && ft_strncmp(line, "\n", 1) != 0
+		&& line[0] != '\0')
 		error("Wrong line", data);
 }
 
@@ -85,6 +86,8 @@ int	parse_line(t_data *data, char **line)
 		parse_plane(data, line, &i);
 	if (ft_strncmp(*line, "cy ", 3) == 0)
 		parse_cylinder(data, line, &i);
+	if (ft_strncmp(*line, "cn ", 3) == 0)
+		parse_cone(data, line, &i);
 	check_wrong_line(*line, data);
 	return (0);
 }

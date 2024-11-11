@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shapes.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 21:29:16 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/07 22:31:44 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:56:42 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ typedef struct s_cone
 	float		height;
 	float		angle;
 	float		tangle;
-	float		material;
 	t_matrix	side;
 	t_matrix	bottom;
 }				t_cone;
@@ -41,7 +40,6 @@ typedef struct s_cylinder
 	float		diameter;
 	float		radius;
 	float		height;
-	float		material;
 }				t_cylinder;
 
 typedef struct s_plane
@@ -50,7 +48,6 @@ typedef struct s_plane
 	t_vec3		norm;
 	t_vec3		color;
 	t_matrix	side;
-	float		material;
 	float		length;
 	float		width;
 }				t_plane;
@@ -62,7 +59,6 @@ typedef struct s_sphere
 	t_matrix	side;
 	float		diameter;
 	float		radius;
-	float		material;
 }				t_sphere;
 
 typedef union u_obj

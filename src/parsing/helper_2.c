@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 13:24:59 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/11 10:36:51 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 13:01:13 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,7 @@ int	check_param_nbr(t_data *data, char **line)
 			count_l++;
 		i++;
 	}
-	if (count_a == 1 && count_c == 1 && data->name == 0)
-		return (0);
-	else if (count_a == 1 && count_c == 1 && count_l > 0)
+	if (count_a == 1 && count_c == 1 && count_l > 0)
 		return (0);
 	error("Wrong number of parameters", data);
 	return (1);

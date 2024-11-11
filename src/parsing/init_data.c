@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/10 17:49:24 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:35:18 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->set.obj = NULL;
 	data->set.light = NULL;
 	data->cache = NULL;
-	data->name = false;
 	if (argc == 2)
 	{
-		if (!ft_strncmp(argv[0], "./miniRT", ft_strlen(argv[0])))
-			data->name = true;
 		data->width = 1600;
 		data->height = 900;
 		data->bg.x = 0.0;
