@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/11 12:48:20 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/11 16:36:53 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,6 @@ void	scaling(float m[4][4], float x, float y, float z);
 // vec_calc
 
 float	leangth_vec(t_vec3 s1);
-t_vec4	norm_vec4(t_vec4 s1);
 t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
 t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
 t_vec3	norm_vec(t_vec3 s1);

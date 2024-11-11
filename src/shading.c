@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 11:42:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/11 16:30:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray, t_light light)
 	diffuse_light(&in, light, hit);
 	specular_light(&in, light, data->set.cam, hit);
 	lighting = add_vec(add_vec(in.ambient,
-		multi_vec_wnbr(in.diffuse, light.brightness * 1000)),
-		multi_vec_wnbr(in.specular, light.brightness * 1000));
+		multi_vec_wnbr(in.diffuse, light.brightness)),
+		multi_vec_wnbr(in.specular, light.brightness));
 	hit->color = multi_vec(hit->obj_color, lighting);
 	ray->origin = ray_vec(hit->p, 0.01, hit->normal);
 	ray->direction = in.light_dir;
@@ -52,7 +52,7 @@ void	diffuse_light(t_lighting *in, t_light light, t_hitpoint *hit)
 	if (strength < 0.0)
 		strength = 0.0;
 	in->diffuse = multi_vec_wnbr(light.color, strength);
-	in->diffuse = dev_vec_wnbr(in->diffuse, 4.0 * M_PI * pow(in->len, 2.0));
+	// in->diffuse = dev_vec_wnbr(in->diffuse, 4.0 * M_PI * pow(in->len, 2.0));
 }
 
 void	specular_light(t_lighting *in,
@@ -69,7 +69,7 @@ void	specular_light(t_lighting *in,
 		strength = 0.0;
 	strength = pow(strength, 32.0);
 	in->specular = multi_vec_wnbr(light.color, strength);
-	in->specular = dev_vec_wnbr(in->specular, 4.0 * M_PI * pow(in->len, 2.0));
+	// in->specular = dev_vec_wnbr(in->specular, 4.0 * M_PI * pow(in->len, 2.0));
 }
 
 t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal)
@@ -90,53 +90,36 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 
 	first = *ray;
 	i = 0;
-	pos = -1;
-	while (pos++ < data->set.light_count)
+	pos = 0;
+	while (pos < data->set.light_count)
 	{
 		*ray = first;
 		i = 0;
-		while (i++ < data->set.light[pos].end)
+		while (i < data->set.light[pos].end)
 		{
 			check_hit(ray, hit, data);
 			if (hit->t != __FLT_MAX__)
 			{
 				if (!get_distanz(hit, data->set.light[pos], i))
 					break ;
-				if (i == 1)
+				if (i == 0)
 					obj_shading(data, hit, ray, data->set.light[pos]);
 				else
 					shading(data, hit, data->set.light[pos]);
 			}
 			else
 			{
-				if (i == 1)
+				if (i == 0)
 					hit->color = data->bg;
 				return ;
 			}
+			i++;
 		}
 		full_color = add_vec(full_color, hit->color);
+		pos++;
 	}
 	hit->color = full_color;
 }
-
-// void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
-// {
-// 	int	pos;
-
-// 	pos = -1;
-// 	check_hit(ray, hit, data);
-// 	if (hit->t == __FLT_MAX__)
-// 	{
-// 		hit->color = data->bg;
-// 		return ;
-// 	}
-// 	while (pos++ < data->set.light_count)
-// 	{
-// 		get_distanz(hit, data->set.light[pos], 1);
-// 		obj_shading(data, hit, ray, data->set.light[pos]);
-// 		check_hit(ray, hit, data);
-// 	}
-// }
 
 bool	get_distanz(t_hitpoint *hit, t_light light, int i)
 {
@@ -145,7 +128,7 @@ bool	get_distanz(t_hitpoint *hit, t_light light, int i)
 	static int		ib = 0;
 	static t_vec3	pb = {0, 0, 0};
 
-	if (i == 1)
+	if (i == 0)
 	{
 		distanz = leangth_vec(sub_vec(hit->p, light.coords));
 		pb = hit->p;
