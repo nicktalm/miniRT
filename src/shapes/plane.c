@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/12 12:44:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/12 16:02:48 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 		hit->t = t;
 		if (pl.bump_map)
 			get_bump_map_coords_pl(pl.bump_map, hit, ray);
-		hit->obj_color = pl.color;
+		else
+			hit->obj_color = pl.color;
 		hit->i = i;
 	}
 }
@@ -63,9 +64,16 @@ void	get_bump_map_coords_pl(xpm_t *map, t_hitpoint *hit, t_ray ray)
 	float	y;
 	int		u;
 	int		v;
+	int		index;
 
 	normal_hit = norm_vec(hit->p);
 	x = (normal_hit.x + 1) / 2;
-	y = (normal_hit.y + 1) / 2;
+	y = 1 - (normal_hit.y + 1) / 2;
 	u = x * (map->texture.width - 1);
+	v = y * (map->texture.height - 1);
+	printf("u = %i v = %i\n", u, v);
+	index = (v * map->texture.width + u) * 4;
+	hit->obj_color.x = map->texture.pixels[index] / 255.0;
+	hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+	hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
 }

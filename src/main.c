@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/12 12:37:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/12 16:04:15 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ int	main(int argc, char **argv)
 
 	init_data(&data, argc, argv);
 	init_mlx(&data);
-	data.set.obj[0].form.sp.bump_map = mlx_load_xpm42("textures/xpm42/earth.xpm42");
-	if (!data.set.obj[0].form.sp.bump_map)
-		error("load xpm file", &data);
-	data.set.obj[1].form.sp.bump_map = mlx_load_xpm42("textures/xpm42/moon.xpm42");
-	if (!data.set.obj[1].form.sp.bump_map)
-		error("load xpm file", &data);
-	data.set.obj[2].form.pl.bump_map = mlx_load_xpm42("textures/xpm42/stars.xpm42");
-	if (!data.set.obj[2].form.pl.bump_map)
+	// data.set.obj[0].form.sp.bump_map = mlx_load_xpm42("textures/xpm42/basketball.xpm42");
+	// if (!data.set.obj[0].form.sp.bump_map)
+	// 	error("load xpm file", &data);
+	// data.set.obj[1].form.sp.bump_map = mlx_load_xpm42("textures/xpm42/stars.xpm42");
+	// if (!data.set.obj[1].form.sp.bump_map)
+	// 	error("load xpm file", &data);
+	data.set.obj[0].form.pl.bump_map = mlx_load_xpm42("textures/xpm42/wood_floor.xpm42");
+	if (!data.set.obj[0].form.pl.bump_map)
 		error("load xpm file", &data);
 	create_img(&data);
 	mlx_image_to_window(data.window, data.img, 0, 0);
