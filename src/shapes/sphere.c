@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 15:33:39 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/12 12:05:17 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 			hit->p = convert_to_vec3(r_vec(sp.side.mi, convert_to_vec4(tmp, 1)));
 			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 			hit->t = formal.t;
-			hit->obj_color = sp.color;
+			if (sp.bump_map)
+				get_bump_map_coords_sp(sp.bump_map, hit->normal, hit);
+			else
+				hit->obj_color = sp.color;
 			hit->i = i;
 		}
 	}
@@ -43,4 +46,22 @@ void	create_m_sp(t_sphere *sp)
 {
 	translation(sp->side.m, multi_vec_wnbr(sp->coords, -1.0));
 	invert_matrix(sp->side.m, sp->side.mi);
+}
+
+void	get_bump_map_coords_sp(xpm_t *map, t_vec3 normal, t_hitpoint *hit)
+{
+	float	phi;
+	float	theta;
+	int		x;
+	int		y;
+	int		index;
+
+	theta = acosf(normal.y);
+	phi = atan2f(normal.z, normal.x);
+	x = (phi + M_PI) / (2 * M_PI) * (map->texture.width - 1);
+	y = (theta / M_PI) * (map->texture.height - 1);
+	index = (y * map->texture.width + x) * 4;
+	hit->obj_color.x = map->texture.pixels[index] / 255.0;
+	hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+	hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
 }

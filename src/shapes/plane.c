@@ -6,11 +6,13 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 15:34:06 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/12 12:44:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+void	get_bump_map_coords_pl(xpm_t *map, t_hitpoint *hit, t_ray ray);
 
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
@@ -31,6 +33,8 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 		hit->p = convert_to_vec3(r_vec(pl.side.mi, convert_to_vec4(tmp, 1)));
 		hit->normal = pl.norm;
 		hit->t = t;
+		if (pl.bump_map)
+			get_bump_map_coords_pl(pl.bump_map, hit, ray);
 		hit->obj_color = pl.color;
 		hit->i = i;
 	}
@@ -50,4 +54,18 @@ void	create_m_pl(t_plane *pl)
 	translation(t, multi_vec_wnbr(pl->coords, -1.0));
 	multi_m(pl->side.m, full_r, t);
 	invert_matrix(pl->side.m, pl->side.mi);
+}
+
+void	get_bump_map_coords_pl(xpm_t *map, t_hitpoint *hit, t_ray ray)
+{
+	t_vec3	normal_hit;
+	float	x;
+	float	y;
+	int		u;
+	int		v;
+
+	normal_hit = norm_vec(hit->p);
+	x = (normal_hit.x + 1) / 2;
+	y = (normal_hit.y + 1) / 2;
+	u = x * (map->texture.width - 1);
 }
