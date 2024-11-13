@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/12 12:05:34 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/13 17:54:43 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void	create_m_pl(t_plane *pl);
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_sp(t_sphere *sp);
-void	get_bump_map_coords_sp(xpm_t *map, t_vec3 normal, t_hitpoint *hit);
+void	get_texture_color_sp(xpm_t *map, t_vec3 normal, t_hitpoint *hit);
 
 // matrix
 
