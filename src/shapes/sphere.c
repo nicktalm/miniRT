@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 13:03:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 15:04:30 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 			hit->t = formal.t;
 			hit->i = i;
-			get_color_and_normal_sp(sp, hit);
+			get_color_and_normal_sp(sp, hit, tmp);
 		}
 	}
 }
@@ -45,7 +45,7 @@ void	create_m_sp(t_sphere *sp)
 	invert_matrix(sp->side.m, sp->side.mi);
 }
 
-void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit)
+void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 {
 	int		index;
 	t_vec3	uv = {0, 0, 0};
@@ -59,11 +59,12 @@ void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit)
 		map = NULL;
 	if (map)
 	{
-		get_uv_coords_sp(map, hit, &uv);
+		get_uv_coords_sp(map, hit, &uv, tmp);
 		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
 	}
 	if (sp.texture)
 	{
+		// get_checkerboard_color(uv.x, uv.y, hit);
 		hit->obj_color.x = map->texture.pixels[index] / 255.0;
 		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
 		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;

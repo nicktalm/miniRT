@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/14 12:22:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 14:52:25 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ void	create_m_pl(t_plane *pl);
 
 void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_sp(t_sphere *sp);
-void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit);
+void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp);
 
 // matrix
 
@@ -202,8 +202,9 @@ void	scaling(float m[4][4], float x, float y, float z);
 
 // uv_coords
 
-void	get_uv_coords_sp(xpm_t *map, t_hitpoint *hit, t_vec3 *uv);
+void	get_uv_coords_sp(xpm_t *map, t_hitpoint *hit, t_vec3 *uv, t_vec3 tmp);
 void	get_uv_coords_pl(t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_checkerboard_color(float u, float v, t_hitpoint *hit);
 
 // vec_calc
 
