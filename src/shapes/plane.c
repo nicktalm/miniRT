@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/13 17:58:10 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 13:01:58 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 void	test_bounded_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	get_texture_color_pl(xpm_t *map, t_hitpoint *hit, t_plane pl, t_vec3 tmp);
+void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp);
 
 void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
-	ray.origin = convert_to_vec3(
-			r_vec(pl.side.m, convert_to_vec4(ray.origin, 1)));
-	ray.direction = convert_to_vec3(
-			r_vec(pl.side.m, convert_to_vec4(ray.direction, 0)));
+	ray.origin = con_to_vec3(
+			r_vec(pl.side.m, con_to_vec4(ray.origin, 1)));
+	ray.direction = con_to_vec3(
+			r_vec(pl.side.m, con_to_vec4(ray.direction, 0)));
 	if (pl.width == 0.0 && pl.length == 0.0)
 		test_inf_pl(pl, ray, hit, i);
 	else
@@ -42,7 +42,7 @@ void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 	if (t > 0.0 && hit->t > t)
 	{
 		tmp = ray_vec(ray.origin, t, ray.direction);
-		hit->p = convert_to_vec3(r_vec(pl.side.mi, convert_to_vec4(tmp, 1)));
+		hit->p = con_to_vec3(r_vec(pl.side.mi, con_to_vec4(tmp, 1)));
 		hit->normal = pl.norm;
 		hit->t = t;
 		hit->i = i;
@@ -77,14 +77,11 @@ void	test_bounded_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 		uv.y = dot(tmp, into);
 		if (uv.x <= pl.width / 2.0 && uv.x >= pl.width / -2.0 && uv.y <= pl.length / 2.0 && uv.y >= pl.length / -2.0)
 		{
-			hit->p = convert_to_vec3(r_vec(pl.side.mi, convert_to_vec4(tmp, 1)));
+			hit->p = con_to_vec3(r_vec(pl.side.mi, con_to_vec4(tmp, 1)));
 			hit->normal = pl.norm;
 			hit->t = t;
 			hit->i = i;
-			if (pl.texture)
-				get_texture_color_pl(pl.texture, hit, pl, uv);
-			else
-				hit->obj_color = pl.color;
+			get_color_and_normal_pl(pl, hit, tmp);
 		}
 	}
 }
@@ -105,20 +102,33 @@ void	create_m_pl(t_plane *pl)
 	invert_matrix(pl->side.m, pl->side.mi);
 }
 
-void	get_texture_color_pl(xpm_t *map, t_hitpoint *hit, t_plane pl, t_vec3 tmp)
+void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 {
-	float	u;
-	float	v;
 	int		index;
+	t_vec3	uv;
+	xpm_t	*map;
 
-	tmp.x = tmp.x / pl.width / 2.0;
-	tmp.y = tmp.y / pl.length / 2.0;
-	tmp.x = (tmp.x + 1) / 2.0;
-	tmp.y = (tmp.y + 1) / 2.0;
-	u = tmp.x * map->texture.width;
-	v = tmp.y * map->texture.height;
-	index = ((int)v * map->texture.width + (int)u) * 4;
-	hit->obj_color.x = map->texture.pixels[index] / 255.0;
-	hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-	hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+	if (pl.texture)
+		map = pl.texture;
+	else if (pl.bump_map)
+		map = pl.bump_map;
+	else
+		map = NULL;
+	if (map)
+	{
+		get_uv_coords_pl(pl, map, tmp, &uv);
+		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
+	}
+	if (pl.texture)
+	{
+		hit->obj_color.x = map->texture.pixels[index] / 255.0;
+		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+	}
+	else
+		hit->obj_color = pl.color;
+	if (pl.bump_map)
+	{
+		printf("bump_map\n");
+	}
 }

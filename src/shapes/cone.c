@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 15:35:44 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 11:50:30 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,16 @@ void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_ray	test;
 
-	test.origin = convert_to_vec3(
-			r_vec(cn.bottom.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(
-			r_vec(cn.bottom.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = con_to_vec3(
+			r_vec(cn.bottom.m, con_to_vec4(ray.origin, 1)));
+	test.direction = con_to_vec3(
+			r_vec(cn.bottom.m, con_to_vec4(ray.direction, 0)));
 	if (test_bottom_cn(cn, hit, test))
 		hit->i = i;
-	test.origin = convert_to_vec3(
-			r_vec(cn.side.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(
-			r_vec(cn.side.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = con_to_vec3(
+			r_vec(cn.side.m, con_to_vec4(ray.origin, 1)));
+	test.direction = con_to_vec3(
+			r_vec(cn.side.m, con_to_vec4(ray.direction, 0)));
 	if (test_side_cn(cn, test, hit))
 		hit->i = i;
 }
@@ -47,7 +47,7 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
 			tmp = ray_vec(ray.origin, formal.t, ray.direction);
 			if (tmp.y >= -cn.height && tmp.y <= 0.0)
 			{
-				hit->p = convert_to_vec3(r_vec(cn.side.mi, convert_to_vec4(tmp, 1)));
+				hit->p = con_to_vec3(r_vec(cn.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cn(cn, hit);
 				hit->t = formal.t;
 				hit->obj_color = cn.color;
@@ -75,8 +75,8 @@ bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray)
 		dis = pow(tmp.x, 2.0) + pow(tmp.z, 2.0);
 		if (dis <= cn.radius * cn.radius)
 		{
-			hit->p = convert_to_vec3(
-					r_vec(cn.bottom.mi, convert_to_vec4(tmp, 1)));
+			hit->p = con_to_vec3(
+					r_vec(cn.bottom.mi, con_to_vec4(tmp, 1)));
 			hit->normal = multi_vec_wnbr(cn.norm, -1.0);
 			hit->t = t;
 			hit->obj_color = cn.color;

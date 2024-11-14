@@ -6,32 +6,35 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/08 15:35:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 11:50:35 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
+void	get_texture_color_cy(xpm_t *map, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp);
+void	get_checkerboard_color(float u, float v, t_hitpoint *hit);
+
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_ray	test;
 
-	test.origin = convert_to_vec3(
-			r_vec(cy.top.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(
-			r_vec(cy.top.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = con_to_vec3(
+			r_vec(cy.top.m, con_to_vec4(ray.origin, 1)));
+	test.direction = con_to_vec3(
+			r_vec(cy.top.m, con_to_vec4(ray.direction, 0)));
 	if (test_top_bottom_cy(cy, hit, test, cy.top.mi))
 		hit->i = i;
-	test.origin = convert_to_vec3(
-			r_vec(cy.bottom.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(
-			r_vec(cy.bottom.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = con_to_vec3(
+			r_vec(cy.bottom.m, con_to_vec4(ray.origin, 1)));
+	test.direction = con_to_vec3(
+			r_vec(cy.bottom.m, con_to_vec4(ray.direction, 0)));
 	if (test_top_bottom_cy(cy, hit, test, cy.bottom.mi))
 		hit->i = i;
-	test.origin = convert_to_vec3(
-			r_vec(cy.side.m, convert_to_vec4(ray.origin, 1)));
-	test.direction = convert_to_vec3(
-			r_vec(cy.side.m, convert_to_vec4(ray.direction, 0)));
+	test.origin = con_to_vec3(
+			r_vec(cy.side.m, con_to_vec4(ray.origin, 1)));
+	test.direction = con_to_vec3(
+			r_vec(cy.side.m, con_to_vec4(ray.direction, 0)));
 	if (test_side_cy(cy, test, hit))
 		hit->i = i;
 }
@@ -53,10 +56,13 @@ bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit)
 			tmp = ray_vec(ray.origin, formal.t, ray.direction);
 			if (fabsf(tmp.y) <= cy.height / 2.0)
 			{
-				hit->p = convert_to_vec3(r_vec(cy.side.mi, convert_to_vec4(tmp, 1)));
+				hit->p = con_to_vec3(r_vec(cy.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cy(cy, hit);
 				hit->t = formal.t;
-				hit->obj_color = cy.color;
+				if (cy.texture)
+					get_texture_color_cy(cy.texture, cy, hit, tmp);
+				else
+					hit->obj_color = cy.color;
 				return (true);
 			}
 		}
@@ -81,7 +87,7 @@ bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]
 		dis = pow(tmp.x, 2.0) + pow(tmp.z, 2.0);
 		if (dis <= cy.radius * cy.radius)
 		{
-			hit->p = convert_to_vec3(r_vec(m, convert_to_vec4(tmp, 1)));
+			hit->p = con_to_vec3(r_vec(m, con_to_vec4(tmp, 1)));
 			hit->normal = cy.norm;
 			hit->obj_color = cy.color;
 			hit->t = t;
@@ -125,4 +131,43 @@ void	create_m_cy(t_cylinder *cy)
 			ray_vec(cy->coords, cy->height / -2.0, cy->norm), -1.0));
 	multi_m(cy->bottom.m, full_r, t);
 	invert_matrix(cy->bottom.m, cy->bottom.mi);
+}
+
+void	get_texture_color_cy(xpm_t *map, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp)
+{
+	float	u;
+	float	v;
+	int		index;
+
+	u = atan2f(hit->normal.z, hit->normal.x) / (2.0 * M_PI);
+	if (u < 0)
+		u += 1.0;
+	v =  1 - ((tmp.y / (cy.height / 2.0)) + 1) / 2.0;
+	u *= (map->texture.width - 1);
+	v *= (map->texture.height - 1);
+	index = ((int)v * map->texture.width + (int)u) * 4;
+	hit->obj_color.x = map->texture.pixels[index] / 255.0;
+	hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+	hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+}
+
+void	get_checkerboard_color(float u, float v, t_hitpoint *hit)
+{
+	int		tile_count;
+	t_vec3	black;
+	t_vec3	white;
+
+	tile_count = 10;
+	black.x = 0.0;
+	black.y = 0.0;
+	black.z = 0.0;
+	white.x = 1.0;
+	white.y = 1.0;
+	white.z = 1.0;
+	u *= tile_count;
+	v *= tile_count;
+	if (((int)u + (int)v) % 2 == 0)
+		hit->obj_color = black;
+	else
+		hit->obj_color = white;
 }
