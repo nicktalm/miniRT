@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 14:58:00 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 16:33:40 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,17 +139,16 @@ void	get_texture_color_cy(xpm_t *map, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp
 	float	v;
 	int		index;
 
-	u = atan2f(hit->normal.z, hit->normal.x) / (2.0 * M_PI);
-	if (u < 0)
-		u += 1.0;
-	v =  1 - ((tmp.y / (cy.height / 2.0)) + 1) / 2.0;
+	tmp = norm_vec(tmp);
+	u = atan2f(tmp.z, tmp.x) / (2.0 * M_PI) + 0.5;
+	v = tmp.y * 0.5 + 0.5;
 	u *= (map->texture.width - 1);
 	v *= (map->texture.height - 1);
-	get_checkerboard_color(u, v, hit);
-	// index = ((int)v * map->texture.width + (int)u) * 4;
-	// hit->obj_color.x = map->texture.pixels[index] / 255.0;
-	// hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-	// hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+	// get_checkerboard_color(u, v, hit);
+	index = ((int)v * map->texture.width + (int)u) * 4;
+	hit->obj_color.x = map->texture.pixels[index] / 255.0;
+	hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+	hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
 }
 
 void	get_checkerboard_color(float u, float v, t_hitpoint *hit)

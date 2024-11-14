@@ -6,11 +6,13 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 11:50:30 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 16:37:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
+
+void	get_texture_color_cn(xpm_t *map, t_cone cn, t_hitpoint *hit, t_vec3 tmp);
 
 void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 {
@@ -50,7 +52,10 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
 				hit->p = con_to_vec3(r_vec(cn.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cn(cn, hit);
 				hit->t = formal.t;
-				hit->obj_color = cn.color;
+				if (cn.texture)
+					get_texture_color_cn(cn.texture, cn, hit, tmp);
+				else
+					hit->obj_color = cn.color;
 				return (true);
 			}
 		}
@@ -121,4 +126,22 @@ void	create_m_cn(t_cone *cn)
 			ray_vec(cn->coords, -cn->height, cn->norm), -1.0));
 	multi_m(cn->bottom.m, full_r, t);
 	invert_matrix(cn->bottom.m, cn->bottom.mi);
+}
+
+void	get_texture_color_cn(xpm_t *map, t_cone cn, t_hitpoint *hit, t_vec3 tmp)
+{
+	float	u;
+	float	v;
+	int		index;
+
+	tmp = norm_vec(tmp);
+	u = atan2f(tmp.z, tmp.x) / (2.0 * M_PI) + 0.5;
+	v = tmp.y * 0.5 + 0.5;
+	u *= (map->texture.width - 1);
+	v *= (map->texture.height - 1);
+	get_checkerboard_color(u, v, hit);
+	// index = ((int)v * map->texture.width + (int)u) * 4;
+	// hit->obj_color.x = map->texture.pixels[index] / 255.0;
+	// hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+	// hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
 }

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 14:21:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 16:26:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,10 +121,10 @@ void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 	}
 	if (pl.texture)
 	{
-		get_checkerboard_color(uv.x, uv.y, hit);
-		// hit->obj_color.x = map->texture.pixels[index] / 255.0;
-		// hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-		// hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+		// get_checkerboard_color(uv.x, uv.y, hit);
+		hit->obj_color.x = map->texture.pixels[index] / 255.0;
+		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
+		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
 	}
 	else
 		hit->obj_color = pl.color;
