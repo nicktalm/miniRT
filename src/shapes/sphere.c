@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 15:04:30 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 20:30:37 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 		{
 			tmp = ray_vec(ray.origin, formal.t, ray.direction);
 			hit->p = con_to_vec3(r_vec(sp.side.mi, con_to_vec4(tmp, 1)));
-			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 			hit->t = formal.t;
 			hit->i = i;
 			get_color_and_normal_sp(sp, hit, tmp);
@@ -48,7 +47,7 @@ void	create_m_sp(t_sphere *sp)
 void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 {
 	int		index;
-	t_vec3	uv = {0, 0, 0};
+	t_vec3	uv;
 	xpm_t	*map;
 
 	if (sp.texture)
@@ -59,7 +58,7 @@ void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 		map = NULL;
 	if (map)
 	{
-		get_uv_coords_sp(map, hit, &uv, tmp);
+		get_uv_coords_sp(map, &uv, tmp);
 		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
 	}
 	if (sp.texture)
@@ -75,4 +74,6 @@ void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 	{
 		printf("bump_map\n");
 	}
+	else
+		hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 }

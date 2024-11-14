@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/14 14:52:25 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 21:07:43 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,13 +163,18 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit);
 bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
 void	create_m_cn(t_cone *cn);
+void	get_color_and_normal_cn(t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i);
 
-// cylinder
+// cylinder_inter
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
 bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit);
 bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
 void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
+
+// cylinder_utils
+
+void	get_color_and_normal_cy(t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i);
 void	create_m_cy(t_cylinder *cy);
 
 // plane
@@ -202,8 +207,11 @@ void	scaling(float m[4][4], float x, float y, float z);
 
 // uv_coords
 
-void	get_uv_coords_sp(xpm_t *map, t_hitpoint *hit, t_vec3 *uv, t_vec3 tmp);
+void	get_uv_coords_sp(xpm_t *map, t_vec3 *uv, t_vec3 tmp);
 void	get_uv_coords_pl(t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_cy(t_cylinder cy, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_tb(float radius, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_cn(t_cone cn, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
 void	get_checkerboard_color(float u, float v, t_hitpoint *hit);
 
 // vec_calc

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 16:26:02 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/14 20:29:08 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	test_bounded_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 		if (uv.x <= pl.width / 2.0 && uv.x >= pl.width / -2.0 && uv.y <= pl.length / 2.0 && uv.y >= pl.length / -2.0)
 		{
 			hit->p = con_to_vec3(r_vec(pl.side.mi, con_to_vec4(tmp, 1)));
-			hit->normal = pl.norm;
 			hit->t = t;
 			hit->i = i;
 			get_color_and_normal_pl(pl, hit, tmp);
@@ -132,4 +131,6 @@ void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 	{
 		printf("bump_map\n");
 	}
+	else
+		hit->normal = pl.norm;
 }

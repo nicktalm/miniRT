@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cylinder.c                                         :+:      :+:    :+:   */
+/*   cylinder_inter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 16:33:40 by lbohm            ###   ########.fr       */
+/*   Created: 2024/11/14 20:52:00 by lucabohn          #+#    #+#             */
+/*   Updated: 2024/11/14 20:59:14 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	get_texture_color_cy(xpm_t *map, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp);
-void	get_checkerboard_color(float u, float v, t_hitpoint *hit);
 
 void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 {
@@ -59,10 +56,7 @@ bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit)
 				hit->p = con_to_vec3(r_vec(cy.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cy(cy, hit);
 				hit->t = formal.t;
-				if (cy.texture)
-					get_texture_color_cy(cy.texture, cy, hit, tmp);
-				else
-					hit->obj_color = cy.color;
+				get_color_and_normal_cy(cy, hit, tmp, 0);
 				return (true);
 			}
 		}
@@ -75,12 +69,12 @@ bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]
 	float	dis;
 	float	t;
 	t_vec3	tmp;
-	t_vec3	test;
+	t_vec3	dir;
 
-	test.x = 0.0;
-	test.y = 1.0;
-	test.z = 0.0;
-	t = -dot(test, ray.origin) / dot(test, ray.direction);
+	dir.x = 0.0;
+	dir.y = 1.0;
+	dir.z = 0.0;
+	t = -dot(dir, ray.origin) / dot(dir, ray.direction);
 	if (t > 0.0 && hit->t > t)
 	{
 		tmp = ray_vec(ray.origin, t, ray.direction);
@@ -89,8 +83,8 @@ bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]
 		{
 			hit->p = con_to_vec3(r_vec(m, con_to_vec4(tmp, 1)));
 			hit->normal = cy.norm;
-			hit->obj_color = cy.color;
 			hit->t = t;
+			get_color_and_normal_cy(cy, hit, tmp, 1);
 			return (true);
 		}
 	}
@@ -106,68 +100,4 @@ void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit)
 	center = add_vec(cy.coords, multi_vec_wnbr(cy.norm,
 				dot(oc, cy.norm) / dot(cy.norm, cy.norm)));
 	hit->normal = norm_vec(sub_vec(hit->p, center));
-}
-
-void	create_m_cy(t_cylinder *cy)
-{
-	float	angle_x;
-	float	angle_z;
-	float	t[4][4];
-	float	full_r[4][4];
-
-	angle_x = 0.0;
-	angle_z = 0.0;
-	calc_angle(cy->norm, &angle_x, &angle_z);
-	get_full_r(full_r, angle_x, 0.0, angle_z);
-	cy->norm = norm_vec(cy->norm);
-	translation(t, multi_vec_wnbr(cy->coords, -1.0));
-	multi_m(cy->side.m, full_r, t);
-	invert_matrix(cy->side.m, cy->side.mi);
-	translation(t, multi_vec_wnbr(
-			ray_vec(cy->coords, cy->height / 2.0, cy->norm), -1.0));
-	multi_m(cy->top.m, full_r, t);
-	invert_matrix(cy->top.m, cy->top.mi);
-	translation(t, multi_vec_wnbr(
-			ray_vec(cy->coords, cy->height / -2.0, cy->norm), -1.0));
-	multi_m(cy->bottom.m, full_r, t);
-	invert_matrix(cy->bottom.m, cy->bottom.mi);
-}
-
-void	get_texture_color_cy(xpm_t *map, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp)
-{
-	float	u;
-	float	v;
-	int		index;
-
-	tmp = norm_vec(tmp);
-	u = atan2f(tmp.z, tmp.x) / (2.0 * M_PI) + 0.5;
-	v = tmp.y * 0.5 + 0.5;
-	u *= (map->texture.width - 1);
-	v *= (map->texture.height - 1);
-	// get_checkerboard_color(u, v, hit);
-	index = ((int)v * map->texture.width + (int)u) * 4;
-	hit->obj_color.x = map->texture.pixels[index] / 255.0;
-	hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-	hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
-}
-
-void	get_checkerboard_color(float u, float v, t_hitpoint *hit)
-{
-	t_vec3	color1 = {1.0, 1.0, 1.0};
-	t_vec3	color2 = {0.0, 0.0, 0.0};
-	float	scaled_u;
-	float	scaled_v;
-	int		tile_count;
-	int		u_tile;
-	int		v_tile;
-
-	tile_count = 20;
-	scaled_u = u * tile_count;
-	scaled_v = v * tile_count;
-	u_tile = (int)floor(scaled_u);
-	v_tile = (int)floor(scaled_v);
-	if ((u_tile + v_tile) % 2 == 0)
-		hit->obj_color = color2;
-	else
-		hit->obj_color = color1;
 }
