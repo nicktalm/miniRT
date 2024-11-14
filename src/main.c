@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/12 12:58:12 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/14 13:05:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,6 @@ int	main(int argc, char **argv)
 
 	init_data(&data, argc, argv);
 	init_mlx(&data);
-	// data.set.obj[0].form.sp.bump_map = mlx_load_xpm42("textures/xpm42/earth.xpm42");
-	// if (!data.set.obj[0].form.sp.bump_map)
-	// 	error("load xpm file", &data);
-	// data.set.obj[1].form.sp.bump_map = mlx_load_xpm42("textures/xpm42/moon.xpm42");
-	// if (!data.set.obj[1].form.sp.bump_map)
-	// 	error("load xpm file", &data);
-	// data.set.obj[2].form.pl.bump_map = mlx_load_xpm42("textures/xpm42/stars.xpm42");
-	// if (!data.set.obj[2].form.pl.bump_map)
-	// 	error("load xpm file", &data);
 	create_img(&data);
 	mlx_image_to_window(data.window, data.img, 0, 0);
 	// mlx_loop_hook(data.window, hook, &data);

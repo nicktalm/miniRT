@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 17:52:19 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/14 11:53:14 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/14 13:07:19 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ int	ft_count_params(char **params)
 
 void	parse_textures(t_data *data, char *texture, xpm_t *obj)
 {
-	printf("texture: %s\n", texture);
 	texture += 8;
-	printf("texture: %s\n", texture);
 	obj = mlx_load_xpm42(texture);
 	if (!obj)
 		error("load xpm file", data);
@@ -34,9 +32,7 @@ void	parse_textures(t_data *data, char *texture, xpm_t *obj)
 
 void	parse_bump_map(t_data *data, char *bump_map, xpm_t *obj)
 {
-	printf("bump_map: %s\n", bump_map);
 	bump_map += 9;
-	printf("bump_map: %s\n", bump_map);
 	obj = mlx_load_xpm42(bump_map);
 	if (!obj)
 		error("load xpm file", data);
@@ -140,7 +136,6 @@ void	parse_plane(t_data *data, char **line, int *i)
 	create_m_pl(&data->set.obj[*i].form.pl);
 	(*i)++;
 	free_double_p(params);
-	printf("plane\n\n\n");
 }
 
 void	parse_cylinder(t_data *data, char **line, int *i)
