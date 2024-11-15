@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 21:45:16 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:46:46 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ void	create_img(t_data *data)
 				hit.color.x = 0.0;
 				hit.color.y = 0.0;
 				hit.color.z = 0.0;
-				// trace_ray(coords.x, coords.y, &hit, data);
-				// data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
-				data->cache[(int)coords.x + (int)coords.y * data->width] = super_sampling(data, &hit, coords.x, coords.y);
+				trace_ray(coords.x, coords.y, &hit, data);
+				data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
+				if (data->render)
+					data->cache[(int)coords.x + (int)coords.y * data->width] = super_sampling(data, &hit, coords.x, coords.y);
 				// down_sampling(data, &hit, coords.x, coords.y);
 			}
 			mlx_put_pixel(data->img, coords.x, coords.y,
 				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
 					data->cache[(int)coords.x + (int)coords.y * data->width].y,
 					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
-			// printf("x = %f y = %f\n", coords.x, coords.y);
 			coords.x++;
 		}
 		coords.y++;

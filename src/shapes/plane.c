@@ -3,20 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 20:29:08 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:14:55 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	test_bounded_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp);
-
-void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
+void	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
 	ray.origin = con_to_vec3(
 			r_vec(pl.side.m, con_to_vec4(ray.origin, 1)));
@@ -25,7 +21,7 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 	if (pl.width == 0.0 && pl.length == 0.0)
 		test_inf_pl(pl, ray, hit, i);
 	else
-		test_bounded_pl(pl, ray, hit, i);
+		test_bounded_pl(data, pl, ray, hit, i);
 }
 
 void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
@@ -50,7 +46,7 @@ void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 	}
 }
 
-void	test_bounded_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
+void	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
 	float	t;
 	t_vec3	tmp;
@@ -78,9 +74,10 @@ void	test_bounded_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 		if (uv.x <= pl.width / 2.0 && uv.x >= pl.width / -2.0 && uv.y <= pl.length / 2.0 && uv.y >= pl.length / -2.0)
 		{
 			hit->p = con_to_vec3(r_vec(pl.side.mi, con_to_vec4(tmp, 1)));
+			hit->normal = pl.norm;
 			hit->t = t;
 			hit->i = i;
-			get_color_and_normal_pl(pl, hit, tmp);
+			get_color_and_normal_pl(data, pl, hit, tmp);
 		}
 	}
 }
@@ -101,7 +98,7 @@ void	create_m_pl(t_plane *pl)
 	invert_matrix(pl->side.m, pl->side.mi);
 }
 
-void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp)
+void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 {
 	int		index;
 	t_vec3	uv;
@@ -114,23 +111,16 @@ void	get_color_and_normal_pl(t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 	else
 		map = NULL;
 	if (map)
-	{
-		get_uv_coords_pl(pl, map, tmp, &uv);
-		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
-	}
+		get_uv_coords_pl(data, pl, map, tmp, &uv);
 	if (pl.texture)
 	{
-		// get_checkerboard_color(uv.x, uv.y, hit);
-		hit->obj_color.x = map->texture.pixels[index] / 255.0;
-		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+		if (data->checker)
+			get_checkerboard_color(uv.x, uv.y, hit);
+		else
+			hit->obj_color = get_map_color(uv.x, uv.y, pl.texture);
 	}
 	else
 		hit->obj_color = pl.color;
 	if (pl.bump_map)
-	{
-		printf("bump_map\n");
-	}
-	else
-		hit->normal = pl.norm;
+		get_map_normal(hit, &uv, pl.bump_map);
 }

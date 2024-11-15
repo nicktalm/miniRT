@@ -3,32 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   uv_coords.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:51:19 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 21:06:15 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:14:38 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	get_uv_coords_sp(xpm_t *map, t_vec3 *uv, t_vec3 tmp)
+void	get_uv_coords_sp(t_data *data, xpm_t *map, t_vec3 *uv, t_vec3 tmp)
 {
 	tmp = norm_vec(tmp);
 	uv->x = atan2f(tmp.z, tmp.x) / (2 * M_PI) + 0.5;
 	uv->y = tmp.y * 0.5 + 0.5;
-	uv->x = uv->x * (map->texture.width - 1);
-	uv->y = (map->texture.height - 1) - (uv->y * (map->texture.height - 1));
+	if (!data->checker)
+	{
+		uv->x = uv->x * (map->texture.width - 1);
+		uv->y = (map->texture.height - 1) - (uv->y * (map->texture.height - 1));
+	}
 }
 
-void	get_uv_coords_pl(t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv)
+void	get_uv_coords_pl(t_data *data, t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv)
 {
 	uv->x = tmp.x / (pl.width / 2.0);
 	uv->y = tmp.z / (pl.length / 2.0);
 	uv->x = (uv->x + 1) / 2.0;
 	uv->y = (uv->y + 1) / 2.0;
-	uv->x = uv->x * (map->texture.width - 1);
-	uv->y = uv->y * (map->texture.height - 1);
+	if (!data->checker)
+	{
+		uv->x = uv->x * (map->texture.width - 1);
+		uv->y = uv->y * (map->texture.height - 1);
+	}
 }
 
 void	get_uv_coords_cy(t_cylinder cy, xpm_t *map, t_vec3 tmp, t_vec3 *uv)

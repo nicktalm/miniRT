@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 20:30:37 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:58:32 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
+void	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_abc	formal;
 	t_vec3	tmp;
 
 	ray.origin = con_to_vec3(r_vec(sp.side.m, con_to_vec4(ray.origin, 1)));
-	ray.direction = con_to_vec3(r_vec(sp.side.m, con_to_vec4(ray.direction, 0)));
+	ray.direction = con_to_vec3(
+			r_vec(sp.side.m, con_to_vec4(ray.direction, 0)));
 	formal.t = 0.0;
 	formal.a = dot(ray.direction, ray.direction);
 	formal.b = dot(ray.direction, ray.origin);
@@ -31,9 +32,10 @@ void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 		{
 			tmp = ray_vec(ray.origin, formal.t, ray.direction);
 			hit->p = con_to_vec3(r_vec(sp.side.mi, con_to_vec4(tmp, 1)));
+			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 			hit->t = formal.t;
 			hit->i = i;
-			get_color_and_normal_sp(sp, hit, tmp);
+			get_color_and_normal_sp(data, sp, hit, tmp);
 		}
 	}
 }
@@ -44,7 +46,7 @@ void	create_m_sp(t_sphere *sp)
 	invert_matrix(sp->side.m, sp->side.mi);
 }
 
-void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
+void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 {
 	int		index;
 	t_vec3	uv;
@@ -57,23 +59,16 @@ void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 	else
 		map = NULL;
 	if (map)
-	{
-		get_uv_coords_sp(map, &uv, tmp);
-		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
-	}
+		get_uv_coords_sp(data, map, &uv, tmp);
 	if (sp.texture)
 	{
-		// get_checkerboard_color(uv.x, uv.y, hit);
-		hit->obj_color.x = map->texture.pixels[index] / 255.0;
-		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+		if (data->checker)
+			get_checkerboard_color(uv.x, uv.y, hit);
+		else
+			hit->obj_color = get_map_color(uv.x, uv.y, sp.texture);
 	}
 	else
 		hit->obj_color = sp.color;
 	if (sp.bump_map)
-	{
-		printf("bump_map\n");
-	}
-	else
-		hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
+		get_map_normal(hit, &uv, sp.bump_map);
 }

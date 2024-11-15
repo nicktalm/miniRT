@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_actions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 13:00:50 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/15 12:31:52 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	hook(void *param)
 	mlx_resize_hook(data->window, resize, data);
 	mlx_key_hook(data->window, key, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
-	create_img(data);
 	mlx_image_to_window(data->window, data->img, 0, 0);
+	create_img(data);
 	printf("fps = %f \n", 1 / (mlx_get_time() - time));
 }
 
@@ -80,6 +80,20 @@ void	key(mlx_key_data_t keydata, void *param)
 	{
 		if (data->set.cam.direction.y - 0.1 >= -1.0)
 			data->set.cam.direction.y -= 0.1;
+	}
+	if (keydata.key == MLX_KEY_C && keydata.action == 1)
+	{
+		if (!data->checker)
+			data->checker = true;
+		else
+			data->checker = false;
+	}
+	if (keydata.key == MLX_KEY_R && keydata.action == 1)
+	{
+		if (!data->render)
+			data->render = true;
+		else
+			data->render = false;
 	}
 	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == 1)
 	{

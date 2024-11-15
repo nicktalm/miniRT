@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 21:03:19 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:03:19 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,40 +55,14 @@ void	get_color_and_normal_cy(t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i)
 			get_uv_coords_cy(cy, map, tmp, &uv);
 		else
 			get_uv_coords_tb(cy.radius, map, tmp, &uv);
-		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
 	}
 	if (cy.texture)
 	{
 		// get_checkerboard_color(uv.x, uv.y, hit);
-		hit->obj_color.x = map->texture.pixels[index] / 255.0;
-		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+		hit->obj_color = get_map_color(uv.x, uv.y, cy.texture);
 	}
 	else
 		hit->obj_color = cy.color;
 	if (cy.bump_map)
-	{
-		printf("bump_map\n");
-	}
-}
-
-void	get_checkerboard_color(float u, float v, t_hitpoint *hit)
-{
-	t_vec3	color1 = {1.0, 1.0, 1.0};
-	t_vec3	color2 = {0.0, 0.0, 0.0};
-	float	scaled_u;
-	float	scaled_v;
-	int		tile_count;
-	int		u_tile;
-	int		v_tile;
-
-	tile_count = 20;
-	scaled_u = u * tile_count;
-	scaled_v = v * tile_count;
-	u_tile = (int)floor(scaled_u);
-	v_tile = (int)floor(scaled_v);
-	if ((u_tile + v_tile) % 2 == 0)
-		hit->obj_color = color2;
-	else
-		hit->obj_color = color1;
+		get_map_normal(hit, &uv, cy.bump_map);
 }

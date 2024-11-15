@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/14 21:07:43 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 12:14:49 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ typedef struct s_data
 	int			width;
 	int			height;
 	bool		moved;
+	bool		checker;
+	bool		render;
 }				t_data;
 
 // main
@@ -179,14 +181,17 @@ void	create_m_cy(t_cylinder *cy);
 
 // plane
 
-void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_pl(t_plane *pl);
+void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp);
 
 // sphere
 
-void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
+void	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_sp(t_sphere *sp);
-void	get_color_and_normal_sp(t_sphere sp, t_hitpoint *hit, t_vec3 tmp);
+void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 tmp);
 
 // matrix
 
@@ -207,12 +212,18 @@ void	scaling(float m[4][4], float x, float y, float z);
 
 // uv_coords
 
-void	get_uv_coords_sp(xpm_t *map, t_vec3 *uv, t_vec3 tmp);
-void	get_uv_coords_pl(t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_sp(t_data *data, xpm_t *map, t_vec3 *uv, t_vec3 tmp);
+void	get_uv_coords_pl(t_data *data, t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
 void	get_uv_coords_cy(t_cylinder cy, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
 void	get_uv_coords_tb(float radius, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
 void	get_uv_coords_cn(t_cone cn, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+
+// bump_mapping
+
 void	get_checkerboard_color(float u, float v, t_hitpoint *hit);
+t_vec3	get_map_color(float u, float v, xpm_t *map);
+t_vec3	get_tangent(t_vec3 normal);
+void	get_map_normal(t_hitpoint *hit, t_vec3 *uv, xpm_t *bump_map);
 
 // vec_calc
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 21:07:20 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 11:04:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,19 +141,14 @@ void	get_color_and_normal_cn(t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i)
 			get_uv_coords_cn(cn, map, tmp, &uv);
 		else
 			get_uv_coords_tb(cn.radius, map, tmp, &uv);
-		index = ((int)uv.y * map->texture.width + (int)uv.x) * 4;
 	}
 	if (cn.texture)
 	{
 		// get_checkerboard_color(uv.x, uv.y, hit);
-		hit->obj_color.x = map->texture.pixels[index] / 255.0;
-		hit->obj_color.y = map->texture.pixels[index + 1] / 255.0;
-		hit->obj_color.z = map->texture.pixels[index + 2] / 255.0;
+		get_map_color(uv.x, uv.y, cn.texture);
 	}
 	else
 		hit->obj_color = cn.color;
 	if (cn.bump_map)
-	{
-		printf("bump_map\n");
-	}
+		get_map_normal(hit, &uv, cn.bump_map);
 }
