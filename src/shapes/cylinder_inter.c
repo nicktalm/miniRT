@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_inter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:52:00 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/14 20:59:14 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/15 16:56:00 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
+void	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_ray	test;
 
@@ -20,23 +20,23 @@ void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i)
 			r_vec(cy.top.m, con_to_vec4(ray.origin, 1)));
 	test.direction = con_to_vec3(
 			r_vec(cy.top.m, con_to_vec4(ray.direction, 0)));
-	if (test_top_bottom_cy(cy, hit, test, cy.top.mi))
+	if (test_top_bottom_cy(data, cy, hit, test, cy.top.mi))
 		hit->i = i;
 	test.origin = con_to_vec3(
 			r_vec(cy.bottom.m, con_to_vec4(ray.origin, 1)));
 	test.direction = con_to_vec3(
 			r_vec(cy.bottom.m, con_to_vec4(ray.direction, 0)));
-	if (test_top_bottom_cy(cy, hit, test, cy.bottom.mi))
+	if (test_top_bottom_cy(data, cy, hit, test, cy.bottom.mi))
 		hit->i = i;
 	test.origin = con_to_vec3(
 			r_vec(cy.side.m, con_to_vec4(ray.origin, 1)));
 	test.direction = con_to_vec3(
 			r_vec(cy.side.m, con_to_vec4(ray.direction, 0)));
-	if (test_side_cy(cy, test, hit))
+	if (test_side_cy(data, cy, test, hit))
 		hit->i = i;
 }
 
-bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit)
+bool	test_side_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit)
 {
 	t_abc	formal;
 	t_vec3	tmp;
@@ -56,7 +56,7 @@ bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit)
 				hit->p = con_to_vec3(r_vec(cy.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cy(cy, hit);
 				hit->t = formal.t;
-				get_color_and_normal_cy(cy, hit, tmp, 0);
+				get_color_and_normal_cy(data, cy, hit, tmp, 0);
 				return (true);
 			}
 		}
@@ -64,7 +64,7 @@ bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit)
 	return (false);
 }
 
-bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4])
+bool	test_top_bottom_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4])
 {
 	float	dis;
 	float	t;
@@ -84,7 +84,7 @@ bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]
 			hit->p = con_to_vec3(r_vec(m, con_to_vec4(tmp, 1)));
 			hit->normal = cy.norm;
 			hit->t = t;
-			get_color_and_normal_cy(cy, hit, tmp, 1);
+			get_color_and_normal_cy(data, cy, hit, tmp, 1);
 			return (true);
 		}
 	}

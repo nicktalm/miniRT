@@ -6,13 +6,13 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 11:04:10 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/15 16:44:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
+void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 {
 	t_ray	test;
 
@@ -20,17 +20,17 @@ void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 			r_vec(cn.bottom.m, con_to_vec4(ray.origin, 1)));
 	test.direction = con_to_vec3(
 			r_vec(cn.bottom.m, con_to_vec4(ray.direction, 0)));
-	if (test_bottom_cn(cn, hit, test))
+	if (test_bottom_cn(data, cn, hit, test))
 		hit->i = i;
 	test.origin = con_to_vec3(
 			r_vec(cn.side.m, con_to_vec4(ray.origin, 1)));
 	test.direction = con_to_vec3(
 			r_vec(cn.side.m, con_to_vec4(ray.direction, 0)));
-	if (test_side_cn(cn, test, hit))
+	if (test_side_cn(data, cn, test, hit))
 		hit->i = i;
 }
 
-bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
+bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit)
 {
 	t_abc	formal;
 	t_vec3	tmp;
@@ -50,7 +50,7 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
 				hit->p = con_to_vec3(r_vec(cn.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cn(cn, hit);
 				hit->t = formal.t;
-				get_color_and_normal_cn(cn, hit, tmp, 0);
+				get_color_and_normal_cn(data, cn, hit, tmp, 0);
 				return (true);
 			}
 		}
@@ -58,7 +58,7 @@ bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit)
 	return (false);
 }
 
-bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray)
+bool	test_bottom_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_ray ray)
 {
 	float	dis;
 	float	t;
@@ -79,7 +79,7 @@ bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray)
 					r_vec(cn.bottom.mi, con_to_vec4(tmp, 1)));
 			hit->normal = multi_vec_wnbr(cn.norm, -1.0);
 			hit->t = t;
-			get_color_and_normal_cn(cn, hit, tmp, 1);
+			get_color_and_normal_cn(data, cn, hit, tmp, 1);
 			return (true);
 		}
 	}
@@ -123,7 +123,7 @@ void	create_m_cn(t_cone *cn)
 	invert_matrix(cn->bottom.m, cn->bottom.mi);
 }
 
-void	get_color_and_normal_cn(t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i)
+void	get_color_and_normal_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i)
 {
 	int		index;
 	t_vec3	uv;
@@ -138,14 +138,16 @@ void	get_color_and_normal_cn(t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i)
 	if (map)
 	{
 		if (i == 0)
-			get_uv_coords_cn(cn, map, tmp, &uv);
+			get_uv_coords_cn(data, cn, map, tmp, &uv);
 		else
-			get_uv_coords_tb(cn.radius, map, tmp, &uv);
+			get_uv_coords_tb(data, cn.radius, map, tmp, &uv);
 	}
 	if (cn.texture)
 	{
-		// get_checkerboard_color(uv.x, uv.y, hit);
-		get_map_color(uv.x, uv.y, cn.texture);
+		if (data->checker)
+			get_checkerboard_color(uv.x, uv.y, hit);
+		else
+			get_map_color(uv.x, uv.y, cn.texture);
 	}
 	else
 		hit->obj_color = cn.color;

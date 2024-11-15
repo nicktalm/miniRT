@@ -6,13 +6,13 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 11:58:32 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/15 17:11:54 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
+bool	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit)
 {
 	t_abc	formal;
 	t_vec3	tmp;
@@ -34,10 +34,11 @@ void	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit, int i)
 			hit->p = con_to_vec3(r_vec(sp.side.mi, con_to_vec4(tmp, 1)));
 			hit->normal = norm_vec(sub_vec(hit->p, sp.coords));
 			hit->t = formal.t;
-			hit->i = i;
 			get_color_and_normal_sp(data, sp, hit, tmp);
+			return (true);
 		}
 	}
+	return (false);
 }
 
 void	create_m_sp(t_sphere *sp)

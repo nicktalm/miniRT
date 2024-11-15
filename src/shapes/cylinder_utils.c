@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 11:03:19 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/15 17:02:40 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	create_m_cy(t_cylinder *cy)
 	invert_matrix(cy->bottom.m, cy->bottom.mi);
 }
 
-void	get_color_and_normal_cy(t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i)
+void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i)
 {
 	int		index;
 	t_vec3	uv;
@@ -49,17 +49,19 @@ void	get_color_and_normal_cy(t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i)
 		map = cy.bump_map;
 	else
 		map = NULL;
-	if (map)
+	if (map || data->checker)
 	{
 		if (i == 0)
-			get_uv_coords_cy(cy, map, tmp, &uv);
+			get_uv_coords_cy(data, cy, map, tmp, &uv);
 		else
-			get_uv_coords_tb(cy.radius, map, tmp, &uv);
+			get_uv_coords_tb(data, cy.radius, map, tmp, &uv);
 	}
-	if (cy.texture)
+	if (cy.texture || data->checker)
 	{
-		// get_checkerboard_color(uv.x, uv.y, hit);
-		hit->obj_color = get_map_color(uv.x, uv.y, cy.texture);
+		if (data->checker)
+			get_checkerboard_color(uv.x, uv.y, hit);
+		else
+			hit->obj_color = get_map_color(uv.x, uv.y, cy.texture);
 	}
 	else
 		hit->obj_color = cy.color;

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 12:46:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/15 17:06:00 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	create_img(t_data *data)
 				data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
 				if (data->render)
 					data->cache[(int)coords.x + (int)coords.y * data->width] = super_sampling(data, &hit, coords.x, coords.y);
-				// down_sampling(data, &hit, coords.x, coords.y);
 			}
 			mlx_put_pixel(data->img, coords.x, coords.y,
 				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,

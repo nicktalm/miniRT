@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/15 12:14:49 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/15 17:12:20 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,23 +160,23 @@ bool	get_distanz(t_hitpoint *hit, t_light light, int i);
 
 // cone
 
-void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
-bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit);
-bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray);
+void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit);
+bool	test_bottom_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
 void	create_m_cn(t_cone *cn);
-void	get_color_and_normal_cn(t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i);
+void	get_color_and_normal_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i);
 
 // cylinder_inter
 
-void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit);
-bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
+void	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+bool	test_side_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit);
+bool	test_top_bottom_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
 void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
 
 // cylinder_utils
 
-void	get_color_and_normal_cy(t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i);
+void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i);
 void	create_m_cy(t_cylinder *cy);
 
 // plane
@@ -189,7 +189,7 @@ void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 t
 
 // sphere
 
-void	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit);
 void	create_m_sp(t_sphere *sp);
 void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 tmp);
 
@@ -214,9 +214,9 @@ void	scaling(float m[4][4], float x, float y, float z);
 
 void	get_uv_coords_sp(t_data *data, xpm_t *map, t_vec3 *uv, t_vec3 tmp);
 void	get_uv_coords_pl(t_data *data, t_plane pl, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
-void	get_uv_coords_cy(t_cylinder cy, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
-void	get_uv_coords_tb(float radius, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
-void	get_uv_coords_cn(t_cone cn, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_cy(t_data *data, t_cylinder cy, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_tb(t_data *data, float radius, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
+void	get_uv_coords_cn(t_data *data, t_cone cn, xpm_t *map, t_vec3 tmp, t_vec3 *uv);
 
 // bump_mapping
 
