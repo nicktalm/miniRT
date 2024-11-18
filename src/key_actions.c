@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 13:51:14 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 16:17:54 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,21 +47,25 @@ void	resize(int width, int height, void *param)
 void	key(mlx_key_data_t keydata, void *param)
 {
 	t_data	*data;
+	t_vec3	tangent;
+	t_vec3	bitangent;
 
 	data = param;
 	data->moved = true;
+	tangent = get_tangent(data->set.cam.direction);
+	bitangent = cross_vec(data->set.cam.direction, tangent);
 	if (keydata.key == MLX_KEY_W && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords.z -= 0.5;
+		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(data->set.cam.direction, 0.5));
 	else if (keydata.key == MLX_KEY_S && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords.z += 0.5;
+		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(data->set.cam.direction, 0.5));
 	else if (keydata.key == MLX_KEY_A && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords.x -= 0.5;
+		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
 	else if (keydata.key == MLX_KEY_D && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords.x += 0.5;
+		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
 	else if (keydata.key == MLX_KEY_Q && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords.y += 0.5;
+		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(tangent, 0.5));
 	else if (keydata.key == MLX_KEY_E && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords.y -= 0.5;
+		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(tangent, 0.5));
 	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.x - 0.1 >= -1.0)
