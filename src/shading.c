@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/14 12:19:27 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 15:00:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 			{
 				if (i == 0)
 					hit->color = data->bg;
-				return ;
+				break ;
 			}
 			i++;
 		}

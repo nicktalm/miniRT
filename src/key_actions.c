@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 12:31:52 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 13:51:14 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,58 +49,60 @@ void	key(mlx_key_data_t keydata, void *param)
 	t_data	*data;
 
 	data = param;
+	data->moved = true;
 	if (keydata.key == MLX_KEY_W && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.z -= 0.5;
-	if (keydata.key == MLX_KEY_S && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_S && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.z += 0.5;
-	if (keydata.key == MLX_KEY_A && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_A && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.x -= 0.5;
-	if (keydata.key == MLX_KEY_D && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_D && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.x += 0.5;
-	if (keydata.key == MLX_KEY_Q && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_Q && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.y += 0.5;
-	if (keydata.key == MLX_KEY_E && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_E && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords.y -= 0.5;
-	if (keydata.key == MLX_KEY_LEFT && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_LEFT && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.x - 0.1 >= -1.0)
 			data->set.cam.direction.x -= 0.1;
 	}
-	if (keydata.key == MLX_KEY_RIGHT && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.x + 0.1 <= 1.0)
 			data->set.cam.direction.x += 0.1;
 	}
-	if (keydata.key == MLX_KEY_UP && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_UP && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.y + 0.1 <= 1.0)
 			data->set.cam.direction.y += 0.1;
 	}
-	if (keydata.key == MLX_KEY_DOWN && (keydata.action == 1 || keydata.action == 2))
+	else if (keydata.key == MLX_KEY_DOWN && (keydata.action == 1 || keydata.action == 2))
 	{
 		if (data->set.cam.direction.y - 0.1 >= -1.0)
 			data->set.cam.direction.y -= 0.1;
 	}
-	if (keydata.key == MLX_KEY_C && keydata.action == 1)
+	else if (keydata.key == MLX_KEY_C && keydata.action == 1)
 	{
 		if (!data->checker)
 			data->checker = true;
 		else
 			data->checker = false;
 	}
-	if (keydata.key == MLX_KEY_R && keydata.action == 1)
+	else if (keydata.key == MLX_KEY_R && keydata.action == 1)
 	{
 		if (!data->render)
 			data->render = true;
 		else
 			data->render = false;
 	}
-	if (keydata.key == MLX_KEY_ESCAPE && keydata.action == 1)
+	else if (keydata.key == MLX_KEY_ESCAPE && keydata.action == 1)
 	{
 		mlx_delete_image(data->window, data->img);
 		mlx_terminate(data->window);
 		free_all(data);
 		exit(0);
 	}
-	data->moved = true;
+	else
+		data->moved = false;
 }

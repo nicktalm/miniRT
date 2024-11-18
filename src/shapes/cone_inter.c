@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cone.c                                             :+:      :+:    :+:   */
+/*   cone_inter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 16:44:48 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 11:31:02 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit)
 				hit->p = con_to_vec3(r_vec(cn.side.mi, con_to_vec4(tmp, 1)));
 				norm_calc_cn(cn, hit);
 				hit->t = formal.t;
-				get_color_and_normal_cn(data, cn, hit, tmp, 0);
+				get_color_and_normal_cn(data, cn, hit, tmp);
 				return (true);
 			}
 		}
@@ -79,7 +79,7 @@ bool	test_bottom_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_ray ray)
 					r_vec(cn.bottom.mi, con_to_vec4(tmp, 1)));
 			hit->normal = multi_vec_wnbr(cn.norm, -1.0);
 			hit->t = t;
-			get_color_and_normal_cn(data, cn, hit, tmp, 1);
+			get_color_and_normal_tb_cn(data, cn, hit, tmp);
 			return (true);
 		}
 	}
@@ -99,58 +99,4 @@ void	norm_calc_cn(t_cone cn, t_hitpoint *hit)
 	ch = sub_vec(hit->p, center);
 	tangent = cross_vec(oc, ch);
 	hit->normal = norm_vec(cross_vec(tangent, oc));
-}
-
-
-void	create_m_cn(t_cone *cn)
-{
-	float	angle_x;
-	float	angle_z;
-	float	t[4][4];
-	float	full_r[4][4];
-
-	angle_x = 0.0;
-	angle_z = 0.0;
-	calc_angle(cn->norm, &angle_x, &angle_z);
-	get_full_r(full_r, angle_x, 0.0, angle_z);
-	cn->norm = norm_vec(cn->norm);
-	translation(t, multi_vec_wnbr(cn->coords, -1.0));
-	multi_m(cn->side.m, full_r, t);
-	invert_matrix(cn->side.m, cn->side.mi);
-	translation(t, multi_vec_wnbr(
-			ray_vec(cn->coords, -cn->height, cn->norm), -1.0));
-	multi_m(cn->bottom.m, full_r, t);
-	invert_matrix(cn->bottom.m, cn->bottom.mi);
-}
-
-void	get_color_and_normal_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_vec3 tmp, int i)
-{
-	int		index;
-	t_vec3	uv;
-	xpm_t	*map;
-
-	if (cn.texture)
-		map = cn.texture;
-	else if (cn.bump_map)
-		map = cn.bump_map;
-	else
-		map = NULL;
-	if (map)
-	{
-		if (i == 0)
-			get_uv_coords_cn(data, cn, map, tmp, &uv);
-		else
-			get_uv_coords_tb(data, cn.radius, map, tmp, &uv);
-	}
-	if (cn.texture)
-	{
-		if (data->checker)
-			get_checkerboard_color(uv.x, uv.y, hit);
-		else
-			get_map_color(uv.x, uv.y, cn.texture);
-	}
-	else
-		hit->obj_color = cn.color;
-	if (cn.bump_map)
-		get_map_normal(hit, &uv, cn.bump_map);
 }

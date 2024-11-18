@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 17:11:54 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 10:33:29 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void	create_m_sp(t_sphere *sp)
 
 void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
 {
-	int		index;
 	t_vec3	uv;
 	xpm_t	*map;
 
@@ -59,9 +58,9 @@ void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 
 		map = sp.bump_map;
 	else
 		map = NULL;
-	if (map)
+	if (map || data->checker)
 		get_uv_coords_sp(data, map, &uv, tmp);
-	if (sp.texture)
+	if (sp.texture || data->checker)
 	{
 		if (data->checker)
 			get_checkerboard_color(uv.x, uv.y, hit);

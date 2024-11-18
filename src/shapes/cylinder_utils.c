@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 17:02:40 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 10:33:15 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	create_m_cy(t_cylinder *cy)
 
 void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i)
 {
-	int		index;
 	t_vec3	uv;
 	xpm_t	*map;
 
@@ -52,9 +51,9 @@ void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec
 	if (map || data->checker)
 	{
 		if (i == 0)
-			get_uv_coords_cy(data, cy, map, tmp, &uv);
+			uv = get_uv_coords_cy(data, cy, map, tmp);
 		else
-			get_uv_coords_tb(data, cy.radius, map, tmp, &uv);
+			uv = get_uv_coords_tb(data, cy.radius, map, tmp);
 	}
 	if (cy.texture || data->checker)
 	{

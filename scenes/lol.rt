@@ -15,3 +15,5 @@ pl	0,0,-0.5	0,0,1						255,255,255	texture=textures/xpm42/wood_floor.xpm42	1,1
 sp	2,0,0	1								255,255,255	texture=textures/xpm42/basketball_bump.xpm42
 
 cy	-2,0,0	0,1,-1	1	1					255,255,255	texture=textures/xpm42/earth.xpm42
+
+cn	-4,0.5,0	0,1,0	1	1				255,255,255	texture=textures/xpm42/earth.xpm42

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 12:14:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 10:33:23 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	create_m_pl(t_plane *pl)
 
 void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 {
-	int		index;
 	t_vec3	uv;
 	xpm_t	*map;
 
@@ -110,9 +109,9 @@ void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 t
 		map = pl.bump_map;
 	else
 		map = NULL;
-	if (map)
-		get_uv_coords_pl(data, pl, map, tmp, &uv);
-	if (pl.texture)
+	if (map || data->checker)
+		uv = get_uv_coords_pl(data, pl, map, tmp);
+	if (pl.texture || data->checker)
 	{
 		if (data->checker)
 			get_checkerboard_color(uv.x, uv.y, hit);
