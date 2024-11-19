@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/19 11:09:42 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 22:56:28 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ typedef struct s_data
 	int			height;
 	int			x_max;
 	int			y_max;
+	float		res;
 	bool		moved;
+	bool		resized;
 	bool		checker;
 	bool		render;
 }				t_data;

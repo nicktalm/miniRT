@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   key_actions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 13:03:40 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 23:00:18 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,13 @@ void	hook(void *param)
 	t_data	*data;
 
 	data = param;
+	// printf("delta time %f\n", data->window->delta_time);
+	// if (data->window->delta_time > 1.0 && data->resized)
+	// {
+	// 	data->res += 1.0;
+	// 	data->moved = true;
+	// 	data->resized = true;
+	// }
 	mlx_delete_image(data->window, data->img);
 	mlx_resize_hook(data->window, resize, data);
 	mlx_key_hook(data->window, key, data);

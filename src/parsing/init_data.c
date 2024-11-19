@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 12:35:14 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 23:22:34 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->cache = NULL;
 	if (argc == 2)
 	{
-		data->width = 1600;
-		data->height = 900;
+		data->width = 500;
+		data->height = 500;
 		data->bg.x = 0.0;
 		data->bg.y = 0.0;
 		data->bg.z = 0.0;
+		data->res = 4.0;
 		data->checker = false;
 		data->render = false;
+		data->resized = true;
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
 		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
