@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 12:35:45 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 16:15:25 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,11 @@ void	create_img(t_data *data)
 					down_sampling(data, &hit, (int)coords.x, (int)coords.y);
 				else
 				{
-					super_sampling(data, &hit, (int)coords.x, (int)coords.y, data->width);
+					// super_sampling(data, &hit, (int)coords.x, (int)coords.y, data->width);
+					creat_img_multi(data);
+					data->moved = false;
+					return ;
 				}
-				// creat_img_multi(data);
-				// data->moved = false;
-				// return ;
 			}
 			else
 			{

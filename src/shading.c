@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 15:35:53 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 16:25:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray, t_light light)
 	diffuse_light(&in, light, hit);
 	specular_light(&in, light, data->set.cam, hit);
 	lighting = add_vec(add_vec(in.ambient,
-		multi_vec_wnbr(in.diffuse, light.brightness)),
-		multi_vec_wnbr(in.specular, light.brightness));
+		multi_vec_wnbr(in.diffuse, light.brightness * 500)),
+		multi_vec_wnbr(in.specular, light.brightness * 500));
 	hit->color = multi_vec(hit->obj_color, lighting);
 	ray->origin = ray_vec(hit->p, 0.01, hit->normal);
 	ray->direction = in.light_dir;
@@ -52,7 +52,7 @@ void	diffuse_light(t_lighting *in, t_light light, t_hitpoint *hit)
 	if (strength < 0.0)
 		strength = 0.0;
 	in->diffuse = multi_vec_wnbr(light.color, strength);
-	// in->diffuse = dev_vec_wnbr(in->diffuse, 4.0 * M_PI * pow(in->len, 2.0));
+	in->diffuse = dev_vec_wnbr(in->diffuse, 4.0 * M_PI * pow(in->len, 2.0));
 }
 
 void	specular_light(t_lighting *in,
@@ -69,7 +69,7 @@ void	specular_light(t_lighting *in,
 		strength = 0.0;
 	strength = pow(strength, 32.0);
 	in->specular = multi_vec_wnbr(light.color, strength);
-	// in->specular = dev_vec_wnbr(in->specular, 4.0 * M_PI * pow(in->len, 2.0));
+	in->specular = dev_vec_wnbr(in->specular, 4.0 * M_PI * pow(in->len, 2.0));
 }
 
 t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal)

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:19:03 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 12:25:44 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 16:17:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*loop_thread(void *param)
 			hit.color.x = 0.0;
 			hit.color.y = 0.0;
 			hit.color.z = 0.0;
-			super_sampling(range->data, &hit, x, y, range->x_max);
+			super_sampling(range->data, &hit, x, y, range->data->width);
 			x++;
 		}
 		y++;
