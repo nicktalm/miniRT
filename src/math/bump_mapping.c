@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:52:10 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 11:37:27 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 13:04:51 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_vec3	get_tangent(t_vec3 normal)
 {
 	t_vec3	up;
 	t_vec3	right;
-	t_vec3	into;
+	t_vec3	tangent;
 
 	up.x = 0.0;
 	up.y = 1.0;
@@ -59,14 +59,10 @@ t_vec3	get_tangent(t_vec3 normal)
 	right.x = 1.0;
 	right.y = 0.0;
 	right.z = 0.0;
-	into.x = 0.0;
-	into.y = 0.0;
-	into.z = 1.0;
-	if (dot(normal, up) != 1)
-		return (up);
-	else if (dot(normal, right) != 1)
-		return (right);
-	return (into);
+	if (fabs(normal.y) > 0.99)
+		up = right;
+	tangent = cross_vec(up, normal);
+	return (norm_vec(tangent));
 }
 
 void	get_map_normal(t_hitpoint *hit, t_vec3 *uv, xpm_t *bump_map)

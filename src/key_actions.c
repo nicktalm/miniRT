@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 16:17:54 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 13:03:40 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,14 @@
 void	hook(void *param)
 {
 	t_data	*data;
-	double	time;
 
 	data = param;
-	time = mlx_get_time();
 	mlx_delete_image(data->window, data->img);
 	mlx_resize_hook(data->window, resize, data);
 	mlx_key_hook(data->window, key, data);
 	data->img = mlx_new_image(data->window, data->width, data->height);
 	mlx_image_to_window(data->window, data->img, 0, 0);
 	create_img(data);
-	printf("fps = %f \n", 1 / (mlx_get_time() - time));
 }
 
 void	resize(int width, int height, void *param)
@@ -52,16 +49,16 @@ void	key(mlx_key_data_t keydata, void *param)
 
 	data = param;
 	data->moved = true;
-	tangent = get_tangent(data->set.cam.direction);
-	bitangent = cross_vec(data->set.cam.direction, tangent);
+	bitangent = get_tangent(data->set.cam.direction);
+	tangent = cross_vec(data->set.cam.direction, bitangent);
 	if (keydata.key == MLX_KEY_W && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(data->set.cam.direction, 0.5));
 	else if (keydata.key == MLX_KEY_S && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(data->set.cam.direction, 0.5));
 	else if (keydata.key == MLX_KEY_A && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
-	else if (keydata.key == MLX_KEY_D && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
+	else if (keydata.key == MLX_KEY_D && (keydata.action == 1 || keydata.action == 2))
+		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
 	else if (keydata.key == MLX_KEY_Q && (keydata.action == 1 || keydata.action == 2))
 		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(tangent, 0.5));
 	else if (keydata.key == MLX_KEY_E && (keydata.action == 1 || keydata.action == 2))

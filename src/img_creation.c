@@ -6,14 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 15:17:15 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 12:35:45 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 // void	create_img(t_data *data)
 // {
@@ -56,7 +53,7 @@ void	create_img(t_data *data)
 	coords.y = 0.0;
 	coords.z = 0.0;
 	if (data->moved && !data->render)
-		add = 4.0;
+		add = 10.0;
 	else
 		add = 1.0;
 	init_viewport(data);
@@ -73,7 +70,12 @@ void	create_img(t_data *data)
 				if (!data->render)
 					down_sampling(data, &hit, (int)coords.x, (int)coords.y);
 				else
-					super_sampling(data, &hit, (int)coords.x, (int)coords.y);
+				{
+					super_sampling(data, &hit, (int)coords.x, (int)coords.y, data->width);
+				}
+				// creat_img_multi(data);
+				// data->moved = false;
+				// return ;
 			}
 			else
 			{
@@ -135,7 +137,7 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 	get_color(data, &ray, hit);
 }
 
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width)
 {
 	t_vec3		full_color;
 	int			i;
@@ -144,23 +146,23 @@ void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 	full_color.x = 0.0;
 	full_color.y = 0.0;
 	full_color.z = 0.0;
-	i = 0;
-	while (i < 4)
+	j = 0;
+	while (j < 4)
 	{
-		j = 0;
-		while (j < 4)
+		i = 0;
+		while (i < 4)
 		{
 			trace_ray((float)x + ((float)i / 4.0) - 0.375,
 				(float)y + ((float)j / 4.0) - 0.375, hit, data);
 			full_color = add_vec(full_color, hit->color);
-			j++;
+			i++;
 		}
-		i++;
+		j++;
 	}
 	full_color = dev_vec_wnbr(full_color, 16.0);
 	mlx_put_pixel(data->img, x, y,
 			create_color(full_color.x, full_color.y, full_color.z, 255));
-	data->cache[x + y * data->width] = full_color;
+	data->cache[x + y * width] = full_color;
 }
 
 void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
@@ -171,10 +173,10 @@ void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 
 	j = 0;
 	trace_ray((float)x, (float)y, hit, data);
-	while (j < 4)
+	while (j < 10)
 	{
 		i = 0;
-		while (i < 4)
+		while (i < 10)
 		{
 			if (x + i < data->width && y + j < data->height)
 			{

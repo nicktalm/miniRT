@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/18 11:30:15 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/19 11:09:42 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@
 # include "shapes.h"
 # include "ray.h"
 
+typedef struct s_data t_data;
+
+typedef struct s_range
+{
+	t_data		*data;
+	pthread_t	p;
+	int			th_nbr;
+	int			y_max;
+	int			x_max;
+	int			y_min;
+	int			x_min;
+}				t_range;
+
 typedef struct s_settings
 {
 	t_ambient	ambient;
@@ -45,9 +58,12 @@ typedef struct s_data
 	t_viewport	vp;
 	t_vec3		bg;
 	t_vec3		*cache;
+	t_range		range[200];
 	float		aspect_ratio;
 	int			width;
 	int			height;
+	int			x_max;
+	int			y_max;
 	bool		moved;
 	bool		checker;
 	bool		render;
@@ -56,6 +72,8 @@ typedef struct s_data
 // main
 
 int		main(int argc, char **argv);
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width);
+void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 //check_file
 
@@ -136,10 +154,10 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 // multi_threading
 
-// void	calc_pixels(t_data *data);
-// void	creat_img_multi(t_data *data);
-// void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
-// void	*loop_thread(void *param);
+void	calc_pixels(t_data *data);
+void	creat_img_multi(t_data *data);
+void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
+void	*loop_thread(void *param);
 
 // check_hit
 
