@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 23:22:34 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:21:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->bg.x = 0.0;
 		data->bg.y = 0.0;
 		data->bg.z = 0.0;
-		data->res = 4.0;
+		data->res = 1.0;
 		data->checker = false;
 		data->render = false;
 		data->resized = true;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 23:29:33 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:12:07 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,14 @@ void	create_img(t_data *data)
 {
 	t_vec3		coords;
 	t_hitpoint	hit;
+	int			resolution;
 
 	coords.y = 0.0;
 	coords.z = 0.0;
 	if (data->moved && !data->render)
-		data->res = 10.0;
+		resolution = data->res;
 	else
-		data->res = 1.0;
+		resolution = 1;
 	init_viewport(data);
 	while (coords.y < data->height)
 	{
@@ -83,9 +84,9 @@ void	create_img(t_data *data)
 					data->cache[(int)coords.x + (int)coords.y * data->width].y,
 					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
 			}
-			coords.x += data->res;
+			coords.x += resolution;
 		}
-		coords.y += data->res;
+		coords.y += resolution;
 	}
 	data->moved = false;
 }
@@ -163,19 +164,19 @@ void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width)
 	mlx_put_pixel(data->img, x, y,
 			create_color(full_color.x, full_color.y, full_color.z, 255));
 	data->cache[x + y * width] = full_color;
-	printf("\033[sRendering image\033[0J");
-	if (dot >= 1)
-		printf(".");
-	if (dot >= 2)
-		printf(".");
-	if (dot == 3)
-	{
-		dot = 1;
-		printf(".");
-	}
-	else
-		dot++;
-	printf("\033[u");
+	// printf("\033[sRendering image\033[0J");
+	// if (dot >= 1)
+	// 	printf(".");
+	// if (dot >= 2)
+	// 	printf(".");
+	// if (dot == 3)
+	// {
+	// 	dot = 1;
+	// 	printf(".");
+	// }
+	// else
+	// 	dot++;
+	// printf("\033[u");
 }
 
 void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
