@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_threading.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:19:03 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/19 17:18:14 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/20 15:44:55 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*loop_thread(void *param)
 			hit.color.x = 0.0;
 			hit.color.y = 0.0;
 			hit.color.z = 0.0;
-			super_sampling(range->data, &hit, x, y, range->data->width);
+			super_sampling(range->data, &hit, x, y);
 			x++;
 		}
 		y++;

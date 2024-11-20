@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/20 10:36:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 16:08:47 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,15 @@ typedef struct s_data
 	t_vec3		*cache;
 	t_range		range[200];
 	float		aspect_ratio;
+	int			win_w_max;
+	int			win_h_max;
 	int			width;
 	int			height;
 	int			x_max;
 	int			y_max;
 	int			res;
 	bool		moved;
-	bool		resized;
+	bool		cache_use;
 	bool		checker;
 	bool		render;
 }				t_data;
@@ -74,7 +76,8 @@ typedef struct s_data
 // main
 
 int		main(int argc, char **argv);
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width);
+void	get_resolution(t_data *data);
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 //check_file
