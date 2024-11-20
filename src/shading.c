@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/20 15:40:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 00:05:06 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,9 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 	{
 		*ray = first;
 		i = 0;
+		hit->color.x = 0.0;
+		hit->color.y = 0.0;
+		hit->color.z = 0.0;
 		while (i < data->set.light[pos].end)
 		{
 			check_hit(ray, hit, data);

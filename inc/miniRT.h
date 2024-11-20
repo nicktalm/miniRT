@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/20 15:37:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 00:11:55 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,6 @@
 # include "shapes.h"
 # include "ray.h"
 
-typedef struct s_data t_data;
-
-typedef struct s_range
-{
-	t_data		*data;
-	pthread_t	p;
-	int			th_nbr;
-	int			y_max;
-	int			x_max;
-	int			y_min;
-	int			x_min;
-}				t_range;
-
 typedef struct s_settings
 {
 	t_ambient	ambient;
@@ -52,33 +39,44 @@ typedef struct s_settings
 
 typedef struct s_data
 {
-	t_settings	set;
-	mlx_t		*window;
-	mlx_image_t	*img;
-	t_viewport	vp;
-	t_vec3		bg;
-	t_vec3		*cache;
-	t_range		range[200];
-	float		aspect_ratio;
-	int			win_w_max;
-	int			win_h_max;
-	int			width;
-	int			height;
-	int			x_max;
-	int			y_max;
-	int			res;
-	bool		moved;
-	bool		cache_use;
-	bool		checker;
-	bool		render;
+	t_settings		set;
+	mlx_t			*window;
+	mlx_image_t		*img;
+	t_viewport		vp;
+	t_vec3			bg;
+	t_vec3			*cache;
+	pthread_mutex_t	write;
+	float			aspect_ratio;
+	int				win_w_max;
+	int				win_h_max;
+	int				width;
+	int				height;
+	int				x_max;
+	int				y_max;
+	int				res;
+	bool			moved;
+	bool			cache_use;
+	bool			checker;
+	bool			render;
 }				t_data;
+
+typedef struct s_range
+{
+	t_data		data;
+	pthread_t	p;
+	int			th_nbr;
+	int			y_max;
+	int			x_max;
+	int			y_min;
+	int			x_min;
+}				t_range;
 
 // main
 
 int		main(int argc, char **argv);
 void	get_resolution(t_data *data);
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
+void	super_sampling(t_data *data, int x, int y);
+void	down_sampling(t_data *data, int x, int y);
 
 //check_file
 
@@ -161,7 +159,7 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 void	calc_pixels(t_data *data);
 void	creat_img_multi(t_data *data);
-void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
+void	fill_range(t_range *range, t_vec3 *min, t_data *data);
 void	*loop_thread(void *param);
 
 // check_hit

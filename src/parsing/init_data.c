@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/20 15:16:38 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 22:10:28 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->cache = NULL;
 	if (argc == 2)
 	{
-		data->width = 1600;
-		data->height = 900;
+		data->width = 50;
+		data->height = 50;
 		data->bg.x = 0.0;
 		data->bg.y = 0.0;
 		data->bg.z = 0.0;
@@ -33,6 +33,8 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
 		if (!data->cache)
 			error("malloc", data);
+		if (pthread_mutex_init(&data->write, NULL) != 0)
+			error("mutex", data);
 		open_file(argv[1], data);
 	}
 	else
