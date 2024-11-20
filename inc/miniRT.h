@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/13 16:05:03 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/19 12:28:02 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,21 @@ int		parse_line(t_data *data, char **line);
 
 //parsing_obj
 
+void	parse_common_params(t_data *data, char **params, int *i,
+			void (*parse_specific_params)(t_data *, char **, int *));
 void	parse_sphere(t_data *data, char **line, int *i);
 void	parse_plane(t_data *data, char **line, int *i);
 void	parse_cylinder(t_data *data, char **line, int *i);
 void	parse_cone(t_data *data, char **line, int *i);
+
+//parsing_obj_helper
+
+void	parse_txt_bump(t_data *data, char *param,
+			xpm_t **texture, xpm_t **bump_map);
+void	parse_sp_specific(t_data *data, char **params, int *i);
+void	parse_pl_specific(t_data *data, char **params, int *i);
+void	parse_cy_specific(t_data *data, char **params, int *i);
+void	parse_cone_specific(t_data *data, char **params, int *i);
 
 //parsing_helper
 
@@ -84,6 +95,14 @@ void	parse_coords(t_vec3 *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec3 *vec, char *line, t_data *data);
 void	parse_color(t_vec3 *vec, char *line, t_data *data);
 void	parse_surface(t_plane *pl, char *param, t_data *data);
+
+//parsing_helper_2
+
+int		ft_count_params(char **params);
+void	parse_textures(t_data *data, char *texture, xpm_t *obj);
+void	parse_bump_map(t_data *data, char *bump_map, xpm_t *obj);
+int		is_texture(char *param);
+int		is_bump_map(char *param);
 
 //error
 

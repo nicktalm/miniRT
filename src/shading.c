@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 19:08:10 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/19 12:43:42 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray, t_light light)
 	diffuse_light(&in, light, hit);
 	specular_light(&in, light, data->set.cam, hit);
 	lighting = add_vec(add_vec(in.ambient,
-		multi_vec_wnbr(in.diffuse, light.brightness * 500)),
-		multi_vec_wnbr(in.specular, light.brightness * 500));
+	multi_vec_wnbr(in.diffuse, light.brightness * 500)),
+	multi_vec_wnbr(in.specular, light.brightness * 500));
 	hit->color = multi_vec(hit->obj_color, lighting);
 	ray->origin = ray_vec(hit->p, 0.01, hit->normal);
 	ray->direction = in.light_dir;

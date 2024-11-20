@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/13 17:31:55 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/18 16:23:17 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,6 @@ void	parse_surface(t_plane *pl, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	printf("param: %s\n", param);
-	printf("values[0]: %s\n", values[0]);
-	printf("values[1]: %s\n", values[1]);
-	printf("values[2]: %s\n", values[2]);
 	if (values[2] != NULL || !values[0] || !values[1])
 		error("Surface must have 2 values", data);
 	pl->length = ft_atof(values[0]);
@@ -88,7 +84,5 @@ void	parse_surface(t_plane *pl, char *param, t_data *data)
 	pl->width = ft_atof(values[1]);
 	if (pl->width < 0)
 		error("Surface width must be positive", data);
-	printf("length: %f\n", pl->length);
-	printf("width: %f\n", pl->width);
 	free_double_p(values);
 }
