@@ -6,15 +6,25 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/12 12:44:13 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/18 10:33:23 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	get_bump_map_coords_pl(xpm_t *map, t_hitpoint *hit, t_ray ray);
+void	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i)
+{
+	ray.origin = con_to_vec3(
+			r_vec(pl.side.m, con_to_vec4(ray.origin, 1)));
+	ray.direction = con_to_vec3(
+			r_vec(pl.side.m, con_to_vec4(ray.direction, 0)));
+	if (pl.width == 0.0 && pl.length == 0.0)
+		test_inf_pl(pl, ray, hit, i);
+	else
+		test_bounded_pl(data, pl, ray, hit, i);
+}
 
-void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
+void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 {
 	float	t;
 	t_vec3	tmp;
@@ -23,20 +33,52 @@ void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i)
 	dir.x = 0.0;
 	dir.y = 1.0;
 	dir.z = 0.0;
-	ray.origin = convert_to_vec3(r_vec(pl.side.m, convert_to_vec4(ray.origin, 1)));
-	ray.direction = convert_to_vec3(r_vec(pl.side.m, convert_to_vec4(ray.direction, 0)));
 	t = 0.0;
 	t = -dot(dir, ray.origin) / dot(dir, ray.direction);
 	if (t > 0.0 && hit->t > t)
 	{
 		tmp = ray_vec(ray.origin, t, ray.direction);
-		hit->p = convert_to_vec3(r_vec(pl.side.mi, convert_to_vec4(tmp, 1)));
+		hit->p = con_to_vec3(r_vec(pl.side.mi, con_to_vec4(tmp, 1)));
 		hit->normal = pl.norm;
 		hit->t = t;
-		if (pl.bump_map)
-			get_bump_map_coords_pl(pl.bump_map, hit, ray);
-		hit->obj_color = pl.color;
 		hit->i = i;
+		hit->obj_color = pl.color;
+	}
+}
+
+void	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i)
+{
+	float	t;
+	t_vec3	tmp;
+	t_vec3	dir;
+	t_vec3	uv;
+	t_vec3	right;
+	t_vec3	into;
+
+	dir.x = 0.0;
+	dir.y = 1.0;
+	dir.z = 0.0;
+	right.x = 1.0;
+	right.y = 0.0;
+	right.z = 0.0;
+	into.x = 0.0;
+	into.y = 0.0;
+	into.z = 1.0;
+	t = 0.0;
+	t = -dot(dir, ray.origin) / dot(dir, ray.direction);
+	if (t > 0.0 && hit->t > t)
+	{
+		tmp = ray_vec(ray.origin, t, ray.direction);
+		uv.x = dot(tmp, right);
+		uv.y = dot(tmp, into);
+		if (uv.x <= pl.width / 2.0 && uv.x >= pl.width / -2.0 && uv.y <= pl.length / 2.0 && uv.y >= pl.length / -2.0)
+		{
+			hit->p = con_to_vec3(r_vec(pl.side.mi, con_to_vec4(tmp, 1)));
+			hit->normal = pl.norm;
+			hit->t = t;
+			hit->i = i;
+			get_color_and_normal_pl(data, pl, hit, tmp);
+		}
 	}
 }
 
@@ -56,16 +98,28 @@ void	create_m_pl(t_plane *pl)
 	invert_matrix(pl->side.m, pl->side.mi);
 }
 
-void	get_bump_map_coords_pl(xpm_t *map, t_hitpoint *hit, t_ray ray)
+void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp)
 {
-	t_vec3	normal_hit;
-	float	x;
-	float	y;
-	int		u;
-	int		v;
+	t_vec3	uv;
+	xpm_t	*map;
 
-	normal_hit = norm_vec(hit->p);
-	x = (normal_hit.x + 1) / 2;
-	y = (normal_hit.y + 1) / 2;
-	u = x * (map->texture.width - 1);
+	if (pl.texture)
+		map = pl.texture;
+	else if (pl.bump_map)
+		map = pl.bump_map;
+	else
+		map = NULL;
+	if (map || data->checker)
+		uv = get_uv_coords_pl(data, pl, map, tmp);
+	if (pl.texture || data->checker)
+	{
+		if (data->checker)
+			get_checkerboard_color(uv.x, uv.y, hit);
+		else
+			hit->obj_color = get_map_color(uv.x, uv.y, pl.texture);
+	}
+	else
+		hit->obj_color = pl.color;
+	if (pl.bump_map)
+		get_map_normal(hit, &uv, pl.bump_map);
 }

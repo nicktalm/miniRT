@@ -3,7 +3,7 @@ C	0,0,30		0,0,-1	70
 L	-5,4,20		0.5				255,255,255
 pl	0,0,-10	0,0,1	100,100,200
 pl	0,-5,0	0,1,0	80,80,80	3,6
-pl	0,5,0	0,-1,0	80,80,80	texture=textures/xpm42/earth.xpm42	bump_map=textures/xpm42/earth.xpm42	3,6
-pl	0,-5,0	0,1,0	80,80,80	texture=textures/xpm42/earth.xpm42	bump_map=textures/xpm42/earth.xpm42
+pl	0,5,0	0,-1,0	80,80,80	texture=textures/xpm42/earth.xpm42	3,6
 pl	0,-5,0	0,1,0	80,80,80	texture=textures/xpm42/earth.xpm42	3,6
-pl	0,-5,0	0,1,0	80,80,80	bump_map=textures/xpm42/earth.xpm42
+pl	0,-5,0	0,1,0	80,80,80	texture=textures/xpm42/earth.xpm42	3,6
+pl	0,-5,0	0,1,0	80,80,80	3,6

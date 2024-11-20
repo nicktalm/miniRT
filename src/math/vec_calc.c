@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/11 13:31:06 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/15 11:39:22 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ t_vec3	norm_vec(t_vec3 s1)
 
 	len = sqrt((s1.x * s1.x) + (s1.y * s1.y) + (s1.z * s1.z));
 	if (len == 0)
-	{
-		fprintf(stderr, "Error: Zero length vector cannot be normalized.\n");
 		return (s1);
-	}
 	s1.x /= len;
 	s1.y /= len;
 	s1.z /= len;
@@ -222,7 +219,7 @@ t_vec4	r_vec(float m[4][4], t_vec4 v)
 	return (result);
 }
 
-t_vec3	convert_to_vec3(t_vec4 s1)
+t_vec3	con_to_vec3(t_vec4 s1)
 {
 	t_vec3	result;
 
@@ -241,7 +238,7 @@ t_vec3	convert_to_vec3(t_vec4 s1)
 	return (result);
 }
 
-t_vec4	convert_to_vec4(t_vec3 s1, float w)
+t_vec4	con_to_vec4(t_vec3 s1, float w)
 {
 	t_vec4	result;
 

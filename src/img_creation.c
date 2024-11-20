@@ -6,22 +6,56 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/12 11:59:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 10:12:07 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-t_vec3	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
+// void	create_img(t_data *data)
+// {
+// 	t_vec3		coords;
+// 	t_hitpoint	hit;
+
+// 	coords.y = 0.0;
+// 	coords.z = 0.0;
+// 	init_viewport(data);
+// 	while (coords.y < data->height)
+// 	{
+// 		coords.x = 0.0;
+// 		while (coords.x < data->width)
+// 		{
+// 			if (data->moved)
+// 			{
+// 				hit.color.x = 0.0;
+// 				hit.color.y = 0.0;
+// 				hit.color.z = 0.0;
+// 				trace_ray(coords.x, coords.y, &hit, data);
+// 				data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
+// 			}
+// 			mlx_put_pixel(data->img, coords.x, coords.y,
+// 				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
+// 					data->cache[(int)coords.x + (int)coords.y * data->width].y,
+// 					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
+// 			coords.x++;
+// 		}
+// 		coords.y++;
+// 	}
+// 	data->moved = false;
+// }
 
 void	create_img(t_data *data)
 {
 	t_vec3		coords;
 	t_hitpoint	hit;
+	int			resolution;
 
 	coords.y = 0.0;
 	coords.z = 0.0;
+	if (data->moved && !data->render)
+		resolution = data->res;
+	else
+		resolution = 1;
 	init_viewport(data);
 	while (coords.y < data->height)
 	{
@@ -33,19 +67,26 @@ void	create_img(t_data *data)
 				hit.color.x = 0.0;
 				hit.color.y = 0.0;
 				hit.color.z = 0.0;
-				trace_ray(coords.x, coords.y, &hit, data);
-				data->cache[(int)coords.x + (int)coords.y * data->width] = hit.color;
-				// data->cache[(int)coords.x + (int)coords.y * data->width] = super_sampling(data, &hit, coords.x, coords.y);
-				// down_sampling(data, &hit, coords.x, coords.y);
+				if (!data->render)
+					down_sampling(data, &hit, (int)coords.x, (int)coords.y);
+				else
+				{
+					super_sampling(data, &hit, (int)coords.x, (int)coords.y, data->width);
+				}
+				// creat_img_multi(data);
+				// data->moved = false;
+				// return ;
 			}
-			mlx_put_pixel(data->img, coords.x, coords.y,
-				create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
+			else
+			{
+				mlx_put_pixel(data->img, coords.x, coords.y,
+					create_color(data->cache[(int)coords.x + (int)coords.y * data->width].x,
 					data->cache[(int)coords.x + (int)coords.y * data->width].y,
 					data->cache[(int)coords.x + (int)coords.y * data->width].z, 255));
-			// printf("x = %f y = %f\n", coords.x, coords.y);
-			coords.x++;
+			}
+			coords.x += resolution;
 		}
-		coords.y++;
+		coords.y += resolution;
 	}
 	data->moved = false;
 }
@@ -96,26 +137,46 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 	get_color(data, &ray, hit);
 }
 
-t_vec3	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width)
 {
-	t_vec3	full_color = {0, 0, 0};
-	int		i;
-	int		j;
+	t_vec3		full_color;
+	static int	dot = 1;
+	int			i;
+	int			j;
 
-	i = 0;
-	while (i < 4)
+	full_color.x = 0.0;
+	full_color.y = 0.0;
+	full_color.z = 0.0;
+	j = 0;
+	while (j < 4)
 	{
-		j = 0;
-		while (j < 4)
+		i = 0;
+		while (i < 4)
 		{
 			trace_ray((float)x + ((float)i / 4.0) - 0.375,
 				(float)y + ((float)j / 4.0) - 0.375, hit, data);
 			full_color = add_vec(full_color, hit->color);
-			j++;
+			i++;
 		}
-		i++;
+		j++;
 	}
-	return (dev_vec_wnbr(full_color, 16.0));
+	full_color = dev_vec_wnbr(full_color, 16.0);
+	mlx_put_pixel(data->img, x, y,
+			create_color(full_color.x, full_color.y, full_color.z, 255));
+	data->cache[x + y * width] = full_color;
+	// printf("\033[sRendering image\033[0J");
+	// if (dot >= 1)
+	// 	printf(".");
+	// if (dot >= 2)
+	// 	printf(".");
+	// if (dot == 3)
+	// {
+	// 	dot = 1;
+	// 	printf(".");
+	// }
+	// else
+	// 	dot++;
+	// printf("\033[u");
 }
 
 void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
@@ -126,18 +187,18 @@ void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 
 	j = 0;
 	trace_ray((float)x, (float)y, hit, data);
-	while (j < 2)
+	while (j < data->res)
 	{
 		i = 0;
-		while (i < 2)
+		while (i < data->res)
 		{
 			if (x + i < data->width && y + j < data->height)
 			{
 				mlx_put_pixel(data->img, x + i, y + j,
 					create_color(hit->color.x, hit->color.y, hit->color.z, 255));
-				data->cache[pos] = hit->color;
-				pos++;
+				data->cache[(x + i) + (y + j) * data->width] = hit->color;
 			}
+			pos++;
 			i++;
 		}
 		j++;

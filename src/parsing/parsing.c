@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/11 16:37:37 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/18 11:18:15 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ void	parse_camera(t_data *data, char **line)
 	check_param_nbr_2(params, 4, data);
 	parse_coords(&data->set.cam.coords, params[1], data);
 	parse_normalized_vector(&data->set.cam.direction, params[2], data);
-	data->set.cam.fov = ft_atoi(params[3]) * (M_PI / 180.0);
+	data->set.cam.fov = ft_atof(params[3]);
 	if (data->set.cam.fov < 0 || data->set.cam.fov > 180)
 		error("FOV must be between 0 and 180", data);
+	data->set.cam.fov *= (M_PI / 180.0);
 	free_double_p(params);
 }
 
@@ -51,7 +52,7 @@ void	parse_light(t_data *data, char **line, int *l)
 		|| data->set.light[*l].brightness > 1)
 		error("Brightness must be between 0 and 1", data);
 	if (data->set.light[*l].brightness == 0.0)
-		data->set.light[*l].end = 0;
+		data->set.light[*l].end = 1;
 	else
 		data->set.light[*l].end = 2;
 	parse_color(&data->set.light[*l].color, params[3], data);

@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/12 09:49:37 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 10:21:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->cache = NULL;
 	if (argc == 2)
 	{
-		data->width = 1600;
-		data->height = 900;
+		data->width = 500;
+		data->height = 500;
 		data->bg.x = 0.0;
 		data->bg.y = 0.0;
 		data->bg.z = 0.0;
+		data->res = 1.0;
+		data->checker = false;
+		data->render = false;
+		data->resized = true;
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
 		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
@@ -67,7 +71,6 @@ void	init_viewport(t_data *data)
 		data->vp.upper_left = sub_vec(sub_vec(add_vec(\
 			data->set.cam.coords, data->set.cam.direction), \
 			dev_vec_wnbr(data->vp.u, 2.0)), dev_vec_wnbr(data->vp.v, 2.0));
-		// printf("upper left x = %f y = %f z = %f\n", data->vp.upper_left.x, data->vp.upper_left.y, data->vp.upper_left.z);
 		data->vp.p00 = add_vec(data->vp.upper_left,
 				multi_vec_wnbr(add_vec(data->vp.du, data->vp.dv), 0.5));
 	}

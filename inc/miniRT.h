@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/19 12:28:02 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/20 10:36:33 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@
 # include "shapes.h"
 # include "ray.h"
 
+typedef struct s_data t_data;
+
+typedef struct s_range
+{
+	t_data		*data;
+	pthread_t	p;
+	int			th_nbr;
+	int			y_max;
+	int			x_max;
+	int			y_min;
+	int			x_min;
+}				t_range;
+
 typedef struct s_settings
 {
 	t_ambient	ambient;
@@ -45,15 +58,24 @@ typedef struct s_data
 	t_viewport	vp;
 	t_vec3		bg;
 	t_vec3		*cache;
+	t_range		range[200];
 	float		aspect_ratio;
 	int			width;
 	int			height;
+	int			x_max;
+	int			y_max;
+	int			res;
 	bool		moved;
+	bool		resized;
+	bool		checker;
+	bool		render;
 }				t_data;
 
 // main
 
 int		main(int argc, char **argv);
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width);
+void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 //check_file
 
@@ -153,10 +175,10 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 // multi_threading
 
-// void	calc_pixels(t_data *data);
-// void	creat_img_multi(t_data *data);
-// void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
-// void	*loop_thread(void *param);
+void	calc_pixels(t_data *data);
+void	creat_img_multi(t_data *data);
+void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
+void	*loop_thread(void *param);
 
 // check_hit
 
@@ -175,32 +197,46 @@ t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal);
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
 bool	get_distanz(t_hitpoint *hit, t_light light, int i);
 
-// cone
+// cone_inter
 
-void	calc_cn(t_cone cn, t_ray ray, t_hitpoint *hit, int i);
-bool	test_side_cn(t_cone cn, t_ray ray, t_hitpoint *hit);
-bool	test_bottom_cn(t_cone cn, t_hitpoint *hit, t_ray ray);
+void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit);
+bool	test_bottom_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
+
+// cone_utils
+
 void	create_m_cn(t_cone *cn);
+void	get_color_and_normal_cn(t_data *data,
+			t_cone cn, t_hitpoint *hit, t_vec3 tmp);
+void	get_color_and_normal_tb_cn(t_data *data,
+			t_cone cn, t_hitpoint *hit, t_vec3 tmp);
 
-// cylinder
+// cylinder_inter
 
-void	calc_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
-bool	test_side_cy(t_cylinder cy, t_ray ray, t_hitpoint *hit);
-bool	test_top_bottom_cy(t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
+void	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+bool	test_side_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit);
+bool	test_top_bottom_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
 void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
+
+// cylinder_utils
+
+void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i);
 void	create_m_cy(t_cylinder *cy);
 
 // plane
 
-void	calc_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+void	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
 void	create_m_pl(t_plane *pl);
+void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp);
 
 // sphere
 
-void	calc_sp(t_sphere sp, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_sp(t_data *data, t_sphere sp, t_ray ray, t_hitpoint *hit);
 void	create_m_sp(t_sphere *sp);
-void	get_bump_map_coords_sp(xpm_t *map, t_vec3 normal, t_hitpoint *hit);
+void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 tmp);
 
 // matrix
 
@@ -213,13 +249,26 @@ void	print_m(float m[4][4]);
 // transformation
 
 void	get_full_r(float result[4][4], float x, float y, float z);
-t_ray	transform_ray(t_ray *ray, t_objects obj);
 void	rotate_x(float m[4][4], float angle);
 void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);
 void	translation(float m[4][4], t_vec3 t);
-void	add_translation(float m[4][4], t_vec3 t);
 void	scaling(float m[4][4], float x, float y, float z);
+
+// uv_coords
+
+void	get_uv_coords_sp(t_data *data, xpm_t *map, t_vec3 *uv, t_vec3 tmp);
+t_vec3	get_uv_coords_pl(t_data *data, t_plane pl, xpm_t *map, t_vec3 tmp);
+t_vec3	get_uv_coords_cy(t_data *data, t_cylinder cy, xpm_t *map, t_vec3 tmp);
+t_vec3	get_uv_coords_tb(t_data *data, float radius, xpm_t *map, t_vec3 tmp);
+t_vec3	get_uv_coords_cn(t_data *data, t_cone cn, xpm_t *map, t_vec3 tmp);
+
+// bump_mapping
+
+void	get_checkerboard_color(float u, float v, t_hitpoint *hit);
+t_vec3	get_map_color(float u, float v, xpm_t *map);
+t_vec3	get_tangent(t_vec3 normal);
+void	get_map_normal(t_hitpoint *hit, t_vec3 *uv, xpm_t *bump_map);
 
 // vec_calc
 
@@ -244,7 +293,7 @@ t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
 int		cmp_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	copy_vec(t_vec3 s1);
 t_vec4	r_vec(float m[4][4], t_vec4 v);
-t_vec3	convert_to_vec3(t_vec4 s1);
-t_vec4	convert_to_vec4(t_vec3 s1, float w);
+t_vec3	con_to_vec3(t_vec4 s1);
+t_vec4	con_to_vec4(t_vec3 s1, float w);
 
 #endif
