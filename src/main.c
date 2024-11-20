@@ -6,13 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/20 10:31:23 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 15:16:42 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	get_resolution(t_data *data);
 
 int	main(int argc, char **argv)
 {
@@ -20,9 +18,9 @@ int	main(int argc, char **argv)
 
 	init_data(&data, argc, argv);
 	init_mlx(&data);
-	mlx_image_to_window(data.window, data.img, 0, 0);
+	mlx_get_monitor_size(0, &data.win_w_max, &data.win_h_max);
+	mlx_set_window_limit(data.window, -1, -1, data.win_w_max, data.win_h_max);
 	create_img(&data);
-	get_resolution(&data);
 	mlx_loop_hook(data.window, hook, &data);
 	mlx_loop(data.window);
 	mlx_delete_image(data.window, data.img);
@@ -33,11 +31,17 @@ int	main(int argc, char **argv)
 
 void	get_resolution(t_data *data)
 {
-	printf("delta time = %f\n", data->window->delta_time);
-	while (data->window->delta_time > 1.0 || data->window->delta_time == 0.0)
+	if (!data->cache_use)
 	{
-		printf("delta time = %f\n", data->window->delta_time);
-		data->res++;
-		create_img(data);
+		if (data->window->delta_time > 0.1)
+		{
+			data->res++;
+			data->moved = true;
+		}
+		else if (data->window->delta_time < 0.05 && !data->cache_use && (data->height * data->width) > 10000)
+		{
+			data->res--;
+			data->moved = true;
+		}
 	}
 }
