@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:28:38 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 14:29:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 17:04:48 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,6 @@ void	resize(int width, int height, void *param)
 	data->height = height;
 	data->width = width;
 	data->aspect_ratio = (float)width / (float)height;
-	if (data->cache)
-		free(data->cache);
-	data->cache = (t_vec3 *)malloc
-		(data->width * data->height * sizeof(t_vec3));
-	if (!data->cache)
-		error("malloc", data);
 	if (!mlx_resize_image(data->img, width, height))
 		error("resized failed", data);
 	if (!data->render)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 16:51:30 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/21 17:04:17 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,11 @@ typedef struct s_data
 	mlx_image_t		*img;
 	t_viewport		vp;
 	t_vec3			bg;
-	t_vec3			*cache;
-	pthread_mutex_t	write;
 	float			aspect_ratio;
 	int				win_w_max;
 	int				win_h_max;
 	int				width;
 	int				height;
-	int				x_max;
-	int				y_max;
 	int				res;
 	bool			moved;
 	bool			cache_use;
@@ -60,23 +56,10 @@ typedef struct s_data
 	bool			render;
 }				t_data;
 
-typedef struct s_range
-{
-	t_data		data;
-	pthread_t	p;
-	int			th_nbr;
-	int			y_max;
-	int			x_max;
-	int			y_min;
-	int			x_min;
-}				t_range;
-
 // main
 
 int		main(int argc, char **argv);
 void	get_resolution(t_data *data);
-void	super_sampling(t_data *data, int x, int y);
-void	down_sampling(t_data *data, int x, int y);
 
 //check_file
 
@@ -182,17 +165,10 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
 // sampling
 
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
+void	super_sampling(t_data *data, int x, int y);
 void	render_animation(int *dot);
 void	render_message(t_data *data, int x, int y);
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
-
-// multi_threading
-
-void	calc_pixels(t_data *data);
-void	creat_img_multi(t_data *data);
-void	fill_range(t_range *range, t_vec3 *min, t_data *data);
-void	*loop_thread(void *param);
+void	down_sampling(t_data *data, int x, int y);
 
 // check_hit
 

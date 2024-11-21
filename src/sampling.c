@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   sampling.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:03:31 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 15:31:47 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/21 17:02:26 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
+void	super_sampling(t_data *data, int x, int y)
 {
 	t_vec3		full_color;
+	t_hitpoint	hit;
 	int			i;
 	int			j;
 
@@ -22,22 +23,24 @@ void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 	full_color.y = 0.0;
 	full_color.z = 0.0;
 	j = 0;
-	while (j < 4)
+	while (j < 2)
 	{
 		i = 0;
-		while (i < 4)
+		while (i < 2)
 		{
-			trace_ray((float)x + ((float)i / 4.0) - 0.375,
-				(float)y + ((float)j / 4.0) - 0.375, hit, data);
-			full_color = add_vec(full_color, hit->color);
+			hit.color.x = 0.0;
+			hit.color.y = 0.0;
+			hit.color.z = 0.0;
+			trace_ray((float)x + ((float)i / 2.0) - 0.25,
+				(float)y + ((float)j / 2.0) - 0.25, &hit, data);
+			full_color = add_vec(full_color, hit.color);
 			i++;
 		}
 		j++;
 	}
-	full_color = dev_vec_wnbr(full_color, 16.0);
+	full_color = dev_vec_wnbr(full_color, 4.0);
 	mlx_put_pixel(data->img, x, y,
-		create_color(full_color.x, full_color.y, full_color.z, 255));
-	data->cache[x + y * data->width] = full_color;
+			create_color(full_color.x, full_color.y, full_color.z, 255));
 	render_message(data, x, y);
 }
 
@@ -76,14 +79,17 @@ void	render_message(t_data *data, int x, int y)
 	}
 }
 
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
+void	down_sampling(t_data *data, int x, int y)
 {
-	static int	pos = 0;
+	t_hitpoint	hit;
 	int			i;
 	int			j;
 
 	j = 0;
-	trace_ray((float)x, (float)y, hit, data);
+	hit.color.x = 0.0;
+	hit.color.y = 0.0;
+	hit.color.z = 0.0;
+	trace_ray((float)x, (float)y, &hit, data);
 	while (j < data->res)
 	{
 		i = 0;
@@ -92,10 +98,8 @@ void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
 			if (x + i < data->width && y + j < data->height)
 			{
 				mlx_put_pixel(data->img, x + i, y + j,
-					create_color(hit->color.x, hit->color.y, hit->color.z, 255));
-				data->cache[(x + i) + (y + j) * data->width] = hit->color;
+					create_color(hit.color.x, hit.color.y, hit.color.z, 255));
 			}
-			pos++;
 			i++;
 		}
 		j++;

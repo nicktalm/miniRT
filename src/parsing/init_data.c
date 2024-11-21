@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 14:54:56 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 17:05:04 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	init_data(t_data *data, int argc, char **argv)
 {
 	data->set.obj = NULL;
 	data->set.light = NULL;
-	data->cache = NULL;
 	if (argc == 2)
 	{
 		data->width = 1600;
@@ -30,11 +29,6 @@ void	init_data(t_data *data, int argc, char **argv)
 		data->cache_use = false;
 		data->aspect_ratio = (float)data->width / (float)data->height;
 		data->moved = true;
-		data->cache = malloc (data->width * data->height * sizeof(t_vec3));
-		if (!data->cache)
-			error("malloc", data);
-		if (pthread_mutex_init(&data->write, NULL) != 0)
-			error("mutex", data);
 		open_file(argv[1], data);
 	}
 	else
