@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 00:02:38 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:31:16 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,8 @@ void	create_img(t_data *data)
 				}
 				else
 				{
-					// super_sampling(data, (int)coords.x, (int)coords.y);
-					creat_img_multi(data);
-					data->moved = false;
+					super_sampling(data, (int)coords.x, (int)coords.y);
 					data->cache_use = true;
-					return ;
 				}
 			}
 			else
@@ -111,28 +108,24 @@ void	super_sampling(t_data *data, int x, int y)
 	full_color.y = 0.0;
 	full_color.z = 0.0;
 	j = 0;
-	while (j < 4)
+	while (j < 2)
 	{
 		i = 0;
-		while (i < 4)
+		while (i < 2)
 		{
 			hit.color.x = 0.0;
 			hit.color.y = 0.0;
 			hit.color.z = 0.0;
-			trace_ray((float)x + ((float)i / 4.0) - 0.375,
-				(float)y + ((float)j / 4.0) - 0.375, &hit, data);
+			trace_ray((float)x + ((float)i / 2.0) - 0.25,
+				(float)y + ((float)j / 2.0) - 0.25, &hit, data);
 			full_color = add_vec(full_color, hit.color);
 			i++;
 		}
 		j++;
 	}
-	full_color = dev_vec_wnbr(full_color, 16.0);
-	if (pthread_mutex_lock(&data->write) != 0)
-		error("mutex lock", data);
+	full_color = dev_vec_wnbr(full_color, 4.0);
 	mlx_put_pixel(data->img, x, y,
 			create_color(full_color.x, full_color.y, full_color.z, 255));
-	if (pthread_mutex_unlock(&data->write) != 0)
-		error("mutex unlock", data);
 }
 
 void	down_sampling(t_data *data, int x, int y)

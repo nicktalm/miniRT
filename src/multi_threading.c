@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_threading.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:19:03 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 00:12:04 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/21 10:19:03 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 void	creat_img_multi(t_data *data)
 {
 	int		pos;
-	int		x;
-	int		y;
 	int		i;
 	t_vec3	min;
 	t_range	range[200];
@@ -36,14 +34,6 @@ void	creat_img_multi(t_data *data)
 		pthread_create(&range[i].p, NULL, loop_thread, &range[i]);
 		i++;
 	}
-	// while (i < 200)
-	// {
-	// 	fill_range(data->range, &min, i, data);
-	// 	data->range[i].th_nbr = i;
-	// 	data->range[i].data = data;
-	// 	pthread_create(&data->range[i].p, NULL, loop_thread, data);
-	// 	i++;
-	// }
 	i = 0;
 	while (i < 200)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 00:11:55 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/21 15:03:45 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,17 @@ char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
 int		check_param_nbr(t_data *data, char **line);
 
-// key_actions
+// hooks
 
 void	hook(void *param);
 void	resize(int width, int height, void *param);
+
+// key_actions
+
 void	key(mlx_key_data_t keydata, void *param);
+bool	wasd(mlx_key_data_t key, t_data *data);
+bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit);
+bool	cr(mlx_key_data_t key, t_data *data, int i);
 
 // init_data
 
@@ -261,6 +267,7 @@ t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
 float	dot4(t_vec4 s1, t_vec4 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	sub_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);

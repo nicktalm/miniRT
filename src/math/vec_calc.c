@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:13:15 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/15 11:39:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 12:08:13 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,16 @@ t_vec3	sub_vec(t_vec3 s1, t_vec3 s2)
 	result.x = s1.x - s2.x;
 	result.y = s1.y - s2.y;
 	result.z = s1.z - s2.z;
+	return (result);
+}
+
+t_vec3	sub_vec_wnbr(t_vec3 s1, float nbr)
+{
+	t_vec3	result;
+
+	result.x = s1.x - nbr;
+	result.y = s1.y - nbr;
+	result.z = s1.z - nbr;
 	return (result);
 }
 

@@ -6,45 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/20 15:55:37 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 15:03:55 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-bool	wasd(mlx_key_data_t keydata, t_data *data);
-bool	lrud(mlx_key_data_t keydata, t_data *data, t_vec3 t, t_vec3 bit);
-
-void	hook(void *param)
-{
-	t_data	*data;
-
-	data = param;
-	// printf("delta time = %f\n", data->window->delta_time);
-	get_resolution(data);
-	mlx_resize_hook(data->window, resize, data);
-	mlx_key_hook(data->window, key, data);
-	create_img(data);
-}
-
-void	resize(int width, int height, void *param)
-{
-	t_data	*data;
-
-	data = param;
-	data->height = height;
-	data->width = width;
-	data->aspect_ratio = (float)width / (float)height;
-	if (data->cache)
-		free(data->cache);
-	data->cache = (t_vec3 *)malloc
-		(data->width * data->height * sizeof(t_vec3));
-	if (!data->cache)
-		error("malloc", data);
-	if (!mlx_resize_image(data->img, width, height))
-		error("resized failed", data);
-	data->moved = true;
-}
 
 void	key(mlx_key_data_t keydata, void *param)
 {
@@ -56,28 +22,11 @@ void	key(mlx_key_data_t keydata, void *param)
 	{
 		if (wasd(keydata, data))
 			return ;
-		else if (keydata.key == MLX_KEY_C && keydata.action == 1)
-		{
-			if (!data->checker)
-				data->checker = true;
-			else
-				data->checker = false;
+		else if (cr(keydata, data, 0))
 			return ;
-		}
 	}
-	if (keydata.key == MLX_KEY_R && keydata.action == 1)
-	{
-		if (!data->render)
-		{
-			data->render = true;
-			mlx_set_window_limit(data->window, data->width, data->height, data->width, data->height);
-		}
-		else
-		{
-			data->render = false;
-			mlx_set_window_limit(data->window, -1, -1, data->win_w_max, data->win_h_max);
-		}
-	}
+	if (cr(keydata, data, 1))
+		return ;
 	else if (keydata.key == MLX_KEY_ESCAPE && keydata.action == 1)
 	{
 		mlx_delete_image(data->window, data->img);
@@ -89,43 +38,77 @@ void	key(mlx_key_data_t keydata, void *param)
 		data->moved = false;
 }
 
-bool	wasd(mlx_key_data_t keydata, t_data *data)
+bool	wasd(mlx_key_data_t key, t_data *data)
 {
-	t_vec3	tangent;
-	t_vec3	bitangent;
+	t_vec3	t;
+	t_vec3	bit;
+	t_vec3	*coord;
 
-	bitangent = get_tangent(data->set.cam.direction);
-	tangent = cross_vec(data->set.cam.direction, bitangent);
-	if (keydata.key == MLX_KEY_W && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(data->set.cam.direction, 0.5));
-	else if (keydata.key == MLX_KEY_S && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(data->set.cam.direction, 0.5));
-	else if (keydata.key == MLX_KEY_A && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
-	else if (keydata.key == MLX_KEY_D && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(bitangent, 0.5));
-	else if (keydata.key == MLX_KEY_Q && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = add_vec(data->set.cam.coords, multi_vec_wnbr(tangent, 0.5));
-	else if (keydata.key == MLX_KEY_E && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.coords = sub_vec(data->set.cam.coords, multi_vec_wnbr(tangent, 0.5));
-	else if (lrud(keydata, data, tangent, bitangent))
+	coord = &data->set.cam.coords;
+	bit = get_tangent(data->set.cam.direction);
+	t = norm_vec(cross_vec(data->set.cam.direction, bit));
+	if (key.key == MLX_KEY_W && (key.action == 1 || key.action == 2))
+		*coord = add_vec(*coord, multi_vec_wnbr(data->set.cam.direction, 0.5));
+	else if (key.key == MLX_KEY_S && (key.action == 1 || key.action == 2))
+		*coord = sub_vec(*coord, multi_vec_wnbr(data->set.cam.direction, 0.5));
+	else if (key.key == MLX_KEY_A && (key.action == 1 || key.action == 2))
+		*coord = add_vec(*coord, multi_vec_wnbr(bit, 0.5));
+	else if (key.key == MLX_KEY_D && (key.action == 1 || key.action == 2))
+		*coord = sub_vec(*coord, multi_vec_wnbr(bit, 0.5));
+	else if (key.key == MLX_KEY_Q && (key.action == 1 || key.action == 2))
+		*coord = add_vec(*coord, multi_vec_wnbr(t, 0.5));
+	else if (key.key == MLX_KEY_E && (key.action == 1 || key.action == 2))
+		*coord = sub_vec(*coord, multi_vec_wnbr(t, 0.5));
+	else if (lrud(key, data, t, bit))
 		return (true);
 	else
 		return (false);
 	return (true);
 }
 
-bool	lrud(mlx_key_data_t keydata, t_data *data, t_vec3 t, t_vec3 bit)
+bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit)
 {
-	if (keydata.key == MLX_KEY_LEFT && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.direction = add_vec(data->set.cam.direction, multi_vec_wnbr(bit, 0.1));
-	else if (keydata.key == MLX_KEY_RIGHT && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.direction = sub_vec(data->set.cam.direction, multi_vec_wnbr(bit, 0.1));
-	else if (keydata.key == MLX_KEY_UP && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.direction = add_vec(data->set.cam.direction, multi_vec_wnbr(t, 0.1));
-	else if (keydata.key == MLX_KEY_DOWN && (keydata.action == 1 || keydata.action == 2))
-		data->set.cam.direction = sub_vec(data->set.cam.direction, multi_vec_wnbr(t, 0.1));
+	t_vec3	*dir;
+
+	dir = &data->set.cam.direction;
+	if (key.key == MLX_KEY_LEFT && (key.action == 1 || key.action == 2))
+		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(bit, 0.1)));
+	else if (key.key == MLX_KEY_RIGHT && (key.action == 1 || key.action == 2))
+		*dir = norm_vec(sub_vec(*dir, multi_vec_wnbr(bit, 0.1)));
+	else if (key.key == MLX_KEY_UP && (key.action == 1 || key.action == 2))
+		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(t, 0.1)));
+	else if (key.key == MLX_KEY_DOWN && (key.action == 1 || key.action == 2))
+		*dir = norm_vec(sub_vec(*dir, multi_vec_wnbr(t, 0.1)));
 	else
 		return (false);
 	return (true);
+}
+
+bool	cr(mlx_key_data_t key, t_data *data, int i)
+{
+	if (key.key == MLX_KEY_C && key.action == 1 && i == 0)
+	{
+		if (!data->checker)
+			data->checker = true;
+		else
+			data->checker = false;
+		return (true);
+	}
+	else if (key.key == MLX_KEY_R && key.action == 1)
+	{
+		if (!data->render)
+		{
+			data->render = true;
+			mlx_set_window_limit(data->window, data->width,
+				data->height, data->width, data->height);
+		}
+		else
+		{
+			data->render = false;
+			mlx_set_window_limit(data->window, -1, -1,
+				data->win_w_max, data->win_h_max);
+		}
+		return (true);
+	}
+	return (false);
 }
