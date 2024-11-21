@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 16:43:27 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/21 16:51:30 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,6 @@
 # include "shapes.h"
 # include "ray.h"
 
-typedef struct s_data t_data;
-
-typedef struct s_range
-{
-	t_data		*data;
-	pthread_t	p;
-	int			th_nbr;
-	int			y_max;
-	int			x_max;
-	int			y_min;
-	int			x_min;
-}				t_range;
-
 typedef struct s_settings
 {
 	t_ambient	ambient;
@@ -52,28 +39,44 @@ typedef struct s_settings
 
 typedef struct s_data
 {
-	t_settings	set;
-	mlx_t		*window;
-	mlx_image_t	*img;
-	t_viewport	vp;
-	t_vec3		bg;
-	t_vec3		*cache;
-	t_range		range[200];
-	float		aspect_ratio;
-	int			width;
-	int			height;
-	int			x_max;
-	int			y_max;
-	int			res;
-	bool		moved;
-	bool		resized;
-	bool		checker;
-	bool		render;
+	t_settings		set;
+	mlx_t			*window;
+	mlx_image_t		*img;
+	t_viewport		vp;
+	t_vec3			bg;
+	t_vec3			*cache;
+	pthread_mutex_t	write;
+	float			aspect_ratio;
+	int				win_w_max;
+	int				win_h_max;
+	int				width;
+	int				height;
+	int				x_max;
+	int				y_max;
+	int				res;
+	bool			moved;
+	bool			cache_use;
+	bool			checker;
+	bool			render;
 }				t_data;
+
+typedef struct s_range
+{
+	t_data		data;
+	pthread_t	p;
+	int			th_nbr;
+	int			y_max;
+	int			x_max;
+	int			y_min;
+	int			x_min;
+}				t_range;
 
 // main
 
 int		main(int argc, char **argv);
+void	get_resolution(t_data *data);
+void	super_sampling(t_data *data, int x, int y);
+void	down_sampling(t_data *data, int x, int y);
 
 //check_file
 
@@ -146,11 +149,17 @@ char	*replace_whitespace(char *line);
 char	*clean_line(char *line);
 int		check_param_nbr(t_data *data, char **line);
 
-// key_actions
+// hooks
 
 void	hook(void *param);
 void	resize(int width, int height, void *param);
+
+// key_actions
+
 void	key(mlx_key_data_t keydata, void *param);
+bool	wasd(mlx_key_data_t key, t_data *data);
+bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit);
+bool	cr(mlx_key_data_t key, t_data *data, int i);
 
 // init_data
 
@@ -182,7 +191,7 @@ void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 void	calc_pixels(t_data *data);
 void	creat_img_multi(t_data *data);
-void	fill_range(t_range *range, t_vec3 *min, int i, t_data *data);
+void	fill_range(t_range *range, t_vec3 *min, t_data *data);
 void	*loop_thread(void *param);
 
 // check_hit
@@ -283,6 +292,7 @@ float	leangth_vec(t_vec3 s1);
 t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
+t_vec3	sub_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
 
 // vec_calc_2

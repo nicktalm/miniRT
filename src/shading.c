@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/20 16:11:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 16:48:14 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,11 @@ void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray, t_light light)
 	t_lighting	in;
 	t_vec3		lighting;
 
-	in.light_dir = sub_vec(light.coords, hit->p);
-	in.len = leangth_vec(in.light_dir);
-	in.light_dir = norm_vec(in.light_dir);
-	in.ambient = multi_vec_wnbr(data->set.ambient.color, data->set.ambient.ratio);
+	in.light_dir = norm_vec(sub_vec(light.coords, hit->p));
 	diffuse_light(&in, light, hit);
 	specular_light(&in, light, data->set.cam, hit);
-	lighting = add_vec(add_vec(in.ambient,
-	multi_vec_wnbr(in.diffuse, light.brightness)),
-	multi_vec_wnbr(in.specular, light.brightness));
+	lighting = add_vec(multi_vec_wnbr(in.diffuse, light.brightness),
+			multi_vec_wnbr(in.specular, light.brightness));
 	hit->color = multi_vec(hit->obj_color, lighting);
 	ray->origin = ray_vec(hit->p, 0.01, hit->normal);
 	ray->direction = in.light_dir;
@@ -37,10 +33,11 @@ void	shading(t_data *data, t_hitpoint *hit, t_light light)
 	t_vec3		lighting;
 
 	in.light_dir = norm_vec(sub_vec(light.coords, hit->p));
-	in.ambient = multi_vec_wnbr(data->set.ambient.color, data->set.ambient.ratio);
+	in.ambient = multi_vec_wnbr(data->set.ambient.color,
+			data->set.ambient.ratio);
 	diffuse_light(&in, light, hit);
 	lighting = add_vec(in.ambient,
-		multi_vec_wnbr(in.diffuse, light.brightness));
+			multi_vec_wnbr(in.diffuse, light.brightness));
 	hit->color = multi_vec(hit->obj_color, lighting);
 }
 
@@ -52,7 +49,6 @@ void	diffuse_light(t_lighting *in, t_light light, t_hitpoint *hit)
 	if (strength < 0.0)
 		strength = 0.0;
 	in->diffuse = multi_vec_wnbr(light.color, strength);
-	// in->diffuse = dev_vec_wnbr(in->diffuse, 4.0 * M_PI * pow(in->len, 2.0));
 }
 
 void	specular_light(t_lighting *in,
@@ -63,13 +59,12 @@ void	specular_light(t_lighting *in,
 	float	strength;
 
 	reflect = norm_vec(reflect_light(in->light_dir, hit->normal));
-	view_dir = norm_vec(sub_vec(light.coords, cam.coords));
+	view_dir = norm_vec(sub_vec(hit->p, cam.coords));
 	strength = dot(reflect, view_dir);
 	if (strength < 0.0)
 		strength = 0.0;
 	strength = pow(strength, 32.0);
 	in->specular = multi_vec_wnbr(light.color, strength);
-	// in->specular = dev_vec_wnbr(in->specular, 4.0 * M_PI * pow(in->len, 2.0));
 }
 
 t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal)
@@ -85,9 +80,12 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 {
 	int		i;
 	int		pos;
-	t_vec3	full_color = {0, 0, 0};
+	t_vec3	full_color;
 	t_ray	first;
 
+	full_color.x = 0.0;
+	full_color.y = 0.0;
+	full_color.z = 0.0;
 	first = *ray;
 	i = 0;
 	pos = 0;
@@ -121,7 +119,8 @@ void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit)
 		full_color = add_vec(full_color, hit->color);
 		pos++;
 	}
-	hit->color = full_color;
+	hit->color = add_vec(multi_vec_wnbr(data->set.ambient.color,
+				data->set.ambient.ratio), full_color);
 }
 
 bool	get_distanz(t_hitpoint *hit, t_light light, int i)
