@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 15:03:55 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 19:59:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ bool	wasd(mlx_key_data_t key, t_data *data)
 	t_vec3	*coord;
 
 	coord = &data->set.cam.coords;
-	bit = get_tangent(data->set.cam.direction);
-	t = norm_vec(cross_vec(data->set.cam.direction, bit));
+	t = get_tangent(data->set.cam.direction);
+	bit = norm_vec(cross_vec(data->set.cam.direction, t));
 	if (key.key == MLX_KEY_W && (key.action == 1 || key.action == 2))
 		*coord = add_vec(*coord, multi_vec_wnbr(data->set.cam.direction, 0.5));
 	else if (key.key == MLX_KEY_S && (key.action == 1 || key.action == 2))
 		*coord = sub_vec(*coord, multi_vec_wnbr(data->set.cam.direction, 0.5));
 	else if (key.key == MLX_KEY_A && (key.action == 1 || key.action == 2))
-		*coord = add_vec(*coord, multi_vec_wnbr(bit, 0.5));
-	else if (key.key == MLX_KEY_D && (key.action == 1 || key.action == 2))
 		*coord = sub_vec(*coord, multi_vec_wnbr(bit, 0.5));
+	else if (key.key == MLX_KEY_D && (key.action == 1 || key.action == 2))
+		*coord = add_vec(*coord, multi_vec_wnbr(bit, 0.5));
 	else if (key.key == MLX_KEY_Q && (key.action == 1 || key.action == 2))
 		*coord = add_vec(*coord, multi_vec_wnbr(t, 0.5));
 	else if (key.key == MLX_KEY_E && (key.action == 1 || key.action == 2))
@@ -72,9 +72,9 @@ bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit)
 
 	dir = &data->set.cam.direction;
 	if (key.key == MLX_KEY_LEFT && (key.action == 1 || key.action == 2))
-		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(bit, 0.1)));
-	else if (key.key == MLX_KEY_RIGHT && (key.action == 1 || key.action == 2))
 		*dir = norm_vec(sub_vec(*dir, multi_vec_wnbr(bit, 0.1)));
+	else if (key.key == MLX_KEY_RIGHT && (key.action == 1 || key.action == 2))
+		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(bit, 0.1)));
 	else if (key.key == MLX_KEY_UP && (key.action == 1 || key.action == 2))
 		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(t, 0.1)));
 	else if (key.key == MLX_KEY_DOWN && (key.action == 1 || key.action == 2))

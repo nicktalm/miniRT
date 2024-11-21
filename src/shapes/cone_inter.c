@@ -3,31 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   cone_inter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 11:06:11 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/21 19:06:54 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i)
+bool	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit)
 {
-	t_ray	test;
+	t_ray	tmp;
+	int		r_value;
 
-	test.origin = con_to_vec3(
+	r_value = 0;
+	tmp.origin = con_to_vec3(
 			r_vec(cn.bottom.m, con_to_vec4(ray.origin, 1)));
-	test.direction = con_to_vec3(
+	tmp.direction = con_to_vec3(
 			r_vec(cn.bottom.m, con_to_vec4(ray.direction, 0)));
-	if (test_bottom_cn(data, cn, hit, test))
-		hit->i = i;
-	test.origin = con_to_vec3(
+	if (test_bottom_cn(data, cn, hit, tmp))
+		r_value = 1;
+	tmp.origin = con_to_vec3(
 			r_vec(cn.side.m, con_to_vec4(ray.origin, 1)));
-	test.direction = con_to_vec3(
+	tmp.direction = con_to_vec3(
 			r_vec(cn.side.m, con_to_vec4(ray.direction, 0)));
-	if (test_side_cn(data, cn, test, hit))
-		hit->i = i;
+	if (test_side_cn(data, cn, tmp, hit))
+		r_value = 1;
+	return (r_value);
 }
 
 t_abc	calc_quadratic_formal(t_ray ray, t_cone cn)

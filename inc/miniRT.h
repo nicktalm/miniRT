@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 17:04:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 21:01:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ typedef struct s_data
 
 int		main(int argc, char **argv);
 void	get_resolution(t_data *data);
+int		create_color(float x, float y, float z, float w);
+void	check_interval(int *nbr);
 
 //check_file
 
@@ -149,19 +151,13 @@ bool	cr(mlx_key_data_t key, t_data *data, int i);
 void	init_data(t_data *data, int argc, char **argv);
 void	init_mlx(t_data *data);
 void	init_viewport(t_data *data);
-// void	init_data_b(t_data *data);
 
 // img_creation
 
 void	create_img(t_data *data);
-int		create_color(float x, float y, float z, float w);
-void	check_interval(int *nbr);
+void	pixel_loop(t_data *data, t_vec3 coords, int resolution);
 void	in_out_object(t_ray *ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
-// void	get_obj_color(t_data *data, t_ray ray, t_hitpoint *hit);
-// void	lighting(t_data *data, t_ray ray, t_hitpoint *hit);
-// void	lighting_b(t_data *data, t_ray ray, t_hitpoint *hit);
-// float	rando(t_data *data);
 
 // sampling
 
@@ -173,7 +169,6 @@ void	down_sampling(t_data *data, int x, int y);
 // check_hit
 
 void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data);
-// void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
 
 // shading
 
@@ -183,12 +178,16 @@ void	diffuse_light(t_lighting *intensity, t_light light, t_hitpoint *hit);
 void	specular_light(t_lighting *in,
 			t_light light, t_camera cam, t_hitpoint *hit);
 t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal);
+
+// shading_2
+
 void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
+bool	light_loop(t_data *data, t_ray *ray, t_hitpoint *hit, t_vec3 index);
 bool	get_distanz(t_hitpoint *hit, t_light light, int i);
 
 // cone_inter
 
-void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit);
 bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit);
 bool	test_bottom_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
@@ -203,21 +202,25 @@ void	get_color_and_normal_tb_cn(t_data *data,
 
 // cylinder_inter
 
-void	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit);
+t_abc	calc_quadratic_formal_cy(t_ray ray, t_cylinder cy);
 bool	test_side_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit);
-bool	test_top_bottom_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
+bool	test_top_bottom_cy(t_data *data,
+			t_cylinder cy, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
 
 // cylinder_utils
 
-void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i);
 void	create_m_cy(t_cylinder *cy);
+void	get_color_and_normal_cy(t_data *data,
+			t_cylinder cy, t_hitpoint *hit, int i);
+xpm_t	*find_map(t_cylinder cy);
 
 // plane
 
-void	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit);
+bool	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit);
+bool	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit);
 void	create_m_pl(t_plane *pl);
 void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp);
 
@@ -268,7 +271,6 @@ float	leangth_vec(t_vec3 s1);
 t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	sub_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
 
 // vec_calc_2

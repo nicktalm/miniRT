@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 17:05:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 20:05:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,10 @@ void	init_viewport(t_data *data)
 	t_vec3	right;
 	t_vec3	up;
 
-	up.x = 0.0;
-	up.y = 1.0;
-	up.z = 0.0;
 	if (data->moved)
 	{
+		up = get_tangent(data->set.cam.direction);
 		right = cross_vec(data->set.cam.direction, up);
-		up = cross_vec(right, data->set.cam.direction);
 		data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
 		data->vp.size.y = (data->vp.size.x / data->aspect_ratio);
 		data->vp.size.z = 0;

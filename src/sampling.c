@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:03:31 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 17:02:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 19:19:00 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ void	super_sampling(t_data *data, int x, int y)
 		i = 0;
 		while (i < 2)
 		{
-			hit.color.x = 0.0;
-			hit.color.y = 0.0;
-			hit.color.z = 0.0;
 			trace_ray((float)x + ((float)i / 2.0) - 0.25,
 				(float)y + ((float)j / 2.0) - 0.25, &hit, data);
 			full_color = add_vec(full_color, hit.color);
@@ -40,7 +37,7 @@ void	super_sampling(t_data *data, int x, int y)
 	}
 	full_color = dev_vec_wnbr(full_color, 4.0);
 	mlx_put_pixel(data->img, x, y,
-			create_color(full_color.x, full_color.y, full_color.z, 255));
+		create_color(full_color.x, full_color.y, full_color.z, 255));
 	render_message(data, x, y);
 }
 
@@ -76,6 +73,7 @@ void	render_message(t_data *data, int x, int y)
 	{
 		printf("\033[K");
 		printf("\033[32mRendering complete!\033[0m\n");
+		printf("\033[?25h");
 	}
 }
 
