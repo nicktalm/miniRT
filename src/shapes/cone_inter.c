@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cone_inter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 15:41:35 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 11:31:02 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 11:06:11 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,26 @@ void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i)
 		hit->i = i;
 }
 
-bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit)
+t_abc	calc_quadratic_formal(t_ray ray, t_cone cn)
 {
 	t_abc	formal;
-	t_vec3	tmp;
 
-	formal.a = pow(ray.direction.x, 2.0) + pow(ray.direction.z, 2.0) - pow(ray.direction.y, 2.0) * cn.angle;
-	formal.b = ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z - ray.origin.y * ray.direction.y * cn.angle;
-	formal.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - pow(ray.origin.y, 2.0) * cn.angle;
+	formal.a = pow(ray.direction.x, 2.0) + pow(ray.direction.z, 2.0)
+		- pow(ray.direction.y, 2.0) * cn.angle;
+	formal.b = ray.origin.x * ray.direction.x + ray.origin.z
+		* ray.direction.z - ray.origin.y * ray.direction.y * cn.angle;
+	formal.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2)
+		- pow(ray.origin.y, 2.0) * cn.angle;
 	formal.dis = (formal.b * formal.b) - (formal.a * formal.c);
+	return (formal);
+}
+
+bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit)
+{
+	t_vec3	tmp;
+	t_abc	formal;
+
+	formal = calc_quadratic_formal(ray, cn);
 	if (formal.dis > 0.0)
 	{
 		calc_t(&formal);

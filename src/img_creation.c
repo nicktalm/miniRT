@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/20 10:12:07 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 15:33:36 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	create_img(t_data *data)
 					down_sampling(data, &hit, (int)coords.x, (int)coords.y);
 				else
 				{
-					super_sampling(data, &hit, (int)coords.x, (int)coords.y, data->width);
+					super_sampling(data, &hit, (int)coords.x, (int)coords.y);
 				}
 				// creat_img_multi(data);
 				// data->moved = false;
@@ -135,72 +135,4 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data)
 	multi_vec_wnbr(data->vp.du, x)), multi_vec_wnbr(data->vp.dv, y));
 	ray.direction = sub_vec(pixle_center, data->set.cam.coords);
 	get_color(data, &ray, hit);
-}
-
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width)
-{
-	t_vec3		full_color;
-	static int	dot = 1;
-	int			i;
-	int			j;
-
-	full_color.x = 0.0;
-	full_color.y = 0.0;
-	full_color.z = 0.0;
-	j = 0;
-	while (j < 4)
-	{
-		i = 0;
-		while (i < 4)
-		{
-			trace_ray((float)x + ((float)i / 4.0) - 0.375,
-				(float)y + ((float)j / 4.0) - 0.375, hit, data);
-			full_color = add_vec(full_color, hit->color);
-			i++;
-		}
-		j++;
-	}
-	full_color = dev_vec_wnbr(full_color, 16.0);
-	mlx_put_pixel(data->img, x, y,
-			create_color(full_color.x, full_color.y, full_color.z, 255));
-	data->cache[x + y * width] = full_color;
-	// printf("\033[sRendering image\033[0J");
-	// if (dot >= 1)
-	// 	printf(".");
-	// if (dot >= 2)
-	// 	printf(".");
-	// if (dot == 3)
-	// {
-	// 	dot = 1;
-	// 	printf(".");
-	// }
-	// else
-	// 	dot++;
-	// printf("\033[u");
-}
-
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y)
-{
-	static int	pos = 0;
-	int			i;
-	int			j;
-
-	j = 0;
-	trace_ray((float)x, (float)y, hit, data);
-	while (j < data->res)
-	{
-		i = 0;
-		while (i < data->res)
-		{
-			if (x + i < data->width && y + j < data->height)
-			{
-				mlx_put_pixel(data->img, x + i, y + j,
-					create_color(hit->color.x, hit->color.y, hit->color.z, 255));
-				data->cache[(x + i) + (y + j) * data->width] = hit->color;
-			}
-			pos++;
-			i++;
-		}
-		j++;
-	}
 }

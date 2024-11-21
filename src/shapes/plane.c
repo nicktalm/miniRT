@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   plane.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 11:51:07 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 10:33:23 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 12:51:28 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ void	create_m_pl(t_plane *pl)
 	invert_matrix(pl->side.m, pl->side.mi);
 }
 
-void	get_color_and_normal_pl(t_data *data, t_plane pl, t_hitpoint *hit, t_vec3 tmp)
+void	get_color_and_normal_pl(t_data *data, t_plane pl,
+	t_hitpoint *hit, t_vec3 tmp)
 {
 	t_vec3	uv;
 	xpm_t	*map;

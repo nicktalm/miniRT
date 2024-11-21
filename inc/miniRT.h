@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/20 10:36:33 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 15:06:26 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,6 @@ typedef struct s_data
 // main
 
 int		main(int argc, char **argv);
-void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y, int width);
-void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
 
 //check_file
 
@@ -173,6 +171,13 @@ void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 // void	lighting_b(t_data *data, t_ray ray, t_hitpoint *hit);
 // float	rando(t_data *data);
 
+// sampling
+
+void	super_sampling(t_data *data, t_hitpoint *hit, int x, int y);
+void	render_animation(int *dot);
+void	render_message(t_data *data, int x, int y);
+void	down_sampling(t_data *data, t_hitpoint *hit, int x, int y);
+
 // multi_threading
 
 void	calc_pixels(t_data *data);
@@ -184,7 +189,6 @@ void	*loop_thread(void *param);
 
 void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data);
 // void	check_reflect(t_ray ray, t_hitpoint *hit, t_data *data);
-t_vec4	ray_vec4(t_vec4 origin, float t, t_vec4 direction);
 
 // shading
 
@@ -246,9 +250,12 @@ void	calc_angle(t_vec3 normal, float *x, float *z);
 void	calc_t(t_abc *formal);
 void	print_m(float m[4][4]);
 
-// transformation
+// transformation_1
 
 void	get_full_r(float result[4][4], float x, float y, float z);
+
+// transformation_2
+
 void	rotate_x(float m[4][4], float angle);
 void	rotate_y(float m[4][4], float angle);
 void	rotate_z(float m[4][4], float angle);
@@ -270,28 +277,26 @@ t_vec3	get_map_color(float u, float v, xpm_t *map);
 t_vec3	get_tangent(t_vec3 normal);
 void	get_map_normal(t_hitpoint *hit, t_vec3 *uv, xpm_t *bump_map);
 
-// vec_calc
+// vec_calc_1
 
 float	leangth_vec(t_vec3 s1);
-t_vec4	sub_vec4(t_vec4 s1, t_vec4 s2);
-t_vec4	multi_vec4_wnbr(t_vec4 s1, float nbr);
 t_vec3	norm_vec(t_vec3 s1);
 float	dot(t_vec3 s1, t_vec3 s2);
-float	dot4(t_vec4 s1, t_vec4 s2);
 t_vec3	sub_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	multi_vec(t_vec3 s1, t_vec3 s2);
+
+// vec_calc_2
+
 t_vec3	multi_vec_wnbr(t_vec3 s1, float nbr);
 t_vec3	dev_vec(t_vec3 s1, t_vec3 s2);
 t_vec3	dev_vec_wnbr(t_vec3 s1, float nbr);
-t_vec4	dev_vec4_wnbr(t_vec4 s1, float nbr);
 t_vec3	add_vec(t_vec3 s1, t_vec3 s2);
-t_vec4	add_vec4(t_vec4 s1, t_vec4 s2);
 t_vec3	add_vec_wnbr(t_vec3 s1, float nbr);
+
+// vec_calc_3
+
 t_vec3	ray_vec(t_vec3 origin, float t, t_vec3 dir);
 t_vec3	cross_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	reflect_vec3(t_vec3 s1, t_vec3 s2);
-int		cmp_vec(t_vec3 s1, t_vec3 s2);
-t_vec3	copy_vec(t_vec3 s1);
 t_vec4	r_vec(float m[4][4], t_vec4 v);
 t_vec3	con_to_vec3(t_vec4 s1);
 t_vec4	con_to_vec4(t_vec3 s1, float w);

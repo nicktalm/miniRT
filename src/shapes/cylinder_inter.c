@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_inter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:52:00 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/15 16:56:00 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 12:50:36 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ bool	test_side_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit)
 
 	formal.a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2);
 	formal.b = ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z;
-	formal.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2) - cy.radius * cy.radius;
+	formal.c = pow(ray.origin.x, 2) + pow(ray.origin.z, 2)
+		- cy.radius * cy.radius;
 	formal.dis = (formal.b * formal.b) - (formal.a * formal.c);
 	if (formal.dis > 0.0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sphere.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 10:14:01 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 10:33:29 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/20 12:47:55 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	create_m_sp(t_sphere *sp)
 	invert_matrix(sp->side.m, sp->side.mi);
 }
 
-void	get_color_and_normal_sp(t_data *data, t_sphere sp, t_hitpoint *hit, t_vec3 tmp)
+void	get_color_and_normal_sp(t_data *data, t_sphere sp,
+			t_hitpoint *hit, t_vec3 tmp)
 {
 	t_vec3	uv;
 	xpm_t	*map;

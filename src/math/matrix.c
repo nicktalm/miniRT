@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/10 10:42:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/07 21:00:45 by lucabohn         ###   ########.fr       */
+/*   Updated: 2024/11/21 11:45:43 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,30 @@
 
 void	invert_matrix(float m[4][4], float inv[4][4])
 {
-	for (int i = 0; i < 3; i++)
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < 3)
 	{
-		for (int j = 0; j < 3; j++)
+		j = 0;
+		while (j < 3)
 		{
 			inv[i][j] = m[j][i];
+			j++;
 		}
+		i++;
 	}
-	for (int i = 0; i < 3; i++)
-	{
-		inv[i][3] = 0.0;
-		inv[3][i] = 0.0;
-		for (int j = 0; j < 3; j++)
-		{
-			inv[i][3] -= inv[i][j] * m[j][3];
-		}
-	}
+	inv[0][3] = -m[0][3] * inv[0][0] - m[1][3]
+		* inv[0][1] - m[2][3] * inv[0][2];
+	inv[1][3] = -m[0][3] * inv[1][0] - m[1][3]
+		* inv[1][1] - m[2][3] * inv[1][2];
+	inv[2][3] = -m[0][3] * inv[2][0] - m[1][3]
+		* inv[2][1] - m[2][3] * inv[2][2];
+	inv[3][0] = 0.0;
+	inv[3][1] = 0.0;
+	inv[3][2] = 0.0;
 	inv[3][3] = 1.0;
 }
 
@@ -55,13 +63,10 @@ void	multi_m(float result[4][4], float m1[4][4], float m2[4][4])
 	}
 }
 
-void	calc_angle(t_vec3 normal, float *x, float *z)
+void	calc_base_angles(t_vec3 normal, float *x, float *z)
 {
 	double	ratio;
-	t_vec3	test = {0,1,0};
-	t_vec3	test2 = cross_vec(normal, test);
 
-	*z = 0.0;
 	ratio = sqrt((normal.x * normal.x) + (normal.y * normal.y));
 	if (normal.x == 0.0 && normal.y == 0.0 && fabsf(normal.z) == 1.0)
 		*x = atan2(normal.z, ratio);
@@ -73,6 +78,16 @@ void	calc_angle(t_vec3 normal, float *x, float *z)
 			*z = acos(normal.y / ratio);
 		*x = atan2(normal.z, ratio);
 	}
+}
+
+void	calc_angle(t_vec3 normal, float *x, float *z)
+{
+	t_vec3	test;
+	t_vec3	test2;
+
+	test = (t_vec3){0, 1, 0};
+	calc_base_angles(normal, x, z);
+	test2 = cross_vec(normal, test);
 	if (test2.z < 0.0)
 		*z *= -1.0;
 	if (test2.x < 0.0)
@@ -96,15 +111,4 @@ void	calc_t(t_abc *formal)
 		if (formal->t <= 0.0 || formal->t >= INFINITY)
 			formal->t = __FLT_MAX__;
 	}
-}
-
-void	print_m(float m[4][4])
-{
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 4; j++)
-			printf("m[%i][%i] = %f ", i, j, m[i][j]);
-		printf("\n");
-	}
-	printf("\n");
 }
