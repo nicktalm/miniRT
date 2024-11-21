@@ -1,6 +1,6 @@
 NAME = miniRT
 CC = cc
-CFLAGS = -Wall -Werror -Wextra \
+CFLAGS = \
 			-I inc \
 			-I lib/libft \
 			-I lib/get_next_line \
@@ -26,8 +26,6 @@ LDFLAGS =  -L $(LIBFT_DIR) -lft \
 			-framework Cocoa -framework OpenGL -framework IOKit
 
 # /opt/homebrew/Cellar/glfw/3.3.8/lib/
-
-
 all:				$(NAME)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)

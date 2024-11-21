@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/20 16:09:17 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 16:48:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ void	get_resolution(t_data *data)
 			data->res++;
 			data->moved = true;
 		}
-		else if (data->window->delta_time < 0.05 && !data->cache_use && (data->height * data->width) > 10000)
+		else if (data->window->delta_time < 0.05
+			&& !data->cache_use && (data->height * data->width) > 10000)
 		{
-			data->res--;
+			if (data->res > 1)
+				data->res--;
 			data->moved = true;
 		}
 	}
