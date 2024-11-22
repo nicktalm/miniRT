@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 15:09:39 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 18:29:27 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/22 12:32:26 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	specular_light(t_lighting *in,
 	strength = dot(reflect, view_dir);
 	if (strength < 0.0)
 		strength = 0.0;
-	strength = pow(strength, 32.0);
+	strength = pow(strength, 5.0);
 	in->specular = multi_vec_wnbr(light.color, strength);
 }
 

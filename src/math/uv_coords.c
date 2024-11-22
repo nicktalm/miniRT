@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:51:19 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 10:29:46 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/22 16:05:17 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	get_uv_coords_sp(t_data *data, xpm_t *map, t_vec3 *uv, t_vec3 tmp)
 {
 	tmp = norm_vec(tmp);
-	uv->x = atan2f(tmp.z, tmp.x) / (2 * M_PI) + 0.5;
+	uv->x = atan2f(-tmp.z, tmp.x) / (2 * M_PI) + 0.5;
 	uv->y = tmp.y * 0.5 + 0.5;
 	if (!data->checker)
 	{
@@ -48,7 +48,7 @@ t_vec3	get_uv_coords_cy(t_data *data, t_cylinder cy, xpm_t *map, t_vec3 tmp)
 	tmp.z /= cy.radius;
 	tmp.y /= (cy.height / 2.0);
 	uv.x = atan2f(tmp.z, tmp.x) / (2.0 * M_PI) + 0.5;
-	uv.y = tmp.y * 0.5 + 0.5;
+	uv.y = -tmp.y * 0.5 + 0.5;
 	if (!data->checker)
 	{
 		uv.x *= (map->texture.width - 1);
@@ -80,8 +80,8 @@ t_vec3	get_uv_coords_cn(t_data *data, t_cone cn, xpm_t *map, t_vec3 tmp)
 	tmp.x /= cn.radius;
 	tmp.z /= cn.radius;
 	tmp.y /= cn.height;
-	uv.x = atan2f(tmp.z, tmp.x) / (2.0 * M_PI) + 0.5;
-	uv.y = tmp.y * 0.5 + 0.5;
+	uv.x = atan2f(-tmp.z, tmp.x) / (2.0 * M_PI) + 0.5;
+	uv.y = -tmp.y * 0.5 + 0.5;
 	if (!data->checker)
 	{
 		uv.x *= (map->texture.width - 1);
