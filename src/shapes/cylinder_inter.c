@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cylinder_inter.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:52:00 by lucabohn          #+#    #+#             */
-/*   Updated: 2024/11/21 20:47:29 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 21:45:16 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit)
 			r_vec(cy.side.m, con_to_vec4(ray.direction, 0)));
 	if (test_side_cy(data, cy, tmp, hit))
 		r_value = 1;
-	return (false);
+	return (r_value);
 }
 
 t_abc	calc_quadratic_formal_cy(t_ray ray, t_cylinder cy)

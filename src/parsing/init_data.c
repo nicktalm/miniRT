@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 20:05:09 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 23:22:26 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->set.light = NULL;
 	if (argc == 2)
 	{
-		data->width = 1600;
-		data->height = 900;
+		data->width = 500;
+		data->height = 500;
 		data->bg.x = 0.0;
 		data->bg.y = 0.0;
 		data->bg.z = 0.0;
@@ -54,8 +54,11 @@ void	init_viewport(t_data *data)
 
 	if (data->moved)
 	{
-		up = get_tangent(data->set.cam.direction);
-		right = cross_vec(data->set.cam.direction, up);
+		right = get_tangent(data->set.cam.direction);
+		up = norm_vec(cross_vec(right, data->set.cam.direction));
+		printf("dir x = %f y = %f z = %f\n", data->set.cam.direction.x, data->set.cam.direction.y, data->set.cam.direction.z);
+		printf("up x = %f y = %f z = %f\n", up.x, up.y, up.z);
+		printf("right x = %f y = %f z = %f\n", right.x, right.y, right.z);
 		data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
 		data->vp.size.y = (data->vp.size.x / data->aspect_ratio);
 		data->vp.size.z = 0;

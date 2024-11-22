@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bump_mapping.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lucabohn <lucabohn@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:52:10 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 19:54:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 23:30:14 by lucabohn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ t_vec3	get_tangent(t_vec3 normal)
 	if (fabs(normal.y) > 0.99)
 		up = right;
 	tangent = cross_vec(normal, up);
-	return (up);
+	return (tangent);
 }
 
 void	get_map_normal(t_hitpoint *hit, t_vec3 *uv, xpm_t *bump_map)
