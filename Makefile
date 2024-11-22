@@ -21,6 +21,7 @@ OBJS_DIR = objs
 SRCS = $(addprefix $(SRCS_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRC_FILES:.c=.o))
 
+
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
@@ -33,14 +34,13 @@ MLX = $(MLX_DIR)/build/libmlx42.a
 LDFLAGS =  -L $(LIBFT_DIR) -lft \
 			-L $(GET_NEXT_LINE_DIR) -l_get_next_line \
 			-L $(MLX_DIR)/build -lmlx42 \
-			-lglfw -lm \
-			-ldl -pthread
-
+			-L /usr/local/lib/ -lglfw \
+			-framework Cocoa -framework OpenGL -framework IOKit
 
 all:				$(NAME)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) -fsanitize=address
 
 $(OBJS_DIR)/%.o:	src/%.c
 	@mkdir -p $(dir $@)
@@ -69,3 +69,4 @@ fclean:				clean
 re:					fclean all
 
 .PHONY:				all clean fclean re
+

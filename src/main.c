@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 15:03:59 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:48:31 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,14 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	init_data(&data, argc, argv);
-	// init_mlx(&data);
-	// mlx_get_monitor_size(0, &data.win_w_max, &data.win_h_max);
-	// mlx_set_window_limit(data.window, -1, -1, data.win_w_max, data.win_h_max);
+	init_mlx(&data);
+	mlx_get_monitor_size(0, &data.win_w_max, &data.win_h_max);
+	mlx_set_window_limit(data.window, -1, -1, data.win_w_max, data.win_h_max);
 	create_img(&data);
-	// mlx_loop_hook(data.window, hook, &data);
-	// mlx_loop(data.window);
-	// mlx_delete_image(data.window, data.img);
-	// mlx_terminate(data.window);
+	mlx_loop_hook(data.window, hook, &data);
+	mlx_loop(data.window);
+	mlx_delete_image(data.window, data.img);
+	mlx_terminate(data.window);
 	free_all(&data);
 	return (0);
 }
