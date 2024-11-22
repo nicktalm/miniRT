@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:16:32 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 16:39:37 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:23:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,26 +22,20 @@ int	ft_count_params(char **params)
 	return (i);
 }
 
-void	parse_textures(t_data *data, char *texture, xpm_t *obj)
+void	parse_textures(t_data *data, char *texture, xpm_t **obj)
 {
 	texture += 8;
-	obj = mlx_load_xpm42(texture);
-	if (!obj)
-	{
-		free_double_p(&texture);
+	*obj = mlx_load_xpm42(texture);
+	if (!*obj)
 		error("load xpm file", data);
-	}
 }
 
-void	parse_bump_map(t_data *data, char *bump_map, xpm_t *obj)
+void	parse_bump_map(t_data *data, char *bump_map, xpm_t **obj)
 {
 	bump_map += 9;
-	obj = mlx_load_xpm42(bump_map);
-	if (!obj)
-	{
-		free_double_p(&bump_map);
+	*obj = mlx_load_xpm42(bump_map);
+	if (!*obj)
 		error("load xpm file", data);
-	}
 }
 
 int	is_texture(char *param)

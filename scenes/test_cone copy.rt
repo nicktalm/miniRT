@@ -1,0 +1,6 @@
+A	0.2						100,100,100
+C	-10,1,0		1,0,0	70
+L	0,5,5		0.5		255,255,255
+L	-5,5,0		0.5		255,255,255
+L	5,5,0		0.5		255,255,255
+cn	-2,1.5,0	0,1,0	1	1	255,255,255	texture=textures/wood_floor.xpm42	bump_map=textures/wood_floor_bump.xpm42

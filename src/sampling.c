@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sampling.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:03:31 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 18:18:38 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:59:00 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,6 @@ void	super_sampling(t_data *data, int x, int y)
 		i = 0;
 		while (i < 2)
 		{
-			hit.color.x = 0.0;
-			hit.color.y = 0.0;
-			hit.color.z = 0.0;
 			trace_ray((float)x + ((float)i / 2.0) - 0.25,
 				(float)y + ((float)j / 2.0) - 0.25, &hit, data);
 			full_color = add_vec(full_color, hit.color);

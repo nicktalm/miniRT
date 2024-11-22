@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:43:57 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:16:58 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_data
 
 int		main(int argc, char **argv);
 void	get_resolution(t_data *data);
+int		create_color(float x, float y, float z, float w);
+void	check_interval(int *nbr);
 
 // bump_mapping
 
@@ -162,13 +164,13 @@ void	ft_count(t_data *data, char **line);
 void	parse_coords(t_vec3 *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec3 *vec, char *param, t_data *data);
 void	parse_color(t_vec3 *vec, char *line, t_data *data);
-void	parse_surface(t_plane *pl, char *param, t_data *data, char **params);
+void	parse_surface(t_plane *pl, char *param, t_data *data);
 
 //parsing_helper_2
 
 int		ft_count_params(char **params);
-void	parse_textures(t_data *data, char *texture, xpm_t *obj);
-void	parse_bump_map(t_data *data, char *bump_map, xpm_t *obj);
+void	parse_textures(t_data *data, char *texture, xpm_t **obj);
+void	parse_bump_map(t_data *data, char *bump_map, xpm_t **obj);
 int		is_texture(char *param);
 int		is_bump_map(char *param);
 
@@ -200,7 +202,7 @@ void	parse_cone_specific(t_data *data, char **params, int *i);
 
 // cone_inter
 
-void	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit);
 bool	test_side_cn(t_data *data, t_cone cn, t_ray ray, t_hitpoint *hit);
 bool	test_bottom_cn(t_data *data, t_cone cn, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cn(t_cone cn, t_hitpoint *hit);
@@ -215,21 +217,25 @@ void	get_color_and_normal_tb_cn(t_data *data,
 
 // cylinder_inter
 
-void	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit);
+t_abc	calc_quadratic_formal_cy(t_ray ray, t_cylinder cy);
 bool	test_side_cy(t_data *data, t_cylinder cy, t_ray ray, t_hitpoint *hit);
-bool	test_top_bottom_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_ray ray, float m[4][4]);
+bool	test_top_bottom_cy(t_data *data,
+			t_cylinder cy, t_hitpoint *hit, t_ray ray);
 void	norm_calc_cy(t_cylinder cy, t_hitpoint *hit);
 
 // cylinder_utils
 
-void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i);
 void	create_m_cy(t_cylinder *cy);
+void	get_color_and_normal_cy(t_data *data,
+			t_cylinder cy, t_hitpoint *hit, int i);
+xpm_t	*find_map(t_cylinder cy);
 
 // plane
 
-void	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit, int i);
-void	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit, int i);
+bool	calc_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit);
+bool	test_inf_pl(t_plane pl, t_ray ray, t_hitpoint *hit);
+bool	test_bounded_pl(t_data *data, t_plane pl, t_ray ray, t_hitpoint *hit);
 void	create_m_pl(t_plane *pl);
 void	get_color_and_normal_pl(t_data *data, t_plane pl,
 			t_hitpoint *hit, t_vec3 tmp);
@@ -255,7 +261,7 @@ void	error(char *message, t_data *data);
 
 // error_2
 
-void	check_bump_texture(xpm_t *bump_map, xpm_t *texture, int i);
+void	check_bump_texture(xpm_t *bump_map, xpm_t *texture);
 
 // hooks
 
@@ -272,8 +278,7 @@ bool	cr(mlx_key_data_t key, t_data *data, int i);
 // img_creation
 
 void	create_img(t_data *data);
-int		create_color(float x, float y, float z, float w);
-void	check_interval(int *nbr);
+void	pixel_loop(t_data *data, t_vec3 coords, int resolution);
 void	in_out_object(t_ray *ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
 
@@ -291,6 +296,12 @@ void	render_animation(int *dot);
 void	render_message(t_data *data, int x, int y);
 void	down_sampling(t_data *data, int x, int y);
 
+// shading_2
+
+void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
+bool	get_distanz(t_hitpoint *hit, t_light light, int i);
+bool	light_loop(t_data *data, t_ray *ray, t_hitpoint *hit, t_vec3 index);
+
 // shading
 
 void	obj_shading(t_data *data, t_hitpoint *hit, t_ray *ray, t_light light);
@@ -299,7 +310,5 @@ void	diffuse_light(t_lighting *intensity, t_light light, t_hitpoint *hit);
 void	specular_light(t_lighting *in,
 			t_light light, t_camera cam, t_hitpoint *hit);
 t_vec3	reflect_light(t_vec3 light_dir, t_vec3 normal);
-void	get_color(t_data *data, t_ray *ray, t_hitpoint *hit);
-bool	get_distanz(t_hitpoint *hit, t_light light, int i);
 
 #endif

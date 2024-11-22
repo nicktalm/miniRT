@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:35:00 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:13:18 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ void	parse_coords(t_vec3 *coords, char *param, t_data *data)
 
 	values = ft_split(param, ',');
 	if (ft_count_params(values) != 3)
-	{
 		error("Coordinates must have 3 values", data);
-	}
 	coords->x = ft_atof(values[0]);
 	coords->y = ft_atof(values[1]);
 	coords->z = ft_atof(values[2]);
@@ -40,9 +38,7 @@ void	parse_color(t_vec3 *color, char *param, t_data *data)
 
 	values = ft_split(param, ',');
 	if (ft_count_params(values) != 3)
-	{
 		error("RGB values must have 3 values", data);
-	}
 	color->x = ft_atof(values[0]);
 	color->y = ft_atof(values[1]);
 	color->z = ft_atof(values[2]);
@@ -55,9 +51,7 @@ void	parse_color(t_vec3 *color, char *param, t_data *data)
 	free_double_p(values);
 	if (color->x < 0 || color->x > 255 || color->y < 0 || color->y > 255
 		|| color->z < 0 || color->z > 255)
-	{
 		error("RGB values must be between 0 and 255", data);
-	}
 	*color = dev_vec_wnbr(*color, 255.0);
 }
 
@@ -88,7 +82,7 @@ void	parse_normalized_vector(t_vec3 *vec, char *param, t_data *data)
 	}
 }
 
-void	parse_surface(t_plane *pl, char *param, t_data *data, char **params)
+void	parse_surface(t_plane *pl, char *param, t_data *data)
 {
 	char	**values;
 

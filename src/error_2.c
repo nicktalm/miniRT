@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   error_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 19:39:37 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:41:09 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:03:20 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-void	check_bump_texture(xpm_t *bump_map, xpm_t *texture, int i)
+void	check_bump_texture(xpm_t *bump_map, xpm_t *texture)
 {
 	if (bump_map)
 		mlx_delete_xpm42(bump_map);

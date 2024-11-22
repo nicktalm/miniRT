@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/27 22:01:37 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/18 10:33:15 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 21:02:24 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,23 +37,19 @@ void	create_m_cy(t_cylinder *cy)
 	invert_matrix(cy->bottom.m, cy->bottom.mi);
 }
 
-void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec3 tmp, int i)
+void	get_color_and_normal_cy(t_data *data,
+			t_cylinder cy, t_hitpoint *hit, int i)
 {
 	t_vec3	uv;
 	xpm_t	*map;
 
-	if (cy.texture)
-		map = cy.texture;
-	else if (cy.bump_map)
-		map = cy.bump_map;
-	else
-		map = NULL;
+	map = find_map(cy);
 	if (map || data->checker)
 	{
 		if (i == 0)
-			uv = get_uv_coords_cy(data, cy, map, tmp);
+			uv = get_uv_coords_cy(data, cy, map, hit->p);
 		else
-			uv = get_uv_coords_tb(data, cy.radius, map, tmp);
+			uv = get_uv_coords_tb(data, cy.radius, map, hit->p);
 	}
 	if (cy.texture || data->checker)
 	{
@@ -66,4 +62,13 @@ void	get_color_and_normal_cy(t_data *data, t_cylinder cy, t_hitpoint *hit, t_vec
 		hit->obj_color = cy.color;
 	if (cy.bump_map)
 		get_map_normal(hit, &uv, cy.bump_map);
+}
+
+xpm_t	*find_map(t_cylinder cy)
+{
+	if (cy.texture)
+		return (cy.texture);
+	else if (cy.bump_map)
+		return (cy.bump_map);
+	return (NULL);
 }

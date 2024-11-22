@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:52:10 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/20 12:29:03 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/22 10:46:41 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_vec3	get_tangent(t_vec3 normal)
 	right.z = 0.0;
 	if (fabs(normal.y) > 0.99)
 		up = right;
-	tangent = cross_vec(up, normal);
+	tangent = cross_vec(normal, up);
 	return (norm_vec(tangent));
 }
 

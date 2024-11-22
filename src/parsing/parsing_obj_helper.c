@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj_helper.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:33:40 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:33:06 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:59:09 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,20 @@ void	parse_txt_bump(t_data *data, char *param,
 {
 	if (is_texture(param))
 	{
+		printf("text\n");
 		if (*texture != NULL)
-		{
 			error("Duplicate texture parameter", data);
-		}
-		parse_textures(data, param, *texture);
+		parse_textures(data, param, texture);
 	}
 	else if (is_bump_map(param))
 	{
+		printf("bump\n");
 		if (*bump_map != NULL)
-		{
 			error("Duplicate bump map parameter", data);
-		}
-		parse_bump_map(data, param, *bump_map);
+		parse_bump_map(data, param, bump_map);
 	}
 	else
-	{
 		error("Invalid parameter", data);
-	}
 }
 
 void	parse_sp_specific(t_data *data, char **params, int *i)
@@ -62,7 +58,7 @@ void	parse_pl_specific(t_data *data, char **params, int *i)
 	if (ft_count_params(params) >= 5)
 	{
 		if (ft_isdigit(params[4][0]))
-			parse_surface(&data->set.obj[*i].form.pl, params[4], data, params);
+			parse_surface(&data->set.obj[*i].form.pl, params[4], data);
 		else
 			parse_txt_bump(data, params[4], &data->set.obj[*i].form.pl.texture,
 				&data->set.obj[*i].form.pl.bump_map);
@@ -70,13 +66,13 @@ void	parse_pl_specific(t_data *data, char **params, int *i)
 	if (ft_count_params(params) >= 6)
 	{
 		if (ft_isdigit(params[5][0]))
-			parse_surface(&data->set.obj[*i].form.pl, params[5], data, params);
+			parse_surface(&data->set.obj[*i].form.pl, params[5], data);
 		else
 			parse_txt_bump(data, params[5], &data->set.obj[*i].form.pl.texture,
 				&data->set.obj[*i].form.pl.bump_map);
 	}
 	if (ft_count_params(params) == 7 && ft_isdigit(params[6][0]))
-		parse_surface(&data->set.obj[*i].form.pl, params[6], data, params);
+		parse_surface(&data->set.obj[*i].form.pl, params[6], data);
 	data->set.obj[*i].type = PLANE;
 	parse_coords(&data->set.obj[*i].form.pl.coords, params[1], data);
 	parse_normalized_vector(&data->set.obj[*i].form.pl.norm, params[2], data);

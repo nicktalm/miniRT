@@ -1,6 +1,6 @@
 NAME = miniRT
 CC = cc
-CFLAGS = \
+CFLAGS = -Wall -Werror -Wextra\
 			-I inc \
 			-I lib/libft \
 			-I lib/get_next_line \
@@ -13,7 +13,7 @@ SRC_FILES = \
 	parsing/parsing_helper.c parsing/parsing_obj_helper.c parsing/parsing_obj.c parsing/parsing.c \
 	shapes/cone_inter.c shapes/cone_utils.c shapes/cylinder_inter.c shapes/cylinder_utils.c \
 	shapes/plane.c shapes/sphere.c \
-	check_hit.c error.c error_2.c hooks.c img_creation.c key_actions.c main.c sampling.c shading.c
+	check_hit.c error.c error_2.c hooks.c img_creation.c key_actions.c main.c sampling.c shading.c shading_2.c
 
 SRCS_DIR = src
 OBJS_DIR = objs
@@ -40,7 +40,7 @@ LDFLAGS =  -L $(LIBFT_DIR) -lft \
 all:				$(NAME)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) -fsanitize=address
+	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS)
 
 $(OBJS_DIR)/%.o:	src/%.c
 	@mkdir -p $(dir $@)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 17:20:57 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 21:11:26 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->garbage.params = NULL;
 	if (argc == 2)
 	{
-		data->width = 1600;
+		data->width = 900;
 		data->height = 900;
 		data->bg.x = 0.0;
 		data->bg.y = 0.0;
@@ -45,8 +45,6 @@ void	init_mlx(t_data *data)
 	data->img = mlx_new_image(data->window, data->width, data->height);
 	if (!data->img)
 		error("img", data);
-	if (mlx_image_to_window(data->window, data->img, 0, 0) == -1)
-		error("image to window", data);
 }
 
 void	init_viewport(t_data *data)
@@ -54,11 +52,10 @@ void	init_viewport(t_data *data)
 	t_vec3	right;
 	t_vec3	up;
 
-	up = get_tangent(data->set.cam.direction);
 	if (data->moved)
 	{
-		right = cross_vec(data->set.cam.direction, up);
-		up = cross_vec(right, data->set.cam.direction);
+		right = get_tangent(data->set.cam.direction);
+		up = norm_vec(cross_vec(right, data->set.cam.direction));
 		data->vp.size.x = 2 * tan(data->set.cam.fov / 2);
 		data->vp.size.y = (data->vp.size.x / data->aspect_ratio);
 		data->vp.size.z = 0;

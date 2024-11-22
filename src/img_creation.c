@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 19:28:59 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:44:25 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	create_img(t_data *data)
 	else
 		resolution = 1;
 	init_viewport(data);
+	pixel_loop(data, coords, resolution);
+	data->moved = false;
+}
+
+void	pixel_loop(t_data *data, t_vec3 coords, int resolution)
+{
 	while (coords.y < data->height)
 	{
 		coords.x = 0.0;
@@ -31,11 +37,9 @@ void	create_img(t_data *data)
 		{
 			if (data->moved)
 			{
+				data->cache_use = false;
 				if (!data->render)
-				{
 					down_sampling(data, (int)coords.x, (int)coords.y);
-					data->cache_use = false;
-				}
 				else
 				{
 					super_sampling(data, (int)coords.x, (int)coords.y);
@@ -48,33 +52,6 @@ void	create_img(t_data *data)
 		}
 		coords.y += resolution;
 	}
-	data->moved = false;
-}
-
-int	create_color(float x, float y, float z, float w)
-{
-	int	r;
-	int	g;
-	int	b;
-	int	a;
-
-	r = 255.0 * x;
-	g = 255.0 * y;
-	b = 255.0 * z;
-	a = 255.0 * w;
-	check_interval(&r);
-	check_interval(&g);
-	check_interval(&b);
-	check_interval(&a);
-	return (r << 24 | g << 16 | b << 8 | a);
-}
-
-void	check_interval(int *nbr)
-{
-	if (*nbr > 255)
-		*nbr = 255;
-	else if (*nbr < 0)
-		*nbr = 0;
 }
 
 void	in_out_object(t_ray *ray, t_hitpoint *hit)
