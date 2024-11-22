@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj_helper.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:33:40 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/19 12:36:01 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 17:54:36 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,23 @@ void	parse_txt_bump(t_data *data, char *param,
 	if (is_texture(param))
 	{
 		if (*texture != NULL)
+		{
 			error("Duplicate texture parameter", data);
+		}
 		parse_textures(data, param, *texture);
-		*texture = mlx_load_xpm42(param + 8);
 	}
 	else if (is_bump_map(param))
 	{
 		if (*bump_map != NULL)
+		{
 			error("Duplicate bump map parameter", data);
+		}
 		parse_bump_map(data, param, *bump_map);
-		*bump_map = mlx_load_xpm42(param + 9);
 	}
 	else
+	{
 		error("Invalid parameter", data);
+	}
 }
 
 void	parse_sp_specific(t_data *data, char **params, int *i)
@@ -46,6 +50,8 @@ void	parse_sp_specific(t_data *data, char **params, int *i)
 	data->set.obj[*i].type = SPHERE;
 	parse_coords(&data->set.obj[*i].form.sp.coords, params[1], data);
 	data->set.obj[*i].form.sp.diameter = ft_atof(params[2]);
+	if (data->set.obj[*i].form.sp.diameter <= 0)
+		error("Diameter must be greater than 0", data);
 	data->set.obj[*i].form.sp.radius = data->set.obj[*i].form.sp.diameter / 2.0;
 	parse_color(&data->set.obj[*i].form.sp.color, params[3], data);
 	create_m_sp(&data->set.obj[*i].form.sp);
@@ -56,7 +62,7 @@ void	parse_pl_specific(t_data *data, char **params, int *i)
 	if (ft_count_params(params) >= 5)
 	{
 		if (ft_isdigit(params[4][0]))
-			parse_surface(&data->set.obj[*i].form.pl, params[4], data);
+			parse_surface(&data->set.obj[*i].form.pl, params[4], data, params);
 		else
 			parse_txt_bump(data, params[4], &data->set.obj[*i].form.pl.texture,
 				&data->set.obj[*i].form.pl.bump_map);
@@ -64,13 +70,13 @@ void	parse_pl_specific(t_data *data, char **params, int *i)
 	if (ft_count_params(params) >= 6)
 	{
 		if (ft_isdigit(params[5][0]))
-			parse_surface(&data->set.obj[*i].form.pl, params[5], data);
+			parse_surface(&data->set.obj[*i].form.pl, params[5], data, params);
 		else
 			parse_txt_bump(data, params[5], &data->set.obj[*i].form.pl.texture,
 				&data->set.obj[*i].form.pl.bump_map);
 	}
 	if (ft_count_params(params) == 7 && ft_isdigit(params[6][0]))
-		parse_surface(&data->set.obj[*i].form.pl, params[6], data);
+		parse_surface(&data->set.obj[*i].form.pl, params[6], data, params);
 	data->set.obj[*i].type = PLANE;
 	parse_coords(&data->set.obj[*i].form.pl.coords, params[1], data);
 	parse_normalized_vector(&data->set.obj[*i].form.pl.norm, params[2], data);
@@ -94,6 +100,10 @@ void	parse_cy_specific(t_data *data, char **params, int *i)
 	data->set.obj[*i].form.cy.diameter = ft_atof(params[3]);
 	data->set.obj[*i].form.cy.radius = data->set.obj[*i].form.cy.diameter / 2.0;
 	data->set.obj[*i].form.cy.height = ft_atof(params[4]);
+	if (data->set.obj[*i].form.cy.height <= 0 || data->set.obj[*i].form.cy.radius <= 0)
+	{
+		error("Diameter and height must be greater than 0", data);
+	}
 	parse_color(&data->set.obj[*i].form.cy.color, params[5], data);
 	create_m_cy(&data->set.obj[*i].form.cy);
 }
@@ -114,6 +124,10 @@ void	parse_cone_specific(t_data *data, char **params, int *i)
 	data->set.obj[*i].form.cn.height = ft_atof(params[3]);
 	data->set.obj[*i].form.cn.diameter = ft_atof(params[4]);
 	data->set.obj[*i].form.cn.radius = data->set.obj[*i].form.cn.diameter / 2.0;
+	if (data->set.obj[*i].form.cn.height <= 0 || data->set.obj[*i].form.cn.radius <= 0)
+	{
+		error("Diameter and height must be greater than 0", data);
+	}
 	parse_color(&data->set.obj[*i].form.cn.color, params[5], data);
 	data->set.obj[*i].form.cn.angle
 		= tanf(atanf(data->set.obj[*i].form.cn.radius

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sampling.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:03:31 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/21 17:02:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/21 18:18:38 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	super_sampling(t_data *data, int x, int y)
 	}
 	full_color = dev_vec_wnbr(full_color, 4.0);
 	mlx_put_pixel(data->img, x, y,
-			create_color(full_color.x, full_color.y, full_color.z, 255));
+		create_color(full_color.x, full_color.y, full_color.z, 255));
 	render_message(data, x, y);
 }
 
@@ -76,6 +76,7 @@ void	render_message(t_data *data, int x, int y)
 	{
 		printf("\033[K");
 		printf("\033[32mRendering complete!\033[0m\n");
+		printf("\033[?25h");
 	}
 }
 

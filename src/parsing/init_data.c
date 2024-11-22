@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 17:05:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/22 17:20:57 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	init_data(t_data *data, int argc, char **argv)
 {
 	data->set.obj = NULL;
 	data->set.light = NULL;
+	data->garbage.line = NULL;
+	data->garbage.params = NULL;
 	if (argc == 2)
 	{
 		data->width = 1600;
@@ -52,9 +54,7 @@ void	init_viewport(t_data *data)
 	t_vec3	right;
 	t_vec3	up;
 
-	up.x = 0.0;
-	up.y = 1.0;
-	up.z = 0.0;
+	up = get_tangent(data->set.cam.direction);
 	if (data->moved)
 	{
 		right = cross_vec(data->set.cam.direction, up);

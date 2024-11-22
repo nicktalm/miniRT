@@ -6,9 +6,20 @@ CFLAGS = \
 			-I lib/get_next_line \
 			-I lib/mlx/include
 
-SRCS = $(shell find src -name '*.c')
+SRC_FILES = \
+	math/bump_mapping.c math/matrix.c math/transformation_1.c math/transformation_2.c\
+	math/uv_coords.c math/vec_calc_1.c math/vec_calc_2.c math/vec_calc_3.c \
+	parsing/check_file.c parsing/helper_2.c parsing/helper.c parsing/init_data.c parsing/parsing_helper_2.c \
+	parsing/parsing_helper.c parsing/parsing_obj_helper.c parsing/parsing_obj.c parsing/parsing.c parsing/parsing_helper_3.c\
+	shapes/cone_inter.c shapes/cone_utils.c shapes/cylinder_inter.c shapes/cylinder_utils.c \
+	shapes/plane.c shapes/sphere.c \
+	check_hit.c error.c hooks.c img_creation.c key_actions.c main.c sampling.c shading.c
+
+SRCS_DIR = src
 OBJS_DIR = objs
-OBJS = $(patsubst src/%.c, $(OBJS_DIR)/%.o, $(SRCS))
+
+SRCS = $(addprefix $(SRCS_DIR)/, $(SRC_FILES))
+OBJS = $(addprefix $(OBJS_DIR)/, $(SRC_FILES:.c=.o))
 
 LIBFT_DIR = lib/libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -22,14 +33,14 @@ MLX = $(MLX_DIR)/build/libmlx42.a
 LDFLAGS =  -L $(LIBFT_DIR) -lft \
 			-L $(GET_NEXT_LINE_DIR) -l_get_next_line \
 			-L $(MLX_DIR)/build -lmlx42 \
-			-L /usr/local/lib/ -lglfw \
-			-framework Cocoa -framework OpenGL -framework IOKit
+			-lglfw -lm \
+			-ldl -pthread
 
-# /opt/homebrew/Cellar/glfw/3.3.8/lib/
+
 all:				$(NAME)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS) -fsanitize=address
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 $(OBJS_DIR)/%.o:	src/%.c
 	@mkdir -p $(dir $@)

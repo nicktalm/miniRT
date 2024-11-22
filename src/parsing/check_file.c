@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_file.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 16:46:39 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/12 11:31:04 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/22 15:04:38 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	count_rows(int fd)
 	return (rows);
 }
 
-int	read_lines_from_file(int fd, char ***line, char *argv)
+int	read_lines_from_file(int fd, char *argv, t_data *data)
 {
 	int		rows;
 	int		i;
 
 	rows = count_rows(fd);
-	*line = malloc(sizeof(char *) * (rows + 1));
-	if (!*line)
+	data->garbage.line = malloc(sizeof(char *) * (rows + 1));
+	if (!data->garbage.line)
 		return (-1);
 	fd = open(argv, O_RDONLY);
 	if (fd < 0)
@@ -44,40 +44,32 @@ int	read_lines_from_file(int fd, char ***line, char *argv)
 	i = 0;
 	while (i < rows)
 	{
-		(*line)[i] = get_next_line(fd);
-		if (!(*line)[i])
+		(data->garbage.line)[i] = get_next_line(fd);
+		if (!(data->garbage.line)[i])
 			break ;
-		(*line)[i] = clean_line((*line)[i]);
+		(data->garbage.line)[i] = clean_line((data->garbage.line)[i]);
 		i++;
 	}
-	line[0][i] = NULL;
+	data->garbage.line[i] = NULL;
 	close(fd);
 	return (0);
 }
 
 int	process_rt_file(int fd, t_data *data, char *argv)
 {
-	char	**line;
 	int		result;
 	int		i;
 
-	result = read_lines_from_file(fd, &line, argv);
+	result = read_lines_from_file(fd, argv, data);
 	if (result < 0)
 		return (result);
-	ft_count(data, line);
+	ft_count(data, data->garbage.line);
 	i = 0;
-	while (line[i] != NULL)
+	while (data->garbage.line[i] != NULL)
 	{
-		parse_line(data, &line[i]);
+		parse_line(data, data->garbage.line[i]);
 		i++;
 	}
-	i = 0;
-	while (line[i] != NULL)
-	{
-		free(line[i]);
-		i++;
-	}
-	free(line);
 	return (0);
 }
 
