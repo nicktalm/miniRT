@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 17:18:19 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:43:57 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,10 +172,6 @@ void	parse_bump_map(t_data *data, char *bump_map, xpm_t *obj);
 int		is_texture(char *param);
 int		is_bump_map(char *param);
 
-//parsing_helper_3
-
-int		ft_double_p_len(char **values);
-
 //parsing_obj
 
 void	parse_common_params(t_data *data, char **params, int *i,
@@ -253,8 +249,13 @@ void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data);
 
 void	free_double_p(char **double_p);
 void	free_all(t_data *data);
+void	delete_bump_texture(t_data *data);
 void	error_2(char *message, char *param, t_data *data);
 void	error(char *message, t_data *data);
+
+// error_2
+
+void	check_bump_texture(xpm_t *bump_map, xpm_t *texture, int i);
 
 // hooks
 

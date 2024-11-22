@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_obj_helper.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:33:40 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 17:54:36 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:33:06 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,9 @@ void	parse_cy_specific(t_data *data, char **params, int *i)
 	data->set.obj[*i].form.cy.diameter = ft_atof(params[3]);
 	data->set.obj[*i].form.cy.radius = data->set.obj[*i].form.cy.diameter / 2.0;
 	data->set.obj[*i].form.cy.height = ft_atof(params[4]);
-	if (data->set.obj[*i].form.cy.height <= 0 || data->set.obj[*i].form.cy.radius <= 0)
-	{
+	if (data->set.obj[*i].form.cy.height <= 0
+		|| data->set.obj[*i].form.cy.radius <= 0)
 		error("Diameter and height must be greater than 0", data);
-	}
 	parse_color(&data->set.obj[*i].form.cy.color, params[5], data);
 	create_m_cy(&data->set.obj[*i].form.cy);
 }
@@ -124,14 +123,12 @@ void	parse_cone_specific(t_data *data, char **params, int *i)
 	data->set.obj[*i].form.cn.height = ft_atof(params[3]);
 	data->set.obj[*i].form.cn.diameter = ft_atof(params[4]);
 	data->set.obj[*i].form.cn.radius = data->set.obj[*i].form.cn.diameter / 2.0;
-	if (data->set.obj[*i].form.cn.height <= 0 || data->set.obj[*i].form.cn.radius <= 0)
-	{
+	if (data->set.obj[*i].form.cn.height <= 0
+		|| data->set.obj[*i].form.cn.radius <= 0)
 		error("Diameter and height must be greater than 0", data);
-	}
 	parse_color(&data->set.obj[*i].form.cn.color, params[5], data);
-	data->set.obj[*i].form.cn.angle
-		= tanf(atanf(data->set.obj[*i].form.cn.radius
-				/ data->set.obj[*i].form.cn.height))
+	data->set.obj[*i].form.cn.angle = tanf(atanf(\
+		data->set.obj[*i].form.cn.radius / data->set.obj[*i].form.cn.height)) \
 		* tanf(atanf(data->set.obj[*i].form.cn.radius
 				/ data->set.obj[*i].form.cn.height));
 	data->set.obj[*i].form.cn.tangle = atan(data->set.obj[*i].form.cn.radius

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   img_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 15:57:06 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 10:18:49 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:28:59 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	create_img(t_data *data)
 			{
 				if (!data->render)
 				{
-					// down_sampling(data, (int)coords.x, (int)coords.y);
+					down_sampling(data, (int)coords.x, (int)coords.y);
 					data->cache_use = false;
 				}
 				else
 				{
-					// super_sampling(data, (int)coords.x, (int)coords.y);
+					super_sampling(data, (int)coords.x, (int)coords.y);
 					data->cache_use = true;
 				}
 			}

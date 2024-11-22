@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 17:31:26 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:41:02 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,6 @@ void	free_double_p(char **double_p)
 	free(double_p);
 }
 
-void	check_bump_texture(xpm_t *bump_map, xpm_t *texture, int i)
-{
-	if (bump_map)
-		mlx_delete_xpm42(bump_map);
-	if (texture)
-		mlx_delete_xpm42(texture);
-}
-
 void	delete_bump_texture(t_data *data)
 {
 	int	i;
@@ -41,13 +33,17 @@ void	delete_bump_texture(t_data *data)
 	while (i < data->set.obj_count)
 	{
 		if (data->set.obj[i].type == SPHERE)
-			check_bump_texture(data->set.obj[i].form.sp.bump_map, data->set.obj[i].form.sp.texture, i);
+			check_bump_texture(data->set.obj[i].form.sp.bump_map,
+				data->set.obj[i].form.sp.texture, i);
 		else if (data->set.obj[i].type == PLANE)
-			check_bump_texture(data->set.obj[i].form.pl.bump_map, data->set.obj[i].form.pl.texture, i);
+			check_bump_texture(data->set.obj[i].form.pl.bump_map,
+				data->set.obj[i].form.pl.texture, i);
 		else if (data->set.obj[i].type == CYLINDER)
-			check_bump_texture(data->set.obj[i].form.cy.bump_map, data->set.obj[i].form.cy.texture, i);
+			check_bump_texture(data->set.obj[i].form.cy.bump_map,
+				data->set.obj[i].form.cy.texture, i);
 		else if (data->set.obj[i].type == CONE)
-			check_bump_texture(data->set.obj[i].form.cn.bump_map, data->set.obj[i].form.cn.texture, i);
+			check_bump_texture(data->set.obj[i].form.cn.bump_map,
+				data->set.obj[i].form.cn.texture, i);
 		i++;
 	}
 }
@@ -56,7 +52,7 @@ void	free_all(t_data *data)
 {
 	if (data->set.obj)
 	{
-		// delete_bump_texture(data);
+		delete_bump_texture(data);
 		free(data->set.obj);
 	}
 	if (data->set.light)
@@ -74,8 +70,8 @@ void	error_2(char *message, char *param, t_data *data)
 	ft_putstr_fd(param, 2);
 	ft_putstr_fd("\n", 2);
 	free_all(data);
-	// mlx_delete_image(data.window, data.img);
-	// mlx_terminate(data.window);
+	mlx_delete_image(data->window, data->img);
+	mlx_terminate(data->window);
 	exit(0);
 }
 
@@ -85,7 +81,7 @@ void	error(char *message, t_data *data)
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd("\n", 2);
 	free_all(data);
-	// mlx_delete_image(data.window, data.img);
-	// mlx_terminate(data.window);
+	mlx_delete_image(data->window, data->img);
+	mlx_terminate(data->window);
 	exit(0);
 }

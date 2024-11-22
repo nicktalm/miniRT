@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:50:42 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 18:04:23 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:29:24 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	parse_camera(t_data *data, char *line)
 	data->garbage.params = ft_split(line, ' ');
 	check_param_nbr_2(data->garbage.params, 4, data);
 	parse_coords(&data->set.cam.coords, data->garbage.params[1], data);
-	parse_normalized_vector(&data->set.cam.direction, data->garbage.params[2], data);
+	parse_normalized_vector(&data->set.cam.direction,
+		data->garbage.params[2], data);
 	data->set.cam.fov = ft_atof(data->garbage.params[3]);
 	if (data->set.cam.fov < 0 || data->set.cam.fov > 180)
 	{

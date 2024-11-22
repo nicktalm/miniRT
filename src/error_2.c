@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_helper_3.c                                 :+:      :+:    :+:   */
+/*   error_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/22 14:46:16 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 14:46:39 by ntalmon          ###   ########.fr       */
+/*   Created: 2024/11/22 19:39:37 by ntalmon           #+#    #+#             */
+/*   Updated: 2024/11/22 19:41:09 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
 
-int	ft_double_p_len(char **values)
+void	check_bump_texture(xpm_t *bump_map, xpm_t *texture, int i)
 {
-	int	i;
-
-	i = 0;
-	while (values[i])
-		i++;
-	return (i);
+	if (bump_map)
+		mlx_delete_xpm42(bump_map);
+	if (texture)
+		mlx_delete_xpm42(texture);
 }

@@ -7,13 +7,13 @@ CFLAGS = \
 			-I lib/mlx/include
 
 SRC_FILES = \
-	math/bump_mapping.c math/matrix.c math/transformation_1.c math/transformation_2.c\
+	math/bump_mapping.c math/matrix.c math/transformation_1.c math/transformation_2.c \
 	math/uv_coords.c math/vec_calc_1.c math/vec_calc_2.c math/vec_calc_3.c \
 	parsing/check_file.c parsing/helper_2.c parsing/helper.c parsing/init_data.c parsing/parsing_helper_2.c \
-	parsing/parsing_helper.c parsing/parsing_obj_helper.c parsing/parsing_obj.c parsing/parsing.c parsing/parsing_helper_3.c\
+	parsing/parsing_helper.c parsing/parsing_obj_helper.c parsing/parsing_obj.c parsing/parsing.c \
 	shapes/cone_inter.c shapes/cone_utils.c shapes/cylinder_inter.c shapes/cylinder_utils.c \
 	shapes/plane.c shapes/sphere.c \
-	check_hit.c error.c hooks.c img_creation.c key_actions.c main.c sampling.c shading.c
+	check_hit.c error.c error_2.c hooks.c img_creation.c key_actions.c main.c sampling.c shading.c
 
 SRCS_DIR = src
 OBJS_DIR = objs

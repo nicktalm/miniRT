@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ntalmon <ntalmon@student.42heilbronn.de    +#+  +:+       +#+        */
+/*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 17:49:11 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 19:35:00 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	parse_coords(t_vec3 *coords, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (ft_double_p_len(values) != 3)
+	if (ft_count_params(values) != 3)
 	{
 		error("Coordinates must have 3 values", data);
 	}
@@ -39,7 +39,7 @@ void	parse_color(t_vec3 *color, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (ft_double_p_len(values) != 3)
+	if (ft_count_params(values) != 3)
 	{
 		error("RGB values must have 3 values", data);
 	}
@@ -66,7 +66,7 @@ void	parse_normalized_vector(t_vec3 *vec, char *param, t_data *data)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (ft_double_p_len(values) != 3)
+	if (ft_count_params(values) != 3)
 	{
 		free_double_p(values);
 		error("Normalized vector must have 3 values", data);
@@ -93,7 +93,7 @@ void	parse_surface(t_plane *pl, char *param, t_data *data, char **params)
 	char	**values;
 
 	values = ft_split(param, ',');
-	if (ft_double_p_len(values) != 2)
+	if (ft_count_params(values) != 2)
 	{
 		free_double_p(values);
 		error("Surface must have 2 values", data);
