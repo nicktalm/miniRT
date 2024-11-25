@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:17:29 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 21:11:26 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 12:41:12 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void	init_data(t_data *data, int argc, char **argv)
 	data->set.light = NULL;
 	data->garbage.line = NULL;
 	data->garbage.params = NULL;
+	data->window = NULL;
+	data->img = NULL;
 	if (argc == 2)
 	{
 		data->width = 900;
