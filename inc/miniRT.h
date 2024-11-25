@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/25 11:35:10 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 15:05:29 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -273,7 +273,7 @@ void	resize(int width, int height, void *param);
 
 void	key(mlx_key_data_t keydata, void *param);
 bool	wasd(mlx_key_data_t key, t_data *data);
-bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit);
+bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t);
 bool	cr(mlx_key_data_t key, t_data *data, int i);
 
 // img_creation
@@ -282,13 +282,6 @@ void	create_img(t_data *data);
 void	pixel_loop(t_data *data, t_vec3 coords, int resolution);
 void	in_out_object(t_ray *ray, t_hitpoint *hit);
 void	trace_ray(float x, float y, t_hitpoint *hit, t_data *data);
-
-// key_actions
-
-void	key(mlx_key_data_t keydata, void *param);
-bool	wasd(mlx_key_data_t key, t_data *data);
-bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit);
-bool	cr(mlx_key_data_t key, t_data *data, int i);
 
 // sampling
 

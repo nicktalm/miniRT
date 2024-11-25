@@ -1,6 +1,6 @@
 NAME = miniRT
 CC = cc
-CFLAGS = \
+CFLAGS = -Wall -Wextra -Werror\
 			-I inc \
 			-I lib/libft \
 			-I lib/get_next_line \

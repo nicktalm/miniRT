@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/25 13:37:22 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 15:04:59 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,14 @@ bool	wasd(mlx_key_data_t key, t_data *data)
 		*coord = add_vec(*coord, multi_vec_wnbr(bit, 0.5));
 	else if (key.key == MLX_KEY_E && (key.action == 1 || key.action == 2))
 		*coord = sub_vec(*coord, multi_vec_wnbr(bit, 0.5));
-	else if (lrud(key, data, t, bit))
+	else if (lrud(key, data, t))
 		return (true);
 	else
 		return (false);
 	return (true);
 }
 
-bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit)
+bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t)
 {
 	t_vec3	*dir;
 
