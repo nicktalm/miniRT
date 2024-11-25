@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:52:10 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/25 11:17:34 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 14:46:08 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,7 @@ void	get_map_normal(t_hitpoint *hit, t_vec3 *uv, xpm_t *bump_map)
 				get_map_color(uv->x, uv->y + 4, bump_map),
 				get_map_color(uv->x, uv->y, bump_map)), 4.0);
 	tangent = get_tangent(hit->normal);
-	tangent = cross_vec(hit->normal, tangent);
-	bitangent = cross_vec(hit->normal, tangent);
+	bitangent = norm_vec(cross_vec(tangent, hit->normal));
 	hit->normal = norm_vec(add_vec_wnbr(
 				add_vec_wnbr(hit->normal, dot(deltau, tangent)),
 				dot(deltav, bitangent)));

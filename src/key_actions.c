@@ -6,13 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/03 10:10:50 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 19:40:19 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 13:37:22 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-bool	check_vec(t_vec3 vec);
 
 void	key(mlx_key_data_t keydata, void *param)
 {
@@ -77,10 +75,6 @@ bool	lrud(mlx_key_data_t key, t_data *data, t_vec3 t, t_vec3 bit)
 		*dir = norm_vec(sub_vec(*dir, multi_vec_wnbr(t, 0.1)));
 	else if (key.key == MLX_KEY_RIGHT && (key.action == 1 || key.action == 2))
 		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(t, 0.1)));
-	else if (key.key == MLX_KEY_UP && (key.action == 1 || key.action == 2))
-		*dir = norm_vec(add_vec(*dir, multi_vec_wnbr(bit, 0.1)));
-	else if (key.key == MLX_KEY_DOWN && (key.action == 1 || key.action == 2))
-		*dir = norm_vec(sub_vec(*dir, multi_vec_wnbr(bit, 0.1)));
 	else
 		return (false);
 	return (true);
@@ -113,11 +107,4 @@ bool	cr(mlx_key_data_t key, t_data *data, int i)
 		return (true);
 	}
 	return (false);
-}
-
-bool	check_vec(t_vec3 vec)
-{
-	if (fabsf(vec.x) > 0.9 || fabsf(vec.y) > 0.9 || fabsf(vec.z) > 0.9)
-		return (false);
-	return (true);
 }
