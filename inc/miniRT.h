@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:43:57 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:03:14 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	ft_count(t_data *data, char **line);
 void	parse_coords(t_vec3 *vec, char *line, t_data *data);
 void	parse_normalized_vector(t_vec3 *vec, char *param, t_data *data);
 void	parse_color(t_vec3 *vec, char *line, t_data *data);
-void	parse_surface(t_plane *pl, char *param, t_data *data, char **params);
+void	parse_surface(t_plane *pl, char *param, t_data *data);
 
 //parsing_helper_2
 

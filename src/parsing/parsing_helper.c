@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:26:20 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:35:00 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/22 20:02:26 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	parse_normalized_vector(t_vec3 *vec, char *param, t_data *data)
 	}
 }
 
-void	parse_surface(t_plane *pl, char *param, t_data *data, char **params)
+void	parse_surface(t_plane *pl, char *param, t_data *data)
 {
 	char	**values;
 
