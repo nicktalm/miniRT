@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 19:41:02 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/25 12:18:54 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ void	delete_bump_texture(t_data *data)
 	{
 		if (data->set.obj[i].type == SPHERE)
 			check_bump_texture(data->set.obj[i].form.sp.bump_map,
-				data->set.obj[i].form.sp.texture, i);
+				data->set.obj[i].form.sp.texture);
 		else if (data->set.obj[i].type == PLANE)
 			check_bump_texture(data->set.obj[i].form.pl.bump_map,
-				data->set.obj[i].form.pl.texture, i);
+				data->set.obj[i].form.pl.texture);
 		else if (data->set.obj[i].type == CYLINDER)
 			check_bump_texture(data->set.obj[i].form.cy.bump_map,
-				data->set.obj[i].form.cy.texture, i);
+				data->set.obj[i].form.cy.texture);
 		else if (data->set.obj[i].type == CONE)
 			check_bump_texture(data->set.obj[i].form.cn.bump_map,
-				data->set.obj[i].form.cn.texture, i);
+				data->set.obj[i].form.cn.texture);
 		i++;
 	}
 }

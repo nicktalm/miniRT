@@ -6,7 +6,7 @@
 /*   By: ntalmon <ntalmon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 20:03:14 by ntalmon          ###   ########.fr       */
+/*   Updated: 2024/11/25 12:18:10 by ntalmon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,7 +255,7 @@ void	error(char *message, t_data *data);
 
 // error_2
 
-void	check_bump_texture(xpm_t *bump_map, xpm_t *texture, int i);
+void	check_bump_texture(xpm_t *bump_map, xpm_t *texture);
 
 // hooks
 
