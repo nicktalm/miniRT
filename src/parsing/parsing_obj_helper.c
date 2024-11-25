@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:33:40 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 20:59:09 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 10:31:06 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ void	parse_txt_bump(t_data *data, char *param,
 {
 	if (is_texture(param))
 	{
-		printf("text\n");
 		if (*texture != NULL)
 			error("Duplicate texture parameter", data);
 		parse_textures(data, param, texture);
 	}
 	else if (is_bump_map(param))
 	{
-		printf("bump\n");
 		if (*bump_map != NULL)
 			error("Duplicate bump map parameter", data);
 		parse_bump_map(data, param, bump_map);

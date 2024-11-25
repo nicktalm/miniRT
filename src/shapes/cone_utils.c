@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 11:23:54 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 20:59:31 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 11:35:52 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	get_color_and_normal_tb_cn(t_data *data,
 		map = cn.bump_map;
 	else
 		map = NULL;
-	// printf("bump %p\n", cn.bump_map);
-	// printf("text %p\n", cn.texture);
 	if (map || data->checker)
 		uv = get_uv_coords_tb(data, cn.radius, map, tmp);
 	if (cn.texture || data->checker)

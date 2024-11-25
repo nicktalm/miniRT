@@ -6,13 +6,11 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 14:46:05 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/21 19:15:21 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 11:34:19 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/miniRT.h"
-
-void	check_obj(t_data *data, t_hitpoint *hit, t_ray *ray, int i);
 
 void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data)
 {
@@ -47,7 +45,7 @@ void	check_obj(t_data *data, t_hitpoint *hit, t_ray *ray, int i)
 		if (calc_cy(data, data->set.obj[i].form.cy, *ray, hit))
 			hit->i = i;
 	}
-	else
+	else if (data->set.obj[i].type == CONE)
 	{
 		if (calc_cn(data, data->set.obj[i].form.cn, *ray, hit))
 			hit->i = i;

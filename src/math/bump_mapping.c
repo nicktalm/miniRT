@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 10:52:10 by lbohm             #+#    #+#             */
-/*   Updated: 2024/11/22 10:46:41 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 11:17:34 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,16 @@ t_vec3	get_map_color(float u, float v, xpm_t *map)
 	t_vec3	color;
 	int		index;
 
+	color.x = 0.0;
+	color.y = 0.0;
+	color.z = 0.0;
 	index = ((int)v * map->texture.width + (int)u) * 4;
-	color.x = map->texture.pixels[index] / 255.0;
-	color.y = map->texture.pixels[index + 1] / 255.0;
-	color.z = map->texture.pixels[index + 2] / 255.0;
+	if (index <= (int)(map->texture.width * map->texture.height * 4))
+	{
+		color.x = map->texture.pixels[index] / 255.0;
+		color.y = map->texture.pixels[index + 1] / 255.0;
+		color.z = map->texture.pixels[index + 2] / 255.0;
+	}
 	return (color);
 }
 

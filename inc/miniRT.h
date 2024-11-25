@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:40:09 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 20:16:58 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 11:35:10 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,7 @@ void	get_color_and_normal_sp(t_data *data, t_sphere sp,
 // check_hit
 
 void	check_hit(t_ray *ray, t_hitpoint *hit, t_data *data);
+void	check_obj(t_data *data, t_hitpoint *hit, t_ray *ray, int i);
 
 //error
 

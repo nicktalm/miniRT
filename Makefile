@@ -40,7 +40,7 @@ LDFLAGS =  -L $(LIBFT_DIR) -lft \
 all:				$(NAME)
 
 $(NAME):			$(OBJS) $(LIBFT) $(GET_NEXT_LINE) $(MLX)
-	@$(CC) $(CFLAGS) $(LDFLAGS) -o $(NAME) $(OBJS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 $(OBJS_DIR)/%.o:	src/%.c
 	@mkdir -p $(dir $@)

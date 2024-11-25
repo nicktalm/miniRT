@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 13:00:57 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 21:08:08 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 11:30:30 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,10 @@ void	error_2(char *message, char *param, t_data *data)
 	ft_putstr_fd(param, 2);
 	ft_putstr_fd("\n", 2);
 	free_all(data);
-	// mlx_delete_image(data->window, data->img);
-	// mlx_terminate(data->window);
+	if (data->window && data->img)
+		mlx_delete_image(data->window, data->img);
+	if (data->window)
+		mlx_terminate(data->window);
 	exit(0);
 }
 
@@ -81,9 +83,9 @@ void	error(char *message, t_data *data)
 	ft_putstr_fd(message, 2);
 	ft_putstr_fd("\n", 2);
 	free_all(data);
-	// if (data->window && data->img)
-	// 	mlx_delete_image(data->window, data->img);
-	// if (data->window)
-	// 	mlx_terminate(data->window);
+	if (data->window && data->img)
+		mlx_delete_image(data->window, data->img);
+	if (data->window)
+		mlx_terminate(data->window);
 	exit(0);
 }

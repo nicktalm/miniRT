@@ -6,7 +6,7 @@
 /*   By: lbohm <lbohm@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/21 15:24:36 by ntalmon           #+#    #+#             */
-/*   Updated: 2024/11/22 21:12:50 by lbohm            ###   ########.fr       */
+/*   Updated: 2024/11/25 11:18:01 by lbohm            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	init_data(&data, argc, argv);
-	// printf("bump %p\n", data.set.obj[0].form.cn.bump_map);
-	// printf("text %p\n", data.set.obj[0].form.cn.texture);
 	init_mlx(&data);
+	mlx_get_monitor_size(0, &data.win_w_max, &data.win_h_max);
+	mlx_set_window_limit(data.window, -1, -1, data.win_w_max, data.win_h_max);
 	create_img(&data);
 	if (mlx_image_to_window(data.window, data.img, 0, 0) == -1)
 		error("image to window", &data);
-	mlx_get_monitor_size(0, &data.win_w_max, &data.win_h_max);
-	mlx_set_window_limit(data.window, -1, -1, data.win_w_max, data.win_h_max);
 	mlx_loop_hook(data.window, hook, &data);
 	mlx_loop(data.window);
 	mlx_delete_image(data.window, data.img);
